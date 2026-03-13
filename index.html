@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>定時退ピング</title>
+    <meta name="description" content="仕事をタイピングで片付けて、定時退社を目指す社会人ネタのブラウザゲーム" />
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+
+    <!-- モバイル警告オーバーレイ -->
+    <div id="mobile-warning" class="mobile-warning" hidden>
+      <div class="mobile-warning-box">
+        <p class="mobile-warning-title">PCでプレイしてください</p>
+        <p class="mobile-warning-body">このゲームはキーボード入力が必要なため、PCブラウザでのプレイを推奨しています。</p>
+        <button id="mobile-warning-dismiss" class="primary-button" type="button">このまま続ける</button>
+      </div>
+    </div>
+
+    <!-- 遊び方モーダル -->
+    <div id="how-to-play-modal" class="modal-overlay" hidden>
+      <div class="modal-box panel">
+        <button class="modal-close" id="modal-close-btn" type="button" aria-label="閉じる">✕</button>
+        <p class="badge">TUTORIAL</p>
+        <h2 class="modal-title">遊び方</h2>
+        <ol class="how-to-list">
+          <li>難易度を選んで <strong>スタート</strong> を押す</li>
+          <li>画面に表示された日本語をローマ字で <strong>キーボード入力</strong> する</li>
+          <li>正確に速く打つほどゲーム内時間の消費が減る</li>
+          <li>すべてのタスクを完了したら <strong>退勤時刻</strong> が確定</li>
+          <li>17:30 より前に退勤できれば <strong>定時退社成功！</strong></li>
+        </ol>
+        <div class="how-to-tips">
+          <p class="label">ポイント</p>
+          <ul>
+            <li>ミスが多いと時間ペナルティが増える</li>
+            <li>割り込みイベントが起きると時間が消費される</li>
+            <li>ブラック企業ほどスコア倍率が高い</li>
+            <li>称号は退勤時刻・ミス数・イベント数で決まる</li>
+          </ul>
+        </div>
+        <button class="primary-button modal-ok-btn" id="modal-ok-btn" type="button">閉じる</button>
+      </div>
+    </div>
+
+    <div class="app-shell">
+      <header class="site-header">
+        <div class="header-meta">
+          <p class="eyebrow">BROWSER TYPING GAME</p>
+          <p class="header-clock">始業 08:30 &nbsp;/&nbsp; 定時 17:30</p>
+        </div>
+        <h1>定時<span class="title-accent">退</span>ピング</h1>
+        <p class="lead">仕事をタイプして片付ける。<br>主役は今日の退勤時刻。</p>
+      </header>
+
+      <main>
+        <!-- ======= タイトル画面 ======= -->
+        <section id="title-screen" class="screen active">
+          <div class="title-layout">
+
+            <!-- 左レール -->
+            <aside class="side-rail">
+              <section class="panel rail-card">
+                <p class="label">Menu</p>
+                <h3>コンテンツ</h3>
+                <div class="rail-menu">
+                  <button class="rail-button how-to-btn" type="button">遊び方</button>
+                  <button class="rail-button" type="button" onclick="alert('近日公開予定！')">実績</button>
+                  <button class="rail-button" type="button" onclick="alert('近日公開予定！')">設定</button>
+                </div>
+              </section>
+
+              <section class="panel rail-card">
+                <p class="label">Best Score</p>
+                <h3>自己ベスト</h3>
+                <div id="best-records" class="best-records"></div>
+              </section>
+            </aside>
+
+            <!-- 中央ステージ -->
+            <div class="hero-card panel office-title-stage">
+
+              <!-- 左キャラ：退勤ダッシュマン -->
+              <div class="office-scene office-scene-left" aria-hidden="true">
+                <div class="runner">
+                  <div class="runner-hair"></div>
+                  <div class="runner-head"></div>
+                  <div class="runner-neck"></div>
+                  <div class="runner-body">
+                    <div class="runner-tie"></div>
+                  </div>
+                  <div class="runner-arm runner-arm-back"></div>
+                  <div class="runner-arm runner-arm-front"></div>
+                  <div class="runner-leg runner-leg-front"></div>
+                  <div class="runner-leg runner-leg-back"></div>
+                  <div class="runner-shoe runner-shoe-front"></div>
+                  <div class="runner-shoe runner-shoe-back"></div>
+                  <div class="runner-bag"></div>
+                </div>
+                <div class="floor-item laptop-floor"></div>
+                <div class="floor-item cup-floor"></div>
+              </div>
+
+              <!-- タイトルボード -->
+              <div class="title-board">
+                <div class="title-plaque">
+                  <p class="badge">WORK x TYPING GAME</p>
+                  <h2 class="game-title-text">定時<span class="title-accent">退</span>ピング</h2>
+                  <p class="title-subcopy">タイピングで仕事を終わらせ、定時退社を目指せ。</p>
+                </div>
+
+                <div class="difficulty-block portal-card">
+                  <p class="diff-label label">難易度選択</p>
+                  <div class="difficulty-grid" id="difficulty-options">
+                    <button class="difficulty-card selected" data-difficulty="white" type="button">
+                      <span class="difficulty-name">ホワイト企業</span>
+                      <span class="difficulty-desc">定時退社しやすい初級</span>
+                      <span class="difficulty-rate">倍率 x1.0 / 割り込み 少</span>
+                    </button>
+                    <button class="difficulty-card" data-difficulty="normal" type="button">
+                      <span class="difficulty-name">ふつう企業</span>
+                      <span class="difficulty-desc">仕事もイベントも標準</span>
+                      <span class="difficulty-rate">倍率 x1.3 / 割り込み 中</span>
+                    </button>
+                    <button class="difficulty-card" data-difficulty="black" type="button">
+                      <span class="difficulty-name">ブラック企業</span>
+                      <span class="difficulty-desc">重い仕事と割り込みが待つ</span>
+                      <span class="difficulty-rate">倍率 x1.8 / 割り込み 多</span>
+                    </button>
+                  </div>
+                  <div class="title-actions">
+                    <button id="start-button" class="primary-button stage-button" type="button">スタート</button>
+                    <button class="secondary-button stage-sub-button how-to-btn" type="button">遊び方</button>
+                    <button class="ghost-button stage-sub-button" type="button" onclick="alert('オンラインランキングは近日公開！')">ランキング</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 右キャラ：残業社員 -->
+              <div class="office-scene office-scene-right" aria-hidden="true">
+                <div class="digital-clock">20:09</div>
+                <div class="worker-scene">
+                  <div class="worker-monitor">
+                    <div class="worker-screen-inner"></div>
+                    <div class="worker-stand"></div>
+                  </div>
+                  <div class="worker-head">
+                    <div class="worker-hair"></div>
+                    <div class="worker-face"></div>
+                  </div>
+                  <div class="worker-body"></div>
+                  <div class="worker-arm worker-arm-left"></div>
+                  <div class="worker-arm worker-arm-right"></div>
+                  <div class="worker-desk"></div>
+                  <div class="worker-keyboard"></div>
+                  <div class="coffee-cup">
+                    <div class="cup-steam cup-steam-1"></div>
+                    <div class="cup-steam cup-steam-2"></div>
+                  </div>
+                  <div class="paper-stack"></div>
+                  <div class="paper-stack paper-stack-2"></div>
+                </div>
+              </div>
+
+              <!-- 床装飾 -->
+              <div class="floor-deco" aria-hidden="true">
+                <div class="plant-pot"></div>
+                <div class="paper-pile"></div>
+              </div>
+            </div>
+
+            <!-- 右レール -->
+            <aside class="side-rail">
+              <section class="panel rail-card">
+                <p class="label">Last Session</p>
+                <h3>直近の退勤</h3>
+                <div id="last-result-summary" class="last-result-summary"></div>
+              </section>
+
+              <section class="panel rail-card">
+                <p class="label">LINKS</p>
+                <h3>リンク</h3>
+                <div class="link-list">
+                  <a href="https://example.com/" target="_blank" rel="noreferrer">自作アプリ</a>
+                  <a href="https://x.com/" target="_blank" rel="noreferrer">開発者X</a>
+                  <a href="https://example.com/" target="_blank" rel="noreferrer">ポートフォリオ</a>
+                  <a href="https://example.com/" target="_blank" rel="noreferrer">他作品一覧</a>
+                </div>
+              </section>
+            </aside>
+          </div>
+        </section>
+
+        <!-- ======= 準備画面 ======= -->
+        <section id="ready-screen" class="screen">
+          <div class="ready-layout">
+            <div class="ready-panel panel">
+              <p class="badge">READY</p>
+              <h2 class="ready-title">準備はいいですか？</h2>
+              <p class="ready-difficulty" id="ready-difficulty-name">ホワイト企業</p>
+              <p class="ready-hint">スペースキーを押してスタート</p>
+              <button id="ready-start-btn" class="primary-button stage-button" type="button">スペースキーでスタート</button>
+              <button id="ready-back-btn" class="ghost-button" type="button" style="margin-top:10px;">タイトルへ戻る</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- ======= ゲーム画面 ======= -->
+        <section id="game-screen" class="screen">
+          <div class="screen-frame">
+            <aside class="frame-rail">
+              <section class="panel rail-card compact-card">
+                <p class="label">Tip</p>
+                <h3>攻略ヒント</h3>
+                <p id="game-tip" class="tip-text">ミスを減らして時間ロスを防ごう！</p>
+              </section>
+              <section class="panel rail-card compact-card">
+                <p class="label">LINKS</p>
+                <h3>リンク</h3>
+                <div class="link-list">
+                  <a href="https://example.com/" target="_blank" rel="noreferrer">自作アプリ</a>
+                  <a href="https://x.com/" target="_blank" rel="noreferrer">開発者X</a>
+                  <a href="https://example.com/" target="_blank" rel="noreferrer">ポートフォリオ</a>
+                </div>
+              </section>
+            </aside>
+
+            <div class="frame-main game-main-grid">
+              <!-- ステータスバー（コンパクト） -->
+              <div class="status-grid">
+                <article class="panel stat-panel accent-panel">
+                  <span class="stat-label">現在時刻</span>
+                  <strong id="current-time" class="stat-value">08:30</strong>
+                </article>
+                <article class="panel stat-panel warn-panel">
+                  <span class="stat-label">定時まで</span>
+                  <strong id="time-left" class="stat-value">9時間00分</strong>
+                </article>
+                <article class="panel stat-panel">
+                  <span class="stat-label">進捗</span>
+                  <strong id="progress-text" class="stat-value">0 / 0</strong>
+                </article>
+              </div>
+
+              <!-- プログレスバー（コンパクト） -->
+              <div class="progress-bar-wrap panel">
+                <div class="progress-bar">
+                  <div id="progress-fill" class="progress-fill"></div>
+                </div>
+              </div>
+
+              <!-- タスク・タイピングエリア -->
+              <section class="panel task-panel">
+                <div class="task-header">
+                  <div>
+                    <p class="task-kicker">現在の業務</p>
+                    <h2 id="task-name">-</h2>
+                  </div>
+                  <div class="difficulty-chip" id="difficulty-chip">ホワイト企業</div>
+                </div>
+
+                <div class="sentence-panel">
+                  <p class="label">業務メッセージ</p>
+                  <p id="prompt-japanese" class="prompt-japanese">-</p>
+                  <p class="label">ローマ字ガイド</p>
+                  <p id="prompt-romaji" class="prompt-romaji">-</p>
+                </div>
+
+                <div id="typing-preview" class="typing-preview"></div>
+
+                <label class="input-wrap" for="typing-input">
+                  <span>ここに入力</span>
+                  <input
+                    id="typing-input"
+                    type="text"
+                    autocapitalize="off"
+                    autocomplete="off"
+                    autocorrect="off"
+                    spellcheck="false"
+                  />
+                </label>
+              </section>
+
+              <!-- メトリクスバー（コンパクト） -->
+              <div class="bottom-grid">
+                <section class="panel metrics-panel">
+                  <div class="metric-row">
+                    <span>WPM</span>
+                    <strong id="wpm-value">0</strong>
+                  </div>
+                  <div class="metric-row">
+                    <span>正確率</span>
+                    <strong id="accuracy-value">100%</strong>
+                  </div>
+                  <div class="metric-row">
+                    <span>ミス数</span>
+                    <strong id="miss-value">0</strong>
+                  </div>
+                </section>
+
+                <section class="panel event-panel">
+                  <p class="label">業務ログ</p>
+                  <p id="event-message" class="event-message">静かな一日が始まりました。</p>
+                </section>
+              </div>
+            </div>
+
+            <aside class="frame-rail">
+              <section class="panel rail-card compact-card">
+                <p class="label">Links</p>
+                <h3>外部リンク</h3>
+                <div class="link-list">
+                  <a href="https://example.com/" target="_blank" rel="noreferrer">自作アプリ</a>
+                  <a href="https://example.com/" target="_blank" rel="noreferrer">他作品一覧</a>
+                </div>
+              </section>
+            </aside>
+          </div>
+        </section>
+
+        <!-- ======= 結果画面 ======= -->
+        <section id="result-screen" class="screen">
+          <div class="screen-frame">
+            <aside class="frame-rail">
+              <section class="panel rail-card compact-card">
+                <p class="label">LINKS</p>
+                <h3>リンク</h3>
+                <div class="link-list">
+                  <a href="https://example.com/" target="_blank" rel="noreferrer">自作アプリ</a>
+                  <a href="https://x.com/" target="_blank" rel="noreferrer">開発者X</a>
+                  <a href="https://example.com/" target="_blank" rel="noreferrer">ポートフォリオ</a>
+                  <a href="https://example.com/" target="_blank" rel="noreferrer">他作品一覧</a>
+                </div>
+              </section>
+            </aside>
+
+            <div class="frame-main">
+              <div class="result-hero panel" id="result-hero">
+                <p class="badge">退勤レポート</p>
+                <div class="result-hero-badges">
+                  <span class="difficulty-chip" id="result-difficulty-chip">ホワイト企業</span>
+                  <span class="result-record-badge" id="result-record-badge" hidden></span>
+                </div>
+                <h2 id="result-leave-time">17:30</h2>
+                <p id="result-status" class="result-status">定時退社成功</p>
+                <p id="result-title" class="result-title">定時の守護神</p>
+                <div class="result-compare" id="result-compare" hidden></div>
+              </div>
+
+              <div class="result-grid">
+                <section class="panel result-stats">
+                  <div class="panel-head">
+                    <span class="label">Result</span>
+                    <span class="mini-note">今日の勤務評価</span>
+                  </div>
+                  <div class="result-row">
+                    <span>総合スコア</span>
+                    <strong id="result-score">0</strong>
+                  </div>
+                  <div class="result-row">
+                    <span>WPM</span>
+                    <strong id="result-wpm">0</strong>
+                  </div>
+                  <div class="result-row">
+                    <span>正確率</span>
+                    <strong id="result-accuracy">0%</strong>
+                  </div>
+                  <div class="result-row">
+                    <span>ミス数</span>
+                    <strong id="result-misses">0</strong>
+                  </div>
+                  <div class="result-row">
+                    <span>難易度</span>
+                    <strong id="result-difficulty">-</strong>
+                  </div>
+                  <div class="result-row">
+                    <span>自己ベスト</span>
+                    <strong id="result-best">-</strong>
+                  </div>
+                </section>
+
+                <section class="panel result-actions">
+                  <div class="panel-head">
+                    <span class="label">Action</span>
+                    <span class="mini-note">結果を共有して再挑戦</span>
+                  </div>
+
+                  <div class="share-text-box" id="share-text-box"></div>
+                  <button id="copy-text-button" class="ghost-button" type="button">テキストをコピー</button>
+                  <button id="share-button" class="secondary-button" type="button">Xでシェア</button>
+                  <button id="retry-button" class="primary-button" type="button">同じ企業で再挑戦</button>
+                  <button id="back-button" class="ghost-button" type="button">タイトルへ戻る</button>
+                </section>
+              </div>
+            </div>
+
+            <aside class="frame-rail">
+              <section class="panel rail-card compact-card">
+                <p class="label">LINKS</p>
+                <h3>リンク</h3>
+                <div class="link-list">
+                  <a href="https://x.com/" target="_blank" rel="noreferrer">開発者X</a>
+                  <a href="https://example.com/" target="_blank" rel="noreferrer">ポートフォリオ</a>
+                </div>
+              </section>
+            </aside>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="./script.js"></script>
+  </body>
+</html>
