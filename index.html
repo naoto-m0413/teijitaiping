@@ -139,7 +139,7 @@
 
               <!-- 右キャラ：残業社員 -->
               <div class="office-scene office-scene-right" aria-hidden="true">
-                <div class="digital-clock">20:09</div>
+                <div class="digital-clock" id="title-real-clock">--:--</div>
                 <div class="worker-scene">
                   <div class="worker-monitor">
                     <div class="worker-screen-inner"></div>
@@ -263,23 +263,19 @@
                 <div class="sentence-panel">
                   <p class="label">業務メッセージ</p>
                   <p id="prompt-japanese" class="prompt-japanese">-</p>
-                  <p class="label">ローマ字ガイド</p>
-                  <p id="prompt-romaji" class="prompt-romaji">-</p>
                 </div>
 
                 <div id="typing-preview" class="typing-preview"></div>
 
-                <label class="input-wrap" for="typing-input">
-                  <span>ここに入力</span>
-                  <input
-                    id="typing-input"
-                    type="text"
-                    autocapitalize="off"
-                    autocomplete="off"
-                    autocorrect="off"
-                    spellcheck="false"
-                  />
-                </label>
+                <input
+                  id="typing-input"
+                  class="hidden-input"
+                  type="text"
+                  autocapitalize="off"
+                  autocomplete="off"
+                  autocorrect="off"
+                  spellcheck="false"
+                />
               </section>
 
               <!-- メトリクスバー（コンパクト） -->

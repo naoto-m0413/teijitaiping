@@ -190,8 +190,8 @@ const TASK_POOL = [
     type: "commute",
     eventEligible: false,
     prompts: [
-      { jp: "本日もよろしくお願いします" },
-      { jp: "出社しました順次対応します" }
+      { jp: "ほんじつもよろしくおねがいします" },
+      { jp: "しゅっしゃしましたじゅんじたいおうします" }
     ]
   },
   {
@@ -201,8 +201,8 @@ const TASK_POOL = [
     type: "meeting",
     eventEligible: true,
     prompts: [
-      { jp: "本日の進捗を共有します" },
-      { jp: "優先度の高い案件から着手します" }
+      { jp: "ほんじつのしんちょくをきょうゆうします" },
+      { jp: "ゆうせんどのたかいあんけんからちゃくしゅします" }
     ]
   },
   {
@@ -212,9 +212,9 @@ const TASK_POOL = [
     type: "mail",
     eventEligible: true,
     prompts: [
-      { jp: "お世話になっております" },
-      { jp: "先ほどの件修正版をお送りします" },
-      { jp: "念のため再度ご確認ください" }
+      { jp: "おせわになっております" },
+      { jp: "さきほどのけんしゅうせいはんをおおくりします" },
+      { jp: "ねんのためさいどごかくにんください" }
     ]
   },
   {
@@ -224,9 +224,9 @@ const TASK_POOL = [
     type: "meeting",
     eventEligible: true,
     prompts: [
-      { jp: "会議室が変更になりました" },
-      { jp: "一旦この方向で進めます" },
-      { jp: "本日の会議資料を共有します" }
+      { jp: "かいぎしつがへんこうになりました" },
+      { jp: "いったんこのほうこうですすめます" },
+      { jp: "ほんじつのかいぎしりょうをきょうゆうします" }
     ]
   },
   {
@@ -236,9 +236,9 @@ const TASK_POOL = [
     type: "document",
     eventEligible: true,
     prompts: [
-      { jp: "こちら認識齟齬がありました" },
-      { jp: "数字だけ差し替えて再送します" },
-      { jp: "至急確認お願いします" }
+      { jp: "こちらにんしきそごがありました" },
+      { jp: "すうじだけさしかえてさいそうします" },
+      { jp: "しきゅうかくにんおねがいします" }
     ]
   },
   {
@@ -248,9 +248,9 @@ const TASK_POOL = [
     type: "document",
     eventEligible: true,
     prompts: [
-      { jp: "仕様変更の内容を反映します" },
-      { jp: "修正版をご確認いただけますか" },
-      { jp: "先ほどの件修正版をお送りします" }
+      { jp: "しようへんこうのないようをはんえいします" },
+      { jp: "しゅうせいはんをごかくにんいただけますか" },
+      { jp: "さきほどのけんしゅうせいはんをおおくりします" }
     ]
   },
   {
@@ -260,9 +260,9 @@ const TASK_POOL = [
     type: "request",
     eventEligible: true,
     prompts: [
-      { jp: "すみません本日中に対応お願いします" },
+      { jp: "すみませんほんじつちゅうにたいおうおねがいします" },
       { jp: "ちょっといいですか" },
-      { jp: "本件先方へ連携完了しました" }
+      { jp: "ほんけんせんぽうへれんけいかんりょうしました" }
     ]
   },
   {
@@ -272,9 +272,9 @@ const TASK_POOL = [
     type: "final",
     eventEligible: true,
     prompts: [
-      { jp: "今日も一日お疲れ様でした" },
-      { jp: "本日の業務を完了します" },
-      { jp: "お先に失礼いたします" }
+      { jp: "きょうもいちにちおつかれさまでした" },
+      { jp: "ほんじつのぎょうむをかんりょうします" },
+      { jp: "おさきにしつれいいたします" }
     ]
   }
 ];
@@ -341,7 +341,6 @@ const el = {
   taskName:             document.getElementById("task-name"),
   difficultyChip:       document.getElementById("difficulty-chip"),
   promptJapanese:       document.getElementById("prompt-japanese"),
-  promptRomaji:         document.getElementById("prompt-romaji"),
   typingPreview:        document.getElementById("typing-preview"),
   typingInput:          document.getElementById("typing-input"),
   wpmValue:             document.getElementById("wpm-value"),
@@ -430,6 +429,20 @@ function initialize() {
   renderBestRecords();
   renderLastResultSummary();
   updateDifficultySelection();
+  startRealClock();
+}
+
+function startRealClock() {
+  const clockEl = document.getElementById("title-real-clock");
+  if (!clockEl) return;
+  function tick() {
+    const now = new Date();
+    const h = String(now.getHours()).padStart(2, "0");
+    const m = String(now.getMinutes()).padStart(2, "0");
+    clockEl.textContent = `${h}:${m}`;
+  }
+  tick();
+  setInterval(tick, 1000);
 }
 
 /* ===========================
@@ -664,7 +677,6 @@ function renderCurrentTask() {
   el.difficultyChip.textContent = session.difficulty.name;
 
   renderJapaneseWithColor();
-  renderRomajiHint();
   renderTypingPreview();
   updateStats();
 }
@@ -1040,9 +1052,9 @@ function processChar(char) {
 }
 
 function flashInputError() {
-  el.typingInput.classList.add("input-error");
-  setTimeout(() => el.typingInput.classList.remove("input-error"), 200);
-  el.typingInput.animate(
+  el.typingPreview.classList.add("input-error");
+  setTimeout(() => el.typingPreview.classList.remove("input-error"), 200);
+  el.typingPreview.animate(
     [
       { transform: "translateX(0)"   },
       { transform: "translateX(-4px)" },
