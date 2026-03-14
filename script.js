@@ -190,8 +190,10 @@ const TASK_POOL = [
     type: "commute",
     eventEligible: false,
     prompts: [
-      { jp: "ほんじつもよろしくおねがいします",           kanji: "本日もよろしくお願いします" },
-      { jp: "しゅっしゃしましたじゅんじたいおうします",   kanji: "出社しました順次対応します" }
+      { jp: "ほんじつもよろしくおねがいします",
+        parts: [["本日","ほんじつ"],["もよろしくお"],["願","ねが"],["いします"]] },
+      { jp: "しゅっしゃしましたじゅんじたいおうします",
+        parts: [["出社","しゅっしゃ"],["しました"],["順次","じゅんじ"],["対応","たいおう"],["します"]] }
     ]
   },
   {
@@ -201,8 +203,10 @@ const TASK_POOL = [
     type: "meeting",
     eventEligible: true,
     prompts: [
-      { jp: "ほんじつのしんちょくをきょうゆうします",             kanji: "本日の進捗を共有します" },
-      { jp: "ゆうせんどのたかいあんけんからちゃくしゅします",     kanji: "優先度の高い案件から着手します" }
+      { jp: "ほんじつのしんちょくをきょうゆうします",
+        parts: [["本日","ほんじつ"],["の"],["進捗","しんちょく"],["を"],["共有","きょうゆう"],["します"]] },
+      { jp: "ゆうせんどのたかいあんけんからちゃくしゅします",
+        parts: [["優先度","ゆうせんど"],["の"],["高","たか"],["い"],["案件","あんけん"],["から"],["着手","ちゃくしゅ"],["します"]] }
     ]
   },
   {
@@ -212,9 +216,12 @@ const TASK_POOL = [
     type: "mail",
     eventEligible: true,
     prompts: [
-      { jp: "おせわになっております",                           kanji: "お世話になっております" },
-      { jp: "さきほどのけんしゅうせいはんをおおくりします",     kanji: "先ほどの件修正版をお送りします" },
-      { jp: "ねんのためさいどごかくにんください",               kanji: "念のため再度ご確認ください" }
+      { jp: "おせわになっております",
+        parts: [["お"],["世話","せわ"],["になっております"]] },
+      { jp: "さきほどのけんしゅうせいはんをおおくりします",
+        parts: [["先","さき"],["ほどの"],["件","けん"],["修正版","しゅうせいはん"],["をお"],["送","おく"],["りします"]] },
+      { jp: "ねんのためさいどごかくにんください",
+        parts: [["念","ねん"],["のため"],["再度","さいど"],["ご"],["確認","かくにん"],["ください"]] }
     ]
   },
   {
@@ -224,9 +231,12 @@ const TASK_POOL = [
     type: "meeting",
     eventEligible: true,
     prompts: [
-      { jp: "かいぎしつがへんこうになりました",             kanji: "会議室が変更になりました" },
-      { jp: "いったんこのほうこうですすめます",             kanji: "一旦この方向で進めます" },
-      { jp: "ほんじつのかいぎしりょうをきょうゆうします",   kanji: "本日の会議資料を共有します" }
+      { jp: "かいぎしつがへんこうになりました",
+        parts: [["会議室","かいぎしつ"],["が"],["変更","へんこう"],["になりました"]] },
+      { jp: "いったんこのほうこうですすめます",
+        parts: [["一旦","いったん"],["この"],["方向","ほうこう"],["で"],["進","すす"],["めます"]] },
+      { jp: "ほんじつのかいぎしりょうをきょうゆうします",
+        parts: [["本日","ほんじつ"],["の"],["会議資料","かいぎしりょう"],["を"],["共有","きょうゆう"],["します"]] }
     ]
   },
   {
@@ -236,9 +246,12 @@ const TASK_POOL = [
     type: "document",
     eventEligible: true,
     prompts: [
-      { jp: "こちらにんしきそごがありました",       kanji: "こちら認識齟齬がありました" },
-      { jp: "すうじだけさしかえてさいそうします",   kanji: "数字だけ差し替えて再送します" },
-      { jp: "しきゅうかくにんおねがいします",       kanji: "至急確認お願いします" }
+      { jp: "こちらにんしきそごがありました",
+        parts: [["こちら"],["認識","にんしき"],["齟齬","そご"],["がありました"]] },
+      { jp: "すうじだけさしかえてさいそうします",
+        parts: [["数字","すうじ"],["だけ"],["差","さ"],["し"],["替","か"],["えて"],["再送","さいそう"],["します"]] },
+      { jp: "しきゅうかくにんおねがいします",
+        parts: [["至急","しきゅう"],["確認","かくにん"],["お"],["願","ねが"],["いします"]] }
     ]
   },
   {
@@ -248,9 +261,12 @@ const TASK_POOL = [
     type: "document",
     eventEligible: true,
     prompts: [
-      { jp: "しようへんこうのないようをはんえいします",       kanji: "仕様変更の内容を反映します" },
-      { jp: "しゅうせいはんをごかくにんいただけますか",       kanji: "修正版をご確認いただけますか" },
-      { jp: "さきほどのけんしゅうせいはんをおおくりします",   kanji: "先ほどの件修正版をお送りします" }
+      { jp: "しようへんこうのないようをはんえいします",
+        parts: [["仕様","しよう"],["変更","へんこう"],["の"],["内容","ないよう"],["を"],["反映","はんえい"],["します"]] },
+      { jp: "しゅうせいはんをごかくにんいただけますか",
+        parts: [["修正版","しゅうせいはん"],["をご"],["確認","かくにん"],["いただけますか"]] },
+      { jp: "さきほどのけんしゅうせいはんをおおくりします",
+        parts: [["先","さき"],["ほどの"],["件","けん"],["修正版","しゅうせいはん"],["をお"],["送","おく"],["りします"]] }
     ]
   },
   {
@@ -260,9 +276,12 @@ const TASK_POOL = [
     type: "request",
     eventEligible: true,
     prompts: [
-      { jp: "すみませんほんじつちゅうにたいおうおねがいします",   kanji: "すみません本日中に対応お願いします" },
-      { jp: "ちょっといいですか",                               kanji: "ちょっといいですか" },
-      { jp: "ほんけんせんぽうへれんけいかんりょうしました",       kanji: "本件先方へ連携完了しました" }
+      { jp: "すみませんほんじつちゅうにたいおうおねがいします",
+        parts: [["すみません"],["本日中","ほんじつちゅう"],["に"],["対応","たいおう"],["お"],["願","ねが"],["いします"]] },
+      { jp: "ちょっといいですか",
+        parts: [["ちょっといいですか"]] },
+      { jp: "ほんけんせんぽうへれんけいかんりょうしました",
+        parts: [["本件","ほんけん"],["先方","せんぽう"],["へ"],["連携","れんけい"],["完了","かんりょう"],["しました"]] }
     ]
   },
   {
@@ -272,9 +291,12 @@ const TASK_POOL = [
     type: "final",
     eventEligible: true,
     prompts: [
-      { jp: "きょうもいちにちおつかれさまでした",   kanji: "今日も一日お疲れ様でした" },
-      { jp: "ほんじつのぎょうむをかんりょうします", kanji: "本日の業務を完了します" },
-      { jp: "おさきにしつれいいたします",           kanji: "お先に失礼いたします" }
+      { jp: "きょうもいちにちおつかれさまでした",
+        parts: [["今日","きょう"],["も"],["一日","いちにち"],["お"],["疲","つか"],["れ"],["様","さま"],["でした"]] },
+      { jp: "ほんじつのぎょうむをかんりょうします",
+        parts: [["本日","ほんじつ"],["の"],["業務","ぎょうむ"],["を"],["完了","かんりょう"],["します"]] },
+      { jp: "おさきにしつれいいたします",
+        parts: [["お"],["先","さき"],["に"],["失礼","しつれい"],["いたします"]] }
     ]
   }
 ];
@@ -671,6 +693,8 @@ function renderCurrentTask() {
   session.tokens       = tokenize(task.prompt.jp);
   session.tokenIndex   = 0;
   session.currentTyped = "";
+  session.minutesPerToken = (task.baseMinutes * session.difficulty.timePressure) / Math.max(session.tokens.length, 1);
+  session.tokenMinutesUsed = 0;
 
   el.typingInput.value = "";
   el.taskName.textContent       = task.name;
@@ -682,7 +706,7 @@ function renderCurrentTask() {
 }
 
 /* ===========================
-   日本語テキストのかなカラーコーディング（ルビ付き漢字表示）
+   日本語テキストのかなカラーコーディング（漢字ルビ対応）
 =========================== */
 function renderJapaneseWithColor() {
   const session = state.session;
@@ -690,94 +714,52 @@ function renderJapaneseWithColor() {
   const tokens  = session.tokens;
   const idx     = session.tokenIndex;
   const jp      = task.prompt.jp;
-  const kanji   = task.prompt.kanji || jp;
+  const parts   = task.prompt.parts;
 
-  // jp文字列中でどこまで入力済みかを文字数で計算
+  // jp文字列でどこまで入力済みかを文字数で計算
   let doneEnd = 0;
   for (let ti = 0; ti < idx; ti++) doneEnd += tokens[ti].length;
   const currentEnd = idx < tokens.length ? doneEnd + tokens[idx].length : doneEnd;
 
-  // ルビ要素：<ruby>漢字<rt><done><current><pending></rt></ruby>
-  const ruby = document.createElement("ruby");
-  ruby.textContent = kanji;
-
-  const rt = document.createElement("rt");
-
-  if (doneEnd > 0) {
-    const doneSpan = document.createElement("span");
-    doneSpan.className = "kana-done";
-    doneSpan.textContent = jp.slice(0, doneEnd);
-    rt.appendChild(doneSpan);
-  }
-
-  if (idx < tokens.length) {
-    const curSpan = document.createElement("span");
-    curSpan.className = "kana-current";
-    curSpan.textContent = jp.slice(doneEnd, currentEnd);
-    rt.appendChild(curSpan);
-  }
-
-  if (currentEnd < jp.length) {
-    const pendSpan = document.createElement("span");
-    pendSpan.className = "kana-pending";
-    pendSpan.textContent = jp.slice(currentEnd);
-    rt.appendChild(pendSpan);
-  }
-
-  ruby.appendChild(rt);
   el.promptJapanese.innerHTML = "";
-  el.promptJapanese.appendChild(ruby);
+  let pos = 0;
+
+  for (const part of parts) {
+    const text    = part[0];
+    const reading = part[1]; // undefined if hiragana segment
+    const segReading = reading !== undefined ? reading : text;
+    const segStart = pos;
+    const segEnd   = pos + segReading.length;
+    pos = segEnd;
+
+    if (reading !== undefined) {
+      // 漢字セグメント: <ruby>漢字<rt>色付き読み</rt></ruby>
+      const ruby = document.createElement("ruby");
+      if (segEnd <= doneEnd)            ruby.className = "kana-done";
+      else if (segStart >= currentEnd)  ruby.className = "kana-pending";
+      else                              ruby.className = "kana-current";
+      ruby.appendChild(document.createTextNode(text));
+      const rt = document.createElement("rt");
+      appendColoredKana(rt, reading, segStart, doneEnd, currentEnd);
+      ruby.appendChild(rt);
+      el.promptJapanese.appendChild(ruby);
+    } else {
+      // ひらがなセグメント: 1文字ずつ色付け
+      appendColoredKana(el.promptJapanese, text, segStart, doneEnd, currentEnd);
+    }
+  }
 }
 
-/* ===========================
-   ローマ字ヒント表示
-=========================== */
-function renderRomajiHint() {
-  const session = state.session;
-  const tokens  = session.tokens;
-  const idx     = session.tokenIndex;
-  const typed   = session.currentTyped;
-
-  el.promptRomaji.innerHTML = "";
-
-  for (let ti = 0; ti < tokens.length; ti++) {
-    const token = tokens[ti];
-    let patterns;
-    if (token === "ん") {
-      patterns = getNPatterns(tokens, ti);
-    } else {
-      patterns = getPatternsForToken(tokens, ti);
-    }
-    const canonical = patterns[0]; // 表示用は最初のパターン
-
-    if (ti < idx) {
-      // 入力済み：グレー
-      const span = document.createElement("span");
-      span.textContent = canonical;
-      span.style.color = "#a0a080";
-      el.promptRomaji.appendChild(span);
-    } else if (ti === idx) {
-      // 現在入力中：タイプ済みと残りを分けて表示
-      const typedSpan = document.createElement("span");
-      typedSpan.textContent = typed;
-      typedSpan.style.color = "#3e7e28";
-      typedSpan.style.fontWeight = "700";
-      el.promptRomaji.appendChild(typedSpan);
-
-      const remain = canonical.startsWith(typed) ? canonical.slice(typed.length) : canonical;
-      const remainSpan = document.createElement("span");
-      remainSpan.textContent = remain;
-      remainSpan.style.color = "#1a0e06";
-      remainSpan.style.background = "rgba(230,190,80,0.5)";
-      remainSpan.style.borderRadius = "2px";
-      el.promptRomaji.appendChild(remainSpan);
-    } else {
-      // 未入力：暗め
-      const span = document.createElement("span");
-      span.textContent = canonical;
-      span.style.color = "#a09070";
-      el.promptRomaji.appendChild(span);
-    }
+function appendColoredKana(parent, text, startPos, doneEnd, currentEnd) {
+  let pos = startPos;
+  for (const ch of text) {
+    const span = document.createElement("span");
+    span.textContent = ch;
+    if (pos < doneEnd)         span.className = "kana-done";
+    else if (pos < currentEnd) span.className = "kana-current";
+    else                       span.className = "kana-pending";
+    parent.appendChild(span);
+    pos++;
   }
 }
 
@@ -860,7 +842,6 @@ function handleTypingKeyDown(event) {
     if (state.session.currentTyped.length > 0) {
       state.session.currentTyped = state.session.currentTyped.slice(0, -1);
       renderJapaneseWithColor();
-      renderRomajiHint();
       renderTypingPreview();
     }
     el.typingInput.value = "";
@@ -893,6 +874,8 @@ function processChar(char) {
       session.taskCorrectChars++;
       session.tokenIndex++;
       session.currentTyped = "";
+      session.gameMinutes += session.minutesPerToken;
+      session.tokenMinutesUsed += session.minutesPerToken;
       playKeySound(true);
       if (session.tokenIndex >= tokens.length) {
         playTaskCompleteSound();
@@ -900,7 +883,6 @@ function processChar(char) {
         return;
       }
       renderJapaneseWithColor();
-      renderRomajiHint();
       renderTypingPreview();
       updateStats();
     } else {
@@ -924,6 +906,8 @@ function processChar(char) {
       session.taskCorrectChars++;
       session.tokenIndex++;
       session.currentTyped = "";
+      session.gameMinutes += session.minutesPerToken;
+      session.tokenMinutesUsed += session.minutesPerToken;
       playKeySound(true);
       if (session.tokenIndex >= tokens.length) {
         playTaskCompleteSound();
@@ -931,7 +915,6 @@ function processChar(char) {
         return;
       }
       renderJapaneseWithColor();
-      renderRomajiHint();
       renderTypingPreview();
       updateStats();
       return;
@@ -943,7 +926,6 @@ function processChar(char) {
       session.taskCorrectChars++;
       playKeySound(true);
       renderJapaneseWithColor();
-      renderRomajiHint();
       renderTypingPreview();
       updateStats();
       return;
@@ -967,6 +949,8 @@ function processChar(char) {
       session.taskCorrectChars++;
       session.tokenIndex++;
       session.currentTyped = "";
+      session.gameMinutes += session.minutesPerToken;
+      session.tokenMinutesUsed += session.minutesPerToken;
       playKeySound(true);
       if (session.tokenIndex >= tokens.length) {
         playTaskCompleteSound();
@@ -974,7 +958,6 @@ function processChar(char) {
         return;
       }
       renderJapaneseWithColor();
-      renderRomajiHint();
       renderTypingPreview();
       updateStats();
       return;
@@ -987,7 +970,6 @@ function processChar(char) {
       session.taskCorrectChars++;
       playKeySound(true);
       renderJapaneseWithColor();
-      renderRomajiHint();
       renderTypingPreview();
       updateStats();
       return;
@@ -1005,6 +987,8 @@ function processChar(char) {
             session.taskCorrectChars++;
             session.tokenIndex++; // っ完了
             session.currentTyped = char; // 次のトークンの1文字目として設定
+            session.gameMinutes += session.minutesPerToken;
+            session.tokenMinutesUsed += session.minutesPerToken;
             playKeySound(true);
             if (session.tokenIndex >= tokens.length) {
               playTaskCompleteSound();
@@ -1012,7 +996,6 @@ function processChar(char) {
               return;
             }
             renderJapaneseWithColor();
-            renderRomajiHint();
             renderTypingPreview();
             updateStats();
             return;
@@ -1039,6 +1022,8 @@ function processChar(char) {
     session.taskCorrectChars++;
     session.tokenIndex++;
     session.currentTyped = "";
+    session.gameMinutes += session.minutesPerToken;
+    session.tokenMinutesUsed += session.minutesPerToken;
     playKeySound(true);
     if (session.tokenIndex >= tokens.length) {
       playTaskCompleteSound();
@@ -1046,7 +1031,6 @@ function processChar(char) {
       return;
     }
     renderJapaneseWithColor();
-    renderRomajiHint();
     renderTypingPreview();
     updateStats();
     return;
@@ -1059,7 +1043,6 @@ function processChar(char) {
     session.taskCorrectChars++;
     playKeySound(true);
     renderJapaneseWithColor();
-    renderRomajiHint();
     renderTypingPreview();
     updateStats();
     return;
@@ -1115,6 +1098,7 @@ function completeTask() {
   const minSpent = Math.max(Math.round(task.baseMinutes * 0.45), 6);
   spent = Math.max(spent, minSpent);
 
+  session.gameMinutes -= session.tokenMinutesUsed;
   session.gameMinutes      += spent;
   session.currentTaskIndex += 1;
 
