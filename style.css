@@ -1162,6 +1162,115 @@ h1 {
 }
 
 /* ===========================
+   難易度選択画面（ready screen）
+=========================== */
+.ready-diff-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 16px 0 14px;
+  width: 100%;
+}
+
+.ready-diff-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 14px 16px;
+  border: 3px solid transparent;
+  border-radius: 16px;
+  cursor: pointer;
+  text-align: center;
+  transition: transform 120ms, box-shadow 120ms, border-color 120ms;
+  width: 100%;
+}
+
+.ready-diff-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+}
+
+.ready-diff-card.selected {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+}
+
+/* ホワイト企業：緑系 */
+.ready-diff-white {
+  background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+  border-color: #66bb6a;
+  color: #1b5e20;
+}
+.ready-diff-white.selected { border-color: #2e7d32; box-shadow: 0 6px 20px rgba(46,125,50,0.3); }
+
+/* ふつう企業：黄色系 */
+.ready-diff-normal {
+  background: linear-gradient(135deg, #fffde7 0%, #fff176 100%);
+  border-color: #f9a825;
+  color: #4e342e;
+}
+.ready-diff-normal.selected { border-color: #e65100; box-shadow: 0 6px 20px rgba(230,81,0,0.3); }
+
+/* ブラック企業：赤/暗色系 */
+.ready-diff-black {
+  background: linear-gradient(135deg, #3e1010 0%, #6b1a1a 100%);
+  border-color: #c62828;
+  color: #ffcdd2;
+}
+.ready-diff-black.selected { border-color: #ef5350; box-shadow: 0 6px 20px rgba(239,83,80,0.4); }
+
+.ready-diff-icon { font-size: 1.8rem; line-height: 1; }
+
+.ready-diff-name {
+  font-size: 1.1rem;
+  font-weight: 900;
+}
+
+.ready-diff-desc {
+  font-size: 0.78rem;
+  opacity: 0.85;
+  line-height: 1.4;
+}
+
+.ready-diff-rate {
+  font-size: 0.72rem;
+  font-weight: 800;
+  opacity: 0.9;
+  margin-top: 2px;
+}
+
+.ready-selected-label {
+  margin: 0 0 12px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+/* ゲーム画面 ナビゲーションボタン行 */
+.game-nav-row {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  margin-bottom: 6px;
+}
+
+.game-nav-btn {
+  font-size: 0.75rem;
+  padding: 4px 10px;
+  border-radius: 8px;
+}
+
+/* タイトル画面スタートブロック */
+.title-start-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+/* ===========================
    ゲーム画面・結果画面 共通フレーム
 =========================== */
 .frame-main { min-width: 0; }
@@ -1206,7 +1315,7 @@ h1 {
 }
 
 .stat-value {
-  font-size: clamp(0.85rem, 1.8vw, 1.2rem);
+  font-size: clamp(1.1rem, 2.35vw, 1.56rem);
   font-weight: 900;
   color: var(--text);
 }

@@ -349,7 +349,7 @@ const el = {
     game:   document.getElementById("game-screen"),
     result: document.getElementById("result-screen")
   },
-  difficultyCards:      [...document.querySelectorAll(".difficulty-card")],
+  difficultyCards:      [...document.querySelectorAll(".ready-diff-card")],
   startButton:          document.getElementById("start-button"),
   readyDifficultyName:  document.getElementById("ready-difficulty-name"),
   readyStartBtn:        document.getElementById("ready-start-btn"),
@@ -495,6 +495,19 @@ function bindEvents() {
   el.readyStartBtn.addEventListener("click", startGame);
   el.readyBackBtn.addEventListener("click", () => switchScreen("title"));
 
+  // ゲーム画面 メイン画面へ戻る／やり直す
+  document.getElementById("game-back-btn").addEventListener("click", () => {
+    stopStatTicker();
+    switchScreen("title");
+    renderBestRecords();
+    renderLastResultSummary();
+  });
+  document.getElementById("game-retry-btn").addEventListener("click", () => {
+    stopStatTicker();
+    switchScreen("ready");
+    el.readyDifficultyName.textContent = DIFFICULTIES[state.selectedDifficulty].name;
+  });
+
   // タイピング入力
   el.typingInput.addEventListener("beforeinput", handleBeforeInput);
   el.typingInput.addEventListener("keydown",     handleTypingKeyDown);
@@ -531,6 +544,15 @@ function bindEvents() {
 }
 
 function handleGlobalKeyDown(e) {
+  // ゲーム画面での直接キー入力（IMEバイパス）
+  if (state.currentScreen === "game" && state.session) {
+    if (e.key.length === 1 && /^[a-zA-Z]$/.test(e.key) && !e.ctrlKey && !e.metaKey && !e.altKey) {
+      e.preventDefault();
+      processChar(e.key.toLowerCase());
+      return;
+    }
+  }
+
   // Escape キー処理
   if (e.key === "Escape") {
     if (!el.modal.hidden) {
@@ -598,6 +620,10 @@ function updateDifficultySelection() {
   el.difficultyCards.forEach((card) => {
     card.classList.toggle("selected", card.dataset.difficulty === state.selectedDifficulty);
   });
+  const diff = DIFFICULTIES[state.selectedDifficulty];
+  if (el.readyDifficultyName) {
+    el.readyDifficultyName.textContent = `${diff.name}を選択中`;
+  }
 }
 
 /* ===========================
@@ -607,7 +633,7 @@ function goToReady() {
   stopStatTicker();
   closeModal();
   const difficulty = DIFFICULTIES[state.selectedDifficulty];
-  el.readyDifficultyName.textContent = difficulty.name;
+  el.readyDifficultyName.textContent = `${difficulty.name}を選択中`;
   switchScreen("ready");
 }
 
@@ -763,6 +789,20 @@ function appendColoredKana(parent, text, startPos, doneEnd, currentEnd) {
   }
 }
 
+function getDisplayCanonical(tokens, ti) {
+  const token = tokens[ti];
+  if (token === "っ" && ti + 1 < tokens.length) {
+    const nextPatterns = getPatternsForToken(tokens, ti + 1);
+    for (const np of nextPatterns) {
+      if (np.length >= 1 && !/^[aiueo]/i.test(np[0])) {
+        return np[0];
+      }
+    }
+  }
+  if (token === "ん") return getNPatterns(tokens, ti)[0];
+  return getPatternsForToken(tokens, ti)[0];
+}
+
 /* ===========================
    タイピングプレビュー描画
 =========================== */
@@ -776,13 +816,7 @@ function renderTypingPreview() {
 
   for (let ti = 0; ti < tokens.length; ti++) {
     const token = tokens[ti];
-    let patterns;
-    if (token === "ん") {
-      patterns = getNPatterns(tokens, ti);
-    } else {
-      patterns = getPatternsForToken(tokens, ti);
-    }
-    const canonical = patterns[0];
+    const canonical = getDisplayCanonical(tokens, ti);
 
     if (ti < idx) {
       // 完了済み
@@ -1482,7 +1516,11 @@ function fmtMin(totalMin) {
 }
 
 function fmtDuration(min) {
-  return `${Math.floor(min)}分`;
+  const total = Math.floor(min);
+  const h = Math.floor(total / 60);
+  const m = total % 60;
+  if (h === 0) return `${m}分`;
+  return `${h}時間${m}分`;
 }
 
 function fmtRemain(currentMin) {

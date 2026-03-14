@@ -110,30 +110,9 @@
                   <p class="title-subcopy">タイピングで仕事を終わらせ、定時退社を目指せ。</p>
                 </div>
 
-                <div class="difficulty-block portal-card">
-                  <p class="diff-label label">難易度選択</p>
-                  <div class="difficulty-grid" id="difficulty-options">
-                    <button class="difficulty-card selected" data-difficulty="white" type="button">
-                      <span class="difficulty-name">ホワイト企業</span>
-                      <span class="difficulty-desc">定時退社しやすい初級</span>
-                      <span class="difficulty-rate">倍率 x1.0 / 割り込み 少</span>
-                    </button>
-                    <button class="difficulty-card" data-difficulty="normal" type="button">
-                      <span class="difficulty-name">ふつう企業</span>
-                      <span class="difficulty-desc">仕事もイベントも標準</span>
-                      <span class="difficulty-rate">倍率 x1.3 / 割り込み 中</span>
-                    </button>
-                    <button class="difficulty-card" data-difficulty="black" type="button">
-                      <span class="difficulty-name">ブラック企業</span>
-                      <span class="difficulty-desc">重い仕事と割り込みが待つ</span>
-                      <span class="difficulty-rate">倍率 x1.8 / 割り込み 多</span>
-                    </button>
-                  </div>
-                  <div class="title-actions">
-                    <button id="start-button" class="primary-button stage-button" type="button">スタート</button>
-                    <button class="secondary-button stage-sub-button how-to-btn" type="button">遊び方</button>
-                    <button class="ghost-button stage-sub-button" type="button" onclick="alert('オンラインランキングは近日公開！')">ランキング</button>
-                  </div>
+                <div class="title-start-block">
+                  <button id="start-button" class="primary-button stage-button" type="button">スタート</button>
+                  <button class="secondary-button stage-sub-button how-to-btn" type="button">遊び方</button>
                 </div>
               </div>
 
@@ -196,11 +175,30 @@
         <section id="ready-screen" class="screen">
           <div class="ready-layout">
             <div class="ready-panel panel">
-              <p class="badge">READY</p>
-              <h2 class="ready-title">準備はいいですか？</h2>
-              <p class="ready-difficulty" id="ready-difficulty-name">ホワイト企業</p>
-              <p class="ready-hint">スペースキーを押してスタート</p>
-              <button id="ready-start-btn" class="primary-button stage-button" type="button">スペースキーでスタート</button>
+              <p class="badge">DIFFICULTY SELECT</p>
+              <h2 class="ready-title">難易度を選んでください</h2>
+              <div class="ready-diff-grid">
+                <button class="ready-diff-card ready-diff-white selected" data-difficulty="white" type="button">
+                  <span class="ready-diff-icon">🌿</span>
+                  <span class="ready-diff-name">ホワイト企業</span>
+                  <span class="ready-diff-desc">定時退社しやすい！<br>業務量：少 / 割り込み：少</span>
+                  <span class="ready-diff-rate">スコア倍率 x1.0</span>
+                </button>
+                <button class="ready-diff-card ready-diff-normal" data-difficulty="normal" type="button">
+                  <span class="ready-diff-icon">💼</span>
+                  <span class="ready-diff-name">ふつう企業</span>
+                  <span class="ready-diff-desc">仕事もイベントも標準<br>業務量：中 / 割り込み：中</span>
+                  <span class="ready-diff-rate">スコア倍率 x1.3</span>
+                </button>
+                <button class="ready-diff-card ready-diff-black" data-difficulty="black" type="button">
+                  <span class="ready-diff-icon">💀</span>
+                  <span class="ready-diff-name">ブラック企業</span>
+                  <span class="ready-diff-desc">地獄の残業が待っている<br>業務量：多 / 割り込み：多</span>
+                  <span class="ready-diff-rate">スコア倍率 x1.8</span>
+                </button>
+              </div>
+              <div id="ready-difficulty-name" class="ready-selected-label">ホワイト企業を選択中</div>
+              <button id="ready-start-btn" class="primary-button stage-button" type="button">この難易度でスタート</button>
               <button id="ready-back-btn" class="ghost-button" type="button" style="margin-top:10px;">タイトルへ戻る</button>
             </div>
           </div>
@@ -257,7 +255,6 @@
                     <p class="task-kicker">現在の業務</p>
                     <h2 id="task-name">-</h2>
                   </div>
-                  <div class="difficulty-chip" id="difficulty-chip">ホワイト企業</div>
                 </div>
 
                 <div class="sentence-panel">
@@ -277,6 +274,12 @@
                   spellcheck="false"
                 />
               </section>
+
+              <!-- ゲーム操作ボタン -->
+              <div class="game-nav-row">
+                <button id="game-back-btn" class="ghost-button game-nav-btn" type="button">⬅ メイン画面</button>
+                <button id="game-retry-btn" class="ghost-button game-nav-btn" type="button">↩ やり直す</button>
+              </div>
 
               <!-- メトリクスバー（コンパクト） -->
               <div class="bottom-grid">
