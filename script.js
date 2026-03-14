@@ -1475,16 +1475,14 @@ function calcAccuracy(correct, misses) {
 }
 
 function fmtMin(totalMin) {
-  const h = Math.floor(totalMin / 60);
-  const m = totalMin % 60;
+  const t = Math.floor(totalMin);
+  const h = Math.floor(t / 60);
+  const m = t % 60;
   return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}`;
 }
 
 function fmtDuration(min) {
-  const h = Math.floor(min / 60);
-  const m = min % 60;
-  if (h === 0) return `${m}分`;
-  return `${h}時間${m}分`;
+  return `${Math.floor(min)}分`;
 }
 
 function fmtRemain(currentMin) {

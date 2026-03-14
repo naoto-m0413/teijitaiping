@@ -1195,18 +1195,18 @@ h1 {
   gap: 8px;
 }
 
-.stat-panel { padding: 8px 12px; }
+.stat-panel { padding: 5px 8px; }
 
 .stat-label {
   display: block;
-  margin-bottom: 2px;
-  font-size: 0.75rem;
+  margin-bottom: 1px;
+  font-size: 0.65rem;
   color: var(--muted);
   font-weight: 700;
 }
 
 .stat-value {
-  font-size: clamp(1.1rem, 2.5vw, 1.8rem);
+  font-size: clamp(0.85rem, 1.8vw, 1.2rem);
   font-weight: 900;
   color: var(--text);
 }
@@ -1289,18 +1289,18 @@ h1 {
 
 .prompt-japanese {
   margin: 4px 0 8px;
-  font-size: clamp(1rem, 2.5vw, 1.5rem);
+  font-size: clamp(1.3rem, 3.2vw, 2rem);
   font-weight: 900;
-  line-height: 3;
+  line-height: 3.2;
   color: #1a0e06;
   word-break: break-all;
   ruby-align: center;
 }
 
 .prompt-japanese rt {
-  font-size: 0.45em;
-  font-weight: 500;
-  letter-spacing: 0.01em;
+  font-size: 0.5em;
+  font-weight: 600;
+  letter-spacing: 0.02em;
   line-height: 1;
 }
 
@@ -1327,14 +1327,14 @@ h1 {
    タイピングプレビュー
 =========================== */
 .typing-preview {
-  min-height: 44px;
+  min-height: 48px;
   margin-bottom: 8px;
   padding: 8px 12px;
   border: 2.5px solid rgba(100,72,40,0.14);
   border-radius: 14px;
   background: rgba(255, 252, 232, 0.85);
   font-family: "Menlo", "Consolas", "Courier New", monospace;
-  font-size: 1rem;
+  font-size: 1.2rem;
   line-height: 1.8;
   word-break: break-all;
   letter-spacing: 0.06em;
