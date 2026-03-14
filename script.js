@@ -190,8 +190,8 @@ const TASK_POOL = [
     type: "commute",
     eventEligible: false,
     prompts: [
-      { jp: "ほんじつもよろしくおねがいします" },
-      { jp: "しゅっしゃしましたじゅんじたいおうします" }
+      { jp: "ほんじつもよろしくおねがいします",           kanji: "本日もよろしくお願いします" },
+      { jp: "しゅっしゃしましたじゅんじたいおうします",   kanji: "出社しました順次対応します" }
     ]
   },
   {
@@ -201,8 +201,8 @@ const TASK_POOL = [
     type: "meeting",
     eventEligible: true,
     prompts: [
-      { jp: "ほんじつのしんちょくをきょうゆうします" },
-      { jp: "ゆうせんどのたかいあんけんからちゃくしゅします" }
+      { jp: "ほんじつのしんちょくをきょうゆうします",             kanji: "本日の進捗を共有します" },
+      { jp: "ゆうせんどのたかいあんけんからちゃくしゅします",     kanji: "優先度の高い案件から着手します" }
     ]
   },
   {
@@ -212,9 +212,9 @@ const TASK_POOL = [
     type: "mail",
     eventEligible: true,
     prompts: [
-      { jp: "おせわになっております" },
-      { jp: "さきほどのけんしゅうせいはんをおおくりします" },
-      { jp: "ねんのためさいどごかくにんください" }
+      { jp: "おせわになっております",                           kanji: "お世話になっております" },
+      { jp: "さきほどのけんしゅうせいはんをおおくりします",     kanji: "先ほどの件修正版をお送りします" },
+      { jp: "ねんのためさいどごかくにんください",               kanji: "念のため再度ご確認ください" }
     ]
   },
   {
@@ -224,9 +224,9 @@ const TASK_POOL = [
     type: "meeting",
     eventEligible: true,
     prompts: [
-      { jp: "かいぎしつがへんこうになりました" },
-      { jp: "いったんこのほうこうですすめます" },
-      { jp: "ほんじつのかいぎしりょうをきょうゆうします" }
+      { jp: "かいぎしつがへんこうになりました",             kanji: "会議室が変更になりました" },
+      { jp: "いったんこのほうこうですすめます",             kanji: "一旦この方向で進めます" },
+      { jp: "ほんじつのかいぎしりょうをきょうゆうします",   kanji: "本日の会議資料を共有します" }
     ]
   },
   {
@@ -236,9 +236,9 @@ const TASK_POOL = [
     type: "document",
     eventEligible: true,
     prompts: [
-      { jp: "こちらにんしきそごがありました" },
-      { jp: "すうじだけさしかえてさいそうします" },
-      { jp: "しきゅうかくにんおねがいします" }
+      { jp: "こちらにんしきそごがありました",       kanji: "こちら認識齟齬がありました" },
+      { jp: "すうじだけさしかえてさいそうします",   kanji: "数字だけ差し替えて再送します" },
+      { jp: "しきゅうかくにんおねがいします",       kanji: "至急確認お願いします" }
     ]
   },
   {
@@ -248,9 +248,9 @@ const TASK_POOL = [
     type: "document",
     eventEligible: true,
     prompts: [
-      { jp: "しようへんこうのないようをはんえいします" },
-      { jp: "しゅうせいはんをごかくにんいただけますか" },
-      { jp: "さきほどのけんしゅうせいはんをおおくりします" }
+      { jp: "しようへんこうのないようをはんえいします",       kanji: "仕様変更の内容を反映します" },
+      { jp: "しゅうせいはんをごかくにんいただけますか",       kanji: "修正版をご確認いただけますか" },
+      { jp: "さきほどのけんしゅうせいはんをおおくりします",   kanji: "先ほどの件修正版をお送りします" }
     ]
   },
   {
@@ -260,9 +260,9 @@ const TASK_POOL = [
     type: "request",
     eventEligible: true,
     prompts: [
-      { jp: "すみませんほんじつちゅうにたいおうおねがいします" },
-      { jp: "ちょっといいですか" },
-      { jp: "ほんけんせんぽうへれんけいかんりょうしました" }
+      { jp: "すみませんほんじつちゅうにたいおうおねがいします",   kanji: "すみません本日中に対応お願いします" },
+      { jp: "ちょっといいですか",                               kanji: "ちょっといいですか" },
+      { jp: "ほんけんせんぽうへれんけいかんりょうしました",       kanji: "本件先方へ連携完了しました" }
     ]
   },
   {
@@ -272,9 +272,9 @@ const TASK_POOL = [
     type: "final",
     eventEligible: true,
     prompts: [
-      { jp: "きょうもいちにちおつかれさまでした" },
-      { jp: "ほんじつのぎょうむをかんりょうします" },
-      { jp: "おさきにしつれいいたします" }
+      { jp: "きょうもいちにちおつかれさまでした",   kanji: "今日も一日お疲れ様でした" },
+      { jp: "ほんじつのぎょうむをかんりょうします", kanji: "本日の業務を完了します" },
+      { jp: "おさきにしつれいいたします",           kanji: "お先に失礼いたします" }
     ]
   }
 ];
@@ -682,29 +682,51 @@ function renderCurrentTask() {
 }
 
 /* ===========================
-   日本語テキストのかなカラーコーディング
+   日本語テキストのかなカラーコーディング（ルビ付き漢字表示）
 =========================== */
 function renderJapaneseWithColor() {
   const session = state.session;
+  const task    = session.tasks[session.currentTaskIndex];
   const tokens  = session.tokens;
   const idx     = session.tokenIndex;
+  const jp      = task.prompt.jp;
+  const kanji   = task.prompt.kanji || jp;
 
-  el.promptJapanese.innerHTML = "";
+  // jp文字列中でどこまで入力済みかを文字数で計算
+  let doneEnd = 0;
+  for (let ti = 0; ti < idx; ti++) doneEnd += tokens[ti].length;
+  const currentEnd = idx < tokens.length ? doneEnd + tokens[idx].length : doneEnd;
 
-  let ti = 0;
-  for (const token of tokens) {
-    const span = document.createElement("span");
-    span.textContent = token;
-    if (ti < idx) {
-      span.className = "kana-done";
-    } else if (ti === idx) {
-      span.className = "kana-current";
-    } else {
-      span.className = "kana-pending";
-    }
-    el.promptJapanese.appendChild(span);
-    ti++;
+  // ルビ要素：<ruby>漢字<rt><done><current><pending></rt></ruby>
+  const ruby = document.createElement("ruby");
+  ruby.textContent = kanji;
+
+  const rt = document.createElement("rt");
+
+  if (doneEnd > 0) {
+    const doneSpan = document.createElement("span");
+    doneSpan.className = "kana-done";
+    doneSpan.textContent = jp.slice(0, doneEnd);
+    rt.appendChild(doneSpan);
   }
+
+  if (idx < tokens.length) {
+    const curSpan = document.createElement("span");
+    curSpan.className = "kana-current";
+    curSpan.textContent = jp.slice(doneEnd, currentEnd);
+    rt.appendChild(curSpan);
+  }
+
+  if (currentEnd < jp.length) {
+    const pendSpan = document.createElement("span");
+    pendSpan.className = "kana-pending";
+    pendSpan.textContent = jp.slice(currentEnd);
+    rt.appendChild(pendSpan);
+  }
+
+  ruby.appendChild(rt);
+  el.promptJapanese.innerHTML = "";
+  el.promptJapanese.appendChild(ruby);
 }
 
 /* ===========================

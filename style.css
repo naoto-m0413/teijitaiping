@@ -1291,20 +1291,28 @@ h1 {
   margin: 4px 0 8px;
   font-size: clamp(1rem, 2.5vw, 1.5rem);
   font-weight: 900;
-  line-height: 1.6;
+  line-height: 3;
   color: #1a0e06;
   word-break: break-all;
+  ruby-align: center;
 }
 
-/* かなカラーコーディング */
-.kana-done    { color: #8a9070; }
+.prompt-japanese rt {
+  font-size: 0.45em;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  line-height: 1;
+}
+
+/* かなカラーコーディング（ルビ内で使用） */
+.kana-done    { color: #9aaa80; }
 .kana-current {
-  color: #1e100a;
-  background: rgba(230, 190, 80, 0.7);
-  border-radius: 3px;
+  color: #7a3a00;
+  background: rgba(230, 190, 80, 0.85);
+  border-radius: 2px;
   padding: 0 1px;
 }
-.kana-pending { color: #1a0e06; }
+.kana-pending { color: #6a5a40; }
 
 .prompt-romaji {
   margin: 0;
@@ -1333,14 +1341,21 @@ h1 {
   flex-shrink: 0;
 }
 
-.char-correct { color: #3e7e28; font-weight: 700; }
+.char-correct {
+  color: #2d6b1a;
+  font-weight: 700;
+  background: rgba(80, 180, 60, 0.15);
+  border-radius: 2px;
+}
 .char-current {
   color: #1e100a;
-  background: rgba(230, 190, 80, 0.7);
+  background: rgba(230, 190, 80, 0.85);
   border-radius: 3px;
-  padding: 0 1px;
+  padding: 0 2px;
+  font-weight: 700;
+  box-shadow: 0 0 0 1.5px rgba(180, 140, 30, 0.5);
 }
-.char-pending { color: #a09070; }
+.char-pending { color: #b8a898; }
 
 .input-wrap {
   display: grid;
