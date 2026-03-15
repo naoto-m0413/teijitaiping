@@ -29,6 +29,7 @@
 body {
   margin: 0;
   min-height: 100vh;
+  overflow-x: hidden;
   font-family: "Hiragino Sans", "Yu Gothic UI", "Meiryo", sans-serif;
   color: var(--text);
   background:
@@ -1149,7 +1150,7 @@ h1 {
 
 .ready-difficulty {
   margin: 0 0 16px;
-  font-size: 1.1rem;
+  font-size: 1.3rem;
   font-weight: 900;
   color: var(--accent);
 }
@@ -1167,21 +1168,21 @@ h1 {
 .ready-diff-grid {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  margin: 16px 0 14px;
+  gap: 8px;
+  margin: 10px 0 10px;
   width: 100%;
 }
 
 .ready-diff-card {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
-  gap: 4px;
-  padding: 14px 16px;
+  gap: 12px;
+  padding: 10px 14px;
   border: 3px solid transparent;
-  border-radius: 16px;
+  border-radius: 12px;
   cursor: pointer;
-  text-align: center;
+  text-align: left;
   transition: transform 120ms, box-shadow 120ms, border-color 120ms;
   width: 100%;
 }
@@ -1220,10 +1221,23 @@ h1 {
 }
 .ready-diff-black.selected { border-color: #ef5350; box-shadow: 0 6px 20px rgba(239,83,80,0.4); }
 
-.ready-diff-icon { font-size: 1.8rem; line-height: 1; }
+.ready-diff-icon {
+  font-size: 2rem;
+  line-height: 1;
+  flex-shrink: 0;
+  width: 2.4rem;
+  text-align: center;
+}
+
+.ready-diff-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+}
 
 .ready-diff-name {
-  font-size: 1.1rem;
+  font-size: 1.15rem;
   font-weight: 900;
 }
 
@@ -1840,3 +1854,56 @@ h1 {
 
   .lead { text-align: left; }
 }
+
+/* ===========================
+   開発者ウィジェット（右下固定）
+=========================== */
+.developer-widget {
+  position: fixed;
+  bottom: 14px;
+  right: 14px;
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 5px;
+  pointer-events: none;
+}
+
+.developer-widget * { pointer-events: auto; }
+
+.dev-app-banner {
+  background: rgba(40, 30, 20, 0.82);
+  backdrop-filter: blur(4px);
+  border-radius: 20px;
+  padding: 4px 12px;
+  font-size: 0.72rem;
+}
+
+.dev-app-banner a {
+  color: #f5e4c0;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.dev-app-banner a:hover { text-decoration: underline; }
+
+.dev-links {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(30, 20, 10, 0.82);
+  backdrop-filter: blur(4px);
+  border-radius: 20px;
+  padding: 5px 12px;
+  font-size: 0.75rem;
+}
+
+.dev-links a {
+  color: #f0d8a0;
+  text-decoration: none;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.dev-links a:hover { text-decoration: underline; }
+
+.dev-sep { color: rgba(240, 216, 160, 0.4); }

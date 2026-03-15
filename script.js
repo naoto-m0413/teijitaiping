@@ -344,16 +344,20 @@ const state = {
 =========================== */
 const el = {
   screens: {
-    title:  document.getElementById("title-screen"),
-    ready:  document.getElementById("ready-screen"),
-    game:   document.getElementById("game-screen"),
-    result: document.getElementById("result-screen")
+    title:      document.getElementById("title-screen"),
+    difficulty: document.getElementById("difficulty-screen"),
+    ready:      document.getElementById("ready-screen"),
+    game:       document.getElementById("game-screen"),
+    result:     document.getElementById("result-screen")
   },
   difficultyCards:      [...document.querySelectorAll(".ready-diff-card")],
   startButton:          document.getElementById("start-button"),
   readyDifficultyName:  document.getElementById("ready-difficulty-name"),
   readyStartBtn:        document.getElementById("ready-start-btn"),
   readyBackBtn:         document.getElementById("ready-back-btn"),
+  diffSelectedLabel:    document.getElementById("diff-selected-label"),
+  diffNextBtn:          document.getElementById("diff-next-btn"),
+  diffBackBtn:          document.getElementById("diff-back-btn"),
   bestRecords:          document.getElementById("best-records"),
   lastResultSummary:    document.getElementById("last-result-summary"),
   currentTime:          document.getElementById("current-time"),
@@ -361,7 +365,6 @@ const el = {
   progressText:         document.getElementById("progress-text"),
   progressFill:         document.getElementById("progress-fill"),
   taskName:             document.getElementById("task-name"),
-  difficultyChip:       document.getElementById("difficulty-chip"),
   promptJapanese:       document.getElementById("prompt-japanese"),
   typingPreview:        document.getElementById("typing-preview"),
   typingInput:          document.getElementById("typing-input"),
@@ -488,12 +491,16 @@ function bindEvents() {
     });
   });
 
-  // スタートボタン → 準備画面へ
-  el.startButton.addEventListener("click", goToReady);
+  // スタートボタン → 難易度選択へ
+  el.startButton.addEventListener("click", goToDifficulty);
+
+  // 難易度選択画面
+  el.diffNextBtn.addEventListener("click", goToReady);
+  el.diffBackBtn.addEventListener("click", () => switchScreen("title"));
 
   // 準備画面
   el.readyStartBtn.addEventListener("click", startGame);
-  el.readyBackBtn.addEventListener("click", () => switchScreen("title"));
+  el.readyBackBtn.addEventListener("click", goToDifficulty);
 
   // ゲーム画面 メイン画面へ戻る／やり直す
   document.getElementById("game-back-btn").addEventListener("click", () => {
@@ -504,8 +511,7 @@ function bindEvents() {
   });
   document.getElementById("game-retry-btn").addEventListener("click", () => {
     stopStatTicker();
-    switchScreen("ready");
-    el.readyDifficultyName.textContent = DIFFICULTIES[state.selectedDifficulty].name;
+    goToDifficulty();
   });
 
   // タイピング入力
@@ -559,6 +565,11 @@ function handleGlobalKeyDown(e) {
       closeModal();
       return;
     }
+    if (state.currentScreen === "difficulty") {
+      e.preventDefault();
+      switchScreen("title");
+      return;
+    }
     if (state.currentScreen === "game" || state.currentScreen === "ready") {
       e.preventDefault();
       stopStatTicker();
@@ -580,6 +591,11 @@ function handleGlobalKeyDown(e) {
   if (e.code === "Space") {
     if (state.currentScreen === "title" && el.modal.hidden) {
       e.preventDefault();
+      goToDifficulty();
+      return;
+    }
+    if (state.currentScreen === "difficulty") {
+      e.preventDefault();
       goToReady();
       return;
     }
@@ -589,8 +605,6 @@ function handleGlobalKeyDown(e) {
       return;
     }
     if (state.currentScreen === "game") {
-      // ゲーム中はスペースのスクロールを防ぐ（入力自体はbeforeinputで処理）
-      // フォーカスがinputにある場合は通常入力として処理
       if (document.activeElement !== el.typingInput) {
         e.preventDefault();
       }
@@ -621,9 +635,19 @@ function updateDifficultySelection() {
     card.classList.toggle("selected", card.dataset.difficulty === state.selectedDifficulty);
   });
   const diff = DIFFICULTIES[state.selectedDifficulty];
-  if (el.readyDifficultyName) {
-    el.readyDifficultyName.textContent = `${diff.name}を選択中`;
+  if (el.diffSelectedLabel) {
+    el.diffSelectedLabel.textContent = `${diff.name}を選択中 — Space キーで次へ`;
   }
+}
+
+/* ===========================
+   難易度選択画面へ
+=========================== */
+function goToDifficulty() {
+  stopStatTicker();
+  closeModal();
+  updateDifficultySelection();
+  switchScreen("difficulty");
 }
 
 /* ===========================
@@ -633,7 +657,7 @@ function goToReady() {
   stopStatTicker();
   closeModal();
   const difficulty = DIFFICULTIES[state.selectedDifficulty];
-  el.readyDifficultyName.textContent = `${difficulty.name}を選択中`;
+  el.readyDifficultyName.textContent = difficulty.name;
   switchScreen("ready");
 }
 
@@ -724,7 +748,6 @@ function renderCurrentTask() {
 
   el.typingInput.value = "";
   el.taskName.textContent       = task.name;
-  el.difficultyChip.textContent = session.difficulty.name;
 
   renderJapaneseWithColor();
   renderTypingPreview();
@@ -1409,6 +1432,8 @@ function renderBestRecords() {
 
     el.bestRecords.appendChild(card);
   });
+  const gameEl = document.getElementById("best-records-game");
+  if (gameEl) gameEl.innerHTML = el.bestRecords.innerHTML;
 }
 
 /* ===========================
@@ -1431,6 +1456,8 @@ function renderLastResultSummary() {
     <p>スコア ${last.score.toLocaleString("ja-JP")} / WPM ${last.wpm}</p>
     <p>称号: ${last.title}</p>
   `;
+  const gameEl = document.getElementById("last-result-game");
+  if (gameEl) gameEl.innerHTML = el.lastResultSummary.innerHTML;
 }
 
 /* ===========================

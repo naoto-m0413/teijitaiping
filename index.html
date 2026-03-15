@@ -50,7 +50,6 @@
           <p class="eyebrow">BROWSER TYPING GAME</p>
           <p class="header-clock">始業 08:30 &nbsp;/&nbsp; 定時 17:30</p>
         </div>
-        <h1>定時<span class="title-accent">退</span>ピング</h1>
         <p class="lead">仕事をタイプして片付ける。<br>主役は今日の退勤時刻。</p>
       </header>
 
@@ -171,35 +170,55 @@
           </div>
         </section>
 
+        <!-- ======= 難易度選択画面 ======= -->
+        <section id="difficulty-screen" class="screen">
+          <div class="ready-layout">
+            <div class="ready-panel panel">
+              <p class="badge">DIFFICULTY SELECT</p>
+              <h2 class="ready-title" style="white-space:nowrap;">難易度を選んでください</h2>
+              <div class="ready-diff-grid">
+                <button class="ready-diff-card ready-diff-white selected" data-difficulty="white" type="button">
+                  <span class="ready-diff-icon">🌿</span>
+                  <div class="ready-diff-text">
+                    <span class="ready-diff-name">ホワイト企業</span>
+                    <span class="ready-diff-desc">業務量：少 / 割り込み：少</span>
+                    <span class="ready-diff-rate">スコア倍率 x1.0</span>
+                  </div>
+                </button>
+                <button class="ready-diff-card ready-diff-normal" data-difficulty="normal" type="button">
+                  <span class="ready-diff-icon">💼</span>
+                  <div class="ready-diff-text">
+                    <span class="ready-diff-name">ふつう企業</span>
+                    <span class="ready-diff-desc">業務量：中 / 割り込み：中</span>
+                    <span class="ready-diff-rate">スコア倍率 x1.3</span>
+                  </div>
+                </button>
+                <button class="ready-diff-card ready-diff-black" data-difficulty="black" type="button">
+                  <span class="ready-diff-icon">💀</span>
+                  <div class="ready-diff-text">
+                    <span class="ready-diff-name">ブラック企業</span>
+                    <span class="ready-diff-desc">業務量：多 / 割り込み：多</span>
+                    <span class="ready-diff-rate">スコア倍率 x1.8</span>
+                  </div>
+                </button>
+              </div>
+              <div id="diff-selected-label" class="ready-selected-label">ホワイト企業を選択中 — Space キーで次へ</div>
+              <button id="diff-next-btn" class="primary-button stage-button" type="button">次へ（Space）</button>
+              <button id="diff-back-btn" class="ghost-button" type="button" style="margin-top:10px;">タイトルへ戻る</button>
+            </div>
+          </div>
+        </section>
+
         <!-- ======= 準備画面 ======= -->
         <section id="ready-screen" class="screen">
           <div class="ready-layout">
             <div class="ready-panel panel">
-              <p class="badge">DIFFICULTY SELECT</p>
-              <h2 class="ready-title">難易度を選んでください</h2>
-              <div class="ready-diff-grid">
-                <button class="ready-diff-card ready-diff-white selected" data-difficulty="white" type="button">
-                  <span class="ready-diff-icon">🌿</span>
-                  <span class="ready-diff-name">ホワイト企業</span>
-                  <span class="ready-diff-desc">定時退社しやすい！<br>業務量：少 / 割り込み：少</span>
-                  <span class="ready-diff-rate">スコア倍率 x1.0</span>
-                </button>
-                <button class="ready-diff-card ready-diff-normal" data-difficulty="normal" type="button">
-                  <span class="ready-diff-icon">💼</span>
-                  <span class="ready-diff-name">ふつう企業</span>
-                  <span class="ready-diff-desc">仕事もイベントも標準<br>業務量：中 / 割り込み：中</span>
-                  <span class="ready-diff-rate">スコア倍率 x1.3</span>
-                </button>
-                <button class="ready-diff-card ready-diff-black" data-difficulty="black" type="button">
-                  <span class="ready-diff-icon">💀</span>
-                  <span class="ready-diff-name">ブラック企業</span>
-                  <span class="ready-diff-desc">地獄の残業が待っている<br>業務量：多 / 割り込み：多</span>
-                  <span class="ready-diff-rate">スコア倍率 x1.8</span>
-                </button>
-              </div>
-              <div id="ready-difficulty-name" class="ready-selected-label">ホワイト企業を選択中</div>
-              <button id="ready-start-btn" class="primary-button stage-button" type="button">この難易度でスタート</button>
-              <button id="ready-back-btn" class="ghost-button" type="button" style="margin-top:10px;">タイトルへ戻る</button>
+              <p class="badge">READY</p>
+              <h2 class="ready-title">準備はいいですか？</h2>
+              <p class="ready-difficulty" id="ready-difficulty-name">ホワイト企業</p>
+              <p class="ready-hint">Space キーを押してスタート</p>
+              <button id="ready-start-btn" class="primary-button stage-button" type="button">Space でスタート</button>
+              <button id="ready-back-btn" class="ghost-button" type="button" style="margin-top:10px;">難易度選択に戻る</button>
             </div>
           </div>
         </section>
@@ -209,18 +228,18 @@
           <div class="screen-frame">
             <aside class="frame-rail">
               <section class="panel rail-card compact-card">
-                <p class="label">Tip</p>
-                <h3>攻略ヒント</h3>
-                <p id="game-tip" class="tip-text">ミスを減らして時間ロスを防ごう！</p>
+                <p class="label">Menu</p>
+                <h3>コンテンツ</h3>
+                <div class="rail-menu">
+                  <button class="rail-button how-to-btn" type="button">遊び方</button>
+                  <button class="rail-button" type="button" onclick="alert('近日公開予定！')">実績</button>
+                  <button class="rail-button" type="button" onclick="alert('近日公開予定！')">設定</button>
+                </div>
               </section>
               <section class="panel rail-card compact-card">
-                <p class="label">LINKS</p>
-                <h3>リンク</h3>
-                <div class="link-list">
-                  <a href="https://example.com/" target="_blank" rel="noreferrer">自作アプリ</a>
-                  <a href="https://x.com/" target="_blank" rel="noreferrer">開発者X</a>
-                  <a href="https://example.com/" target="_blank" rel="noreferrer">ポートフォリオ</a>
-                </div>
+                <p class="label">Best Score</p>
+                <h3>自己ベスト</h3>
+                <div id="best-records-game" class="best-records"></div>
               </section>
             </aside>
 
@@ -278,7 +297,7 @@
               <!-- ゲーム操作ボタン -->
               <div class="game-nav-row">
                 <button id="game-back-btn" class="ghost-button game-nav-btn" type="button">⬅ メイン画面</button>
-                <button id="game-retry-btn" class="ghost-button game-nav-btn" type="button">↩ やり直す</button>
+                <button id="game-retry-btn" class="ghost-button game-nav-btn" type="button">🔄 やり直す</button>
               </div>
 
               <!-- メトリクスバー（コンパクト） -->
@@ -307,10 +326,16 @@
 
             <aside class="frame-rail">
               <section class="panel rail-card compact-card">
-                <p class="label">Links</p>
-                <h3>外部リンク</h3>
+                <p class="label">Last Session</p>
+                <h3>直近の退勤</h3>
+                <div id="last-result-game" class="last-result-summary"></div>
+              </section>
+              <section class="panel rail-card compact-card">
+                <p class="label">LINKS</p>
+                <h3>リンク</h3>
                 <div class="link-list">
-                  <a href="https://example.com/" target="_blank" rel="noreferrer">自作アプリ</a>
+                  <a href="https://x.com/" target="_blank" rel="noreferrer">開発者X</a>
+                  <a href="https://example.com/" target="_blank" rel="noreferrer">ポートフォリオ</a>
                   <a href="https://example.com/" target="_blank" rel="noreferrer">他作品一覧</a>
                 </div>
               </section>
@@ -407,6 +432,18 @@
           </div>
         </section>
       </main>
+    </div>
+
+    <!-- 開発者情報（右下固定） -->
+    <div class="developer-widget">
+      <div class="dev-app-banner">
+        <a href="https://example.com/" target="_blank" rel="noreferrer">◀ 自作アプリ一覧</a>
+      </div>
+      <div class="dev-links">
+        <a href="https://x.com/" target="_blank" rel="noreferrer">𝕏 Twitter</a>
+        <span class="dev-sep">|</span>
+        <a href="https://example.com/" target="_blank" rel="noreferrer">Portfolio</a>
+      </div>
     </div>
 
     <script src="./script.js"></script>
