@@ -378,8 +378,8 @@ const el = {
   resultRecordBadge:    document.getElementById("result-record-badge"),
   resultCompare:        document.getElementById("result-compare"),
   shareTextBox:         document.getElementById("share-text-box"),
-  copyTextButton:       document.getElementById("copy-text-button"),
   retryButton:          document.getElementById("retry-button"),
+  changeDifficultyBtn:  document.getElementById("change-difficulty-btn"),
   backButton:           document.getElementById("back-button"),
   modal:                document.getElementById("how-to-play-modal"),
   modalCloseBtn:        document.getElementById("modal-close-btn"),
@@ -517,9 +517,9 @@ function bindEvents() {
   });
 
   // 結果画面ボタン
-  el.copyTextButton.addEventListener("click", copyShareText);
   el.heroShareBtn.addEventListener("click", shareResult);
   el.retryButton.addEventListener("click", goToReady);
+  el.changeDifficultyBtn.addEventListener("click", goToDifficulty);
   el.backButton.addEventListener("click", () => {
     stopStatTicker();
     switchScreen("title");
@@ -1355,18 +1355,12 @@ function buildShareText(result) {
 }
 
 /* ===========================
-   テキストコピー
+   テキストコピー（Xシェアボタン用に残存）
 =========================== */
 function copyShareText() {
   const text = el.shareTextBox.textContent;
   if (!text) return;
-  navigator.clipboard.writeText(text).then(() => {
-    const orig = el.copyTextButton.textContent;
-    el.copyTextButton.textContent = "コピー完了！";
-    setTimeout(() => { el.copyTextButton.textContent = orig; }, 1500);
-  }).catch(() => {
-    alert("コピーに失敗しました。テキストを手動でコピーしてください。");
-  });
+  navigator.clipboard.writeText(text).catch(() => {});
 }
 
 /* ===========================
