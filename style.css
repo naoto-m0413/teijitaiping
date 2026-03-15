@@ -1245,6 +1245,7 @@ h1 {
   flex-shrink: 0;
   width: 2.4rem;
   text-align: center;
+  margin-left: 1em;
 }
 
 .ready-diff-text {
@@ -1252,6 +1253,8 @@ h1 {
   flex-direction: column;
   gap: 2px;
   flex: 1;
+  text-align: center;
+  align-items: center;
 }
 
 .ready-diff-name {
@@ -1593,10 +1596,6 @@ h1 {
 /* ===========================
    結果画面
 =========================== */
-.result-screen-frame {
-  grid-template-columns: minmax(0, 1fr) 168px;
-}
-
 .result-hero {
   position: relative;
   margin-bottom: 16px;
