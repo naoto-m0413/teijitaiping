@@ -377,7 +377,6 @@ const el = {
   resultDifficultyChip: document.getElementById("result-difficulty-chip"),
   resultRecordBadge:    document.getElementById("result-record-badge"),
   resultCompare:        document.getElementById("result-compare"),
-  shareTextBox:         document.getElementById("share-text-box"),
   retryButton:          document.getElementById("retry-button"),
   changeDifficultyBtn:  document.getElementById("change-difficulty-btn"),
   backButton:           document.getElementById("back-button"),
@@ -1325,9 +1324,6 @@ function renderResult(result, recordStatus, prevResult) {
     el.resultCompare.hidden = true;
   }
 
-  // シェアテキスト生成
-  const shareText = buildShareText(result);
-  el.shareTextBox.textContent = shareText;
 }
 
 /* ===========================
@@ -1352,15 +1348,6 @@ function buildShareText(result) {
     `称号：${result.title}`,
     "#定時退ピング #タイピングゲーム"
   ].join("\n");
-}
-
-/* ===========================
-   テキストコピー（Xシェアボタン用に残存）
-=========================== */
-function copyShareText() {
-  const text = el.shareTextBox.textContent;
-  if (!text) return;
-  navigator.clipboard.writeText(text).catch(() => {});
 }
 
 /* ===========================
