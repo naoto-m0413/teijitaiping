@@ -1193,14 +1193,14 @@ h1 {
 
 .ready-diff-card {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
-  gap: 4px;
+  gap: 12px;
   padding: 10px 14px;
   border: 3px solid transparent;
   border-radius: 12px;
   cursor: pointer;
-  text-align: center;
+  text-align: left;
   transition: transform 120ms, box-shadow 120ms, border-color 120ms;
   width: 100%;
 }
@@ -1240,16 +1240,18 @@ h1 {
 .ready-diff-black.selected { border-color: #ef5350; box-shadow: 0 6px 20px rgba(239,83,80,0.4); }
 
 .ready-diff-icon {
-  font-size: 1.8rem;
+  font-size: 2rem;
   line-height: 1;
+  flex-shrink: 0;
+  width: 2.4rem;
+  text-align: center;
 }
 
 .ready-diff-text {
   display: flex;
   flex-direction: column;
   gap: 2px;
-  align-items: center;
-  width: 100%;
+  flex: 1;
 }
 
 .ready-diff-name {
@@ -1591,12 +1593,26 @@ h1 {
 /* ===========================
    結果画面
 =========================== */
+.result-screen-frame {
+  grid-template-columns: minmax(0, 1fr) 168px;
+}
+
 .result-hero {
   position: relative;
   margin-bottom: 16px;
   padding: 24px;
   text-align: center;
   background: linear-gradient(180deg, #c8e8a8 0%, #e8e0a8 100%);
+}
+
+.result-hero-back-btn {
+  display: inline-block;
+  width: auto;
+  min-width: 160px;
+  margin-top: 14px;
+  font-size: 0.9rem;
+  min-height: 42px;
+  padding: 0 20px;
 }
 
 .hero-share-btn {
