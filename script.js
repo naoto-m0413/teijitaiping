@@ -13,8 +13,8 @@ const KANA_MAP = new Map([
   // 基本五十音
   ["あ", ["a"]], ["い", ["i"]], ["う", ["u"]], ["え", ["e"]], ["お", ["o"]],
   ["か", ["ka"]], ["き", ["ki"]], ["く", ["ku"]], ["け", ["ke"]], ["こ", ["ko"]],
-  ["さ", ["sa"]], ["し", ["shi", "si"]], ["す", ["su"]], ["せ", ["se"]], ["そ", ["so"]],
-  ["た", ["ta"]], ["ち", ["chi", "ti"]], ["つ", ["tsu", "tu"]], ["て", ["te"]], ["と", ["to"]],
+  ["さ", ["sa"]], ["し", ["si", "shi"]], ["す", ["su"]], ["せ", ["se"]], ["そ", ["so"]],
+  ["た", ["ta"]], ["ち", ["chi", "ti"]], ["つ", ["tu", "tsu"]], ["て", ["te"]], ["と", ["to"]],
   ["な", ["na"]], ["に", ["ni"]], ["ぬ", ["nu"]], ["ね", ["ne"]], ["の", ["no"]],
   ["は", ["ha"]], ["ひ", ["hi"]], ["ふ", ["fu", "hu"]], ["へ", ["he"]], ["ほ", ["ho"]],
   ["ま", ["ma"]], ["み", ["mi"]], ["む", ["mu"]], ["め", ["me"]], ["も", ["mo"]],
@@ -46,7 +46,7 @@ const KANA_MAP = new Map([
   ["じゃ", ["ja", "jya", "zya"]], ["じゅ", ["ju", "jyu", "zyu"]], ["じょ", ["jo", "jyo", "zyo"]],
 
   // ちゃ行
-  ["ちゃ", ["cha", "tya"]], ["ちゅ", ["chu", "tyu"]], ["ちょ", ["cho", "tyo"]],
+  ["ちゃ", ["cha", "tya"]], ["ちゅ", ["chu", "tyu"]], ["ちょ", ["tyo", "cho"]],
 
   // にゃ行
   ["にゃ", ["nya"]], ["にゅ", ["nyu"]], ["にょ", ["nyo"]],
@@ -134,15 +134,7 @@ function getPatternsForToken(tokens, idx) {
    ん の有効パターン判定
 =========================== */
 function getNPatterns(tokens, idx) {
-  // 次のトークンのパターンが全て a/i/u/e/o/n/y で始まる場合 → nn のみ
-  const nextIdx = idx + 1;
-  if (nextIdx < tokens.length) {
-    const nextPatterns = getPatternsForToken(tokens, nextIdx);
-    const allVowelOrNY = nextPatterns.every(p => /^[aiueonny]/.test(p));
-    if (allVowelOrNY) {
-      return ["nn"];
-    }
-  }
+  // トークンは事前に確定しているため n 単独でも常に有効
   return ["nn", "n"];
 }
 
@@ -387,7 +379,6 @@ const el = {
   resultCompare:        document.getElementById("result-compare"),
   shareTextBox:         document.getElementById("share-text-box"),
   copyTextButton:       document.getElementById("copy-text-button"),
-  shareButton:          document.getElementById("share-button"),
   retryButton:          document.getElementById("retry-button"),
   backButton:           document.getElementById("back-button"),
   modal:                document.getElementById("how-to-play-modal"),
@@ -527,7 +518,6 @@ function bindEvents() {
 
   // 結果画面ボタン
   el.copyTextButton.addEventListener("click", copyShareText);
-  el.shareButton.addEventListener("click", shareResult);
   el.heroShareBtn.addEventListener("click", shareResult);
   el.retryButton.addEventListener("click", goToReady);
   el.backButton.addEventListener("click", () => {

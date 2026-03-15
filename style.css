@@ -1193,9 +1193,9 @@ h1 {
 
 .ready-diff-card {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: center;
-  gap: 12px;
+  gap: 4px;
   padding: 10px 14px;
   border: 3px solid transparent;
   border-radius: 12px;
@@ -1240,20 +1240,16 @@ h1 {
 .ready-diff-black.selected { border-color: #ef5350; box-shadow: 0 6px 20px rgba(239,83,80,0.4); }
 
 .ready-diff-icon {
-  font-size: 2rem;
+  font-size: 1.8rem;
   line-height: 1;
-  flex-shrink: 0;
-  width: 2.4rem;
-  text-align: center;
 }
 
 .ready-diff-text {
   display: flex;
   flex-direction: column;
   gap: 2px;
-  flex: 1;
-  text-align: center;
   align-items: center;
+  width: 100%;
 }
 
 .ready-diff-name {
