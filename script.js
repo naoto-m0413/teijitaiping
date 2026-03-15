@@ -381,6 +381,7 @@ const el = {
   resultDifficulty:     document.getElementById("result-difficulty"),
   resultBest:           document.getElementById("result-best"),
   resultHero:           document.getElementById("result-hero"),
+  heroShareBtn:         document.getElementById("hero-share-btn"),
   resultDifficultyChip: document.getElementById("result-difficulty-chip"),
   resultRecordBadge:    document.getElementById("result-record-badge"),
   resultCompare:        document.getElementById("result-compare"),
@@ -527,6 +528,7 @@ function bindEvents() {
   // 結果画面ボタン
   el.copyTextButton.addEventListener("click", copyShareText);
   el.shareButton.addEventListener("click", shareResult);
+  el.heroShareBtn.addEventListener("click", shareResult);
   el.retryButton.addEventListener("click", goToReady);
   el.backButton.addEventListener("click", () => {
     stopStatTicker();
@@ -1281,9 +1283,12 @@ function renderResult(result, recordStatus, prevResult) {
   el.resultHero.classList.add(result.overtimeMinutes > 0 ? "is-overtime" : "is-success");
 
   el.resultLeaveTime.textContent  = fmtMin(result.leaveMinutes);
+  const earlyMin = END_MINUTES - result.leaveMinutes;
   el.resultStatus.textContent     = result.overtimeMinutes > 0
     ? `残業 ${fmtDuration(result.overtimeMinutes)}`
-    : "定時退社成功！";
+    : earlyMin > 0
+      ? `定時より ${fmtDuration(earlyMin)}早く退社！`
+      : "ちょうど定時退社！";
   el.resultTitle.textContent      = `称号：${result.title}`;
   el.resultScore.textContent      = result.score.toLocaleString("ja-JP");
   el.resultWpm.textContent        = String(result.wpm);
@@ -1339,9 +1344,12 @@ function renderResult(result, recordStatus, prevResult) {
    シェアテキスト構築
 =========================== */
 function buildShareText(result) {
+  const earlyMinShare = END_MINUTES - result.leaveMinutes;
   const statusText = result.overtimeMinutes > 0
     ? `残業 ${fmtDuration(result.overtimeMinutes)}`
-    : "定時退社成功";
+    : earlyMinShare > 0
+      ? `定時より ${fmtDuration(earlyMinShare)}早く退社！`
+      : "ちょうど定時退社！";
 
   return [
     "【定時退ピング】",
@@ -1447,9 +1455,12 @@ function renderLastResultSummary() {
     return;
   }
 
+  const earlyMinLast = END_MINUTES - last.leaveMinutes;
   const statusText = last.overtimeMinutes > 0
     ? `残業 ${fmtDuration(last.overtimeMinutes)}`
-    : "定時退社成功";
+    : earlyMinLast > 0
+      ? `定時より ${fmtDuration(earlyMinLast)}早退`
+      : "ちょうど定時退社";
 
   el.lastResultSummary.innerHTML = `
     <p class="summary-emphasis">${fmtMin(last.leaveMinutes)} 退勤</p>
