@@ -266,7 +266,7 @@ minutesPerToken = (baseMinutes × timePressure) / max(tokens.length, 1)
 | 昼休憩が 5 分短縮されました。 | 5分 | lunch |
 | 仕様変更が入りました。調整対応で 11 分消費。 | 11分 | spec |
 
-実際の加算時間は `基本時間 × difficulty.eventPenaltyScale` を切り捨てて計算する。
+実際の加算時間は `Math.round(基本時間 × difficulty.eventPenaltyScale)` で計算する。この値が `eventMinutes` として `spent` に加算される（`completeTask()` 内でタスク完了と同時に判定・加算）。
 
 ### 11.3 イベント効果
 
@@ -535,6 +535,7 @@ WPM = (正解文字数 / 5) / 実プレイ時間(分)
 表示構成:
 
 - 上部（固定）: 現在時刻 / 定時までの残り時間 / 進捗タスク数
+  - 定時まで残り時間パネルは定時前は黄系（`warn-panel`）、定時超過後は赤系（`overtime-panel`）に切り替わる
 - 進捗バー（コンパクト）
 - 中央（flex-grow）:
   - タスク名
@@ -798,7 +799,7 @@ WPM：243
 #定時退ピング #タイピングゲーム
 ```
 
-定時前退社の場合のステータス行: `定時より ○時間○分 早く退社！`
+定時前退社の場合のステータス行: `定時より ○時間○分早く退社！`
 
 ### 24.3 シェア機能
 
