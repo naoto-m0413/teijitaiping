@@ -355,8 +355,6 @@ const el = {
   readyDifficultyName:  document.getElementById("ready-difficulty-name"),
   readyStartBtn:        document.getElementById("ready-start-btn"),
   readyBackBtn:         document.getElementById("ready-back-btn"),
-  diffSelectedLabel:    document.getElementById("diff-selected-label"),
-  diffNextBtn:          document.getElementById("diff-next-btn"),
   diffBackBtn:          document.getElementById("diff-back-btn"),
   bestRecords:          document.getElementById("best-records"),
   lastResultSummary:    document.getElementById("last-result-summary"),
@@ -488,6 +486,7 @@ function bindEvents() {
     card.addEventListener("click", () => {
       state.selectedDifficulty = card.dataset.difficulty;
       updateDifficultySelection();
+      goToReady();
     });
   });
 
@@ -495,10 +494,9 @@ function bindEvents() {
   el.startButton.addEventListener("click", goToDifficulty);
 
   // 難易度選択画面
-  el.diffNextBtn.addEventListener("click", goToReady);
   el.diffBackBtn.addEventListener("click", () => switchScreen("title"));
 
-  // 準備画面
+  // 準備画面（Space キーでスタート、クリックでも可）
   el.readyStartBtn.addEventListener("click", startGame);
   el.readyBackBtn.addEventListener("click", goToDifficulty);
 
@@ -518,6 +516,13 @@ function bindEvents() {
   el.typingInput.addEventListener("beforeinput", handleBeforeInput);
   el.typingInput.addEventListener("keydown",     handleTypingKeyDown);
   el.typingInput.addEventListener("paste",       (e) => e.preventDefault());
+  // IMEコンポジション開始時にキャンセル（かな入力モード対策）
+  el.typingInput.addEventListener("compositionstart", (e) => {
+    if (state.currentScreen === "game" && state.session) {
+      e.target.blur();
+      e.target.focus();
+    }
+  });
 
   // 結果画面ボタン
   el.copyTextButton.addEventListener("click", copyShareText);
@@ -634,10 +639,6 @@ function updateDifficultySelection() {
   el.difficultyCards.forEach((card) => {
     card.classList.toggle("selected", card.dataset.difficulty === state.selectedDifficulty);
   });
-  const diff = DIFFICULTIES[state.selectedDifficulty];
-  if (el.diffSelectedLabel) {
-    el.diffSelectedLabel.textContent = `${diff.name}を選択中 — Space キーで次へ`;
-  }
 }
 
 /* ===========================

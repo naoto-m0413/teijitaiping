@@ -1131,19 +1131,22 @@ h1 {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 60vh;
-  padding: 20px;
+  height: 100vh;
+  max-height: 100vh;
+  overflow: hidden;
+  padding: 16px;
+  box-sizing: border-box;
 }
 
 .ready-panel {
-  width: min(480px, 100%);
-  padding: 40px 36px 36px;
+  width: min(560px, 100%);
+  padding: 28px 32px 28px;
   text-align: center;
 }
 
 .ready-title {
-  margin: 12px 0 8px;
-  font-size: clamp(1.8rem, 4vw, 2.6rem);
+  margin: 8px 0 6px;
+  font-size: clamp(1.4rem, 3.2vw, 2rem);
   font-weight: 900;
   color: var(--text);
 }
@@ -1162,14 +1165,29 @@ h1 {
   font-weight: 700;
 }
 
+.ready-space-hint {
+  margin: 16px 0 8px;
+  font-size: 1.15rem;
+  font-weight: 900;
+  color: var(--accent);
+  letter-spacing: 0.04em;
+  animation: pulse-hint 2s ease-in-out infinite;
+  cursor: pointer;
+}
+
+@keyframes pulse-hint {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.55; }
+}
+
 /* ===========================
    難易度選択画面（ready screen）
 =========================== */
 .ready-diff-grid {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  margin: 10px 0 10px;
+  gap: 6px;
+  margin: 6px 0 6px;
   width: 100%;
 }
 
