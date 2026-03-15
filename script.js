@@ -1340,25 +1340,39 @@ function buildShareText(result) {
   return [
     "【定時退ピング】",
     `難易度：${result.difficultyName}`,
-    `退勤時刻：${fmtMin(result.leaveMinutes)}`,
-    `${statusText}`,
-    `スコア：${result.score.toLocaleString("ja-JP")}`,
-    `WPM：${result.wpm}`,
-    `正確率：${result.accuracy}%`,
+    `退勤時刻：${fmtMin(result.leaveMinutes)}　${statusText}`,
+    `スコア：${result.score.toLocaleString("ja-JP")}　WPM：${result.wpm}　正確率：${result.accuracy}%`,
     `称号：${result.title}`,
     "#定時退ピング #タイピングゲーム"
   ].join("\n");
 }
 
 /* ===========================
-   X（Twitter）シェア
+   シェア（Web Share API / Twitter フォールバック）
 =========================== */
-function shareResult() {
+async function shareResult() {
   const last = state.records.lastResult;
   if (!last) return;
-  const text = buildShareText(last);
-  const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
-  window.open(url, "_blank", "noopener,noreferrer");
+  const text    = buildShareText(last);
+  const gameUrl = window.location.href;
+
+  // Web Share API 対応（主にスマホ）
+  if (navigator.share) {
+    try {
+      await navigator.share({ title: "定時退ピング", text, url: gameUrl });
+      return;
+    } catch (e) {
+      if (e.name === "AbortError") return; // ユーザーがキャンセル
+    }
+  }
+
+  // PC / 非対応環境 → Twitter Intent にフォールバック
+  const tweetText = text + "\n" + gameUrl;
+  window.open(
+    `https://twitter.com/intent/tweet?text=${encodeURIComponent(tweetText)}`,
+    "_blank",
+    "noopener,noreferrer"
+  );
 }
 
 /* ===========================
