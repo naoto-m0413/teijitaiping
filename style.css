@@ -1284,14 +1284,14 @@ h1 {
 
 /* ゲーム画面 ナビゲーションボタン行 */
 .game-nav-row {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 8px;
-  justify-content: flex-end;
   margin-bottom: 6px;
 }
 
 .game-nav-btn {
+  width: 100%;
   font-size: 0.75rem;
   padding: 4px 10px;
   border-radius: 8px;
@@ -1302,7 +1302,7 @@ h1 {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
+  gap: 14px;
   margin-top: 12px;
 }
 
