@@ -149,7 +149,9 @@ const DIFFICULTIES = {
     eventRate: 0.15,
     taskCount: 6,
     timePressure: 0.90,
-    eventPenaltyScale: 0.9
+    eventPenaltyScale: 0.9,
+    startMinutes: 10 * 60,        // 10:00
+    endMinutes:   19 * 60         // 19:00
   },
   normal: {
     id: "normal",
@@ -158,7 +160,9 @@ const DIFFICULTIES = {
     eventRate: 0.30,
     taskCount: 7,
     timePressure: 1.0,
-    eventPenaltyScale: 1.05
+    eventPenaltyScale: 1.05,
+    startMinutes: 9 * 60,         // 09:00
+    endMinutes:   18 * 60         // 18:00
   },
   black: {
     id: "black",
@@ -167,7 +171,9 @@ const DIFFICULTIES = {
     eventRate: 0.50,
     taskCount: 8,
     timePressure: 1.12,
-    eventPenaltyScale: 1.18
+    eventPenaltyScale: 1.18,
+    startMinutes: 7 * 60 + 30,    // 07:30
+    endMinutes:   22 * 60         // 22:00
   }
 };
 
@@ -376,7 +382,6 @@ const el = {
   heroShareBtn:         document.getElementById("hero-share-btn"),
   resultDifficultyChip: document.getElementById("result-difficulty-chip"),
   resultRecordBadge:    document.getElementById("result-record-badge"),
-  resultCompare:        document.getElementById("result-compare"),
   retryButton:          document.getElementById("retry-button"),
   changeDifficultyBtn:  document.getElementById("change-difficulty-btn"),
   backButton:           document.getElementById("back-button"),
@@ -494,6 +499,7 @@ function bindEvents() {
   // ゲーム画面 メイン画面へ戻る／やり直す
   document.getElementById("game-back-btn").addEventListener("click", () => {
     stopStatTicker();
+    hideHeaderClock();
     switchScreen("title");
     renderBestRecords();
     renderLastResultSummary();
@@ -521,6 +527,7 @@ function bindEvents() {
   el.changeDifficultyBtn.addEventListener("click", goToDifficulty);
   el.backButton.addEventListener("click", () => {
     stopStatTicker();
+    hideHeaderClock();
     switchScreen("title");
     renderBestRecords();
     renderLastResultSummary();
@@ -569,6 +576,7 @@ function handleGlobalKeyDown(e) {
     if (state.currentScreen === "game" || state.currentScreen === "ready") {
       e.preventDefault();
       stopStatTicker();
+      hideHeaderClock();
       switchScreen("title");
       renderBestRecords();
       renderLastResultSummary();
@@ -576,6 +584,7 @@ function handleGlobalKeyDown(e) {
     }
     if (state.currentScreen === "result") {
       e.preventDefault();
+      hideHeaderClock();
       switchScreen("title");
       renderBestRecords();
       renderLastResultSummary();
@@ -639,6 +648,7 @@ function goToDifficulty() {
   stopStatTicker();
   closeModal();
   updateDifficultySelection();
+  hideHeaderClock();
   switchScreen("difficulty");
 }
 
@@ -650,7 +660,20 @@ function goToReady() {
   closeModal();
   const difficulty = DIFFICULTIES[state.selectedDifficulty];
   el.readyDifficultyName.textContent = difficulty.name;
+  updateHeaderClock(difficulty);
   switchScreen("ready");
+}
+
+function updateHeaderClock(difficulty) {
+  const headerClock = document.getElementById("header-clock");
+  if (!headerClock) return;
+  headerClock.innerHTML = `始業 ${fmtMin(difficulty.startMinutes)} &nbsp;/&nbsp; 定時 ${fmtMin(difficulty.endMinutes)}`;
+  headerClock.hidden = false;
+}
+
+function hideHeaderClock() {
+  const headerClock = document.getElementById("header-clock");
+  if (headerClock) headerClock.hidden = true;
 }
 
 /* ===========================
@@ -672,7 +695,7 @@ function startGame() {
     tokenIndex:   0,
     currentTyped: "",
     // 統計
-    gameMinutes:    START_MINUTES,
+    gameMinutes:    difficulty.startMinutes,
     realStartAt:    now,
     correctChars:   0,
     misses:         0,
@@ -1202,7 +1225,7 @@ function updateStats() {
   const pct = Math.min((tasksDone / total + inTaskProg) * 100, 100);
 
   el.currentTime.textContent   = fmtMin(session.gameMinutes);
-  el.timeLeft.textContent      = fmtRemain(session.gameMinutes);
+  el.timeLeft.textContent      = fmtRemain(session.gameMinutes, session.difficulty.endMinutes);
   el.progressText.textContent  = `${Math.min(tasksDone + 1, total)} / ${total}`;
   el.progressFill.style.width  = `${pct}%`;
   el.wpmValue.textContent      = String(Number.isFinite(wpm) ? wpm : 0);
@@ -1211,8 +1234,8 @@ function updateStats() {
 
   const timePanel = el.timeLeft.closest(".stat-panel");
   if (timePanel) {
-    timePanel.classList.toggle("warn-panel",    session.gameMinutes <= END_MINUTES);
-    timePanel.classList.toggle("overtime-panel", session.gameMinutes > END_MINUTES);
+    timePanel.classList.toggle("warn-panel",     session.gameMinutes <= session.difficulty.endMinutes);
+    timePanel.classList.toggle("overtime-panel", session.gameMinutes > session.difficulty.endMinutes);
   }
 }
 
@@ -1225,7 +1248,8 @@ function finishGame() {
   const wpm          = Math.round((session.correctChars / 5) / elapsedMin);
   const accuracy     = calcAccuracy(session.correctChars, session.misses);
   const leaveMinutes = session.gameMinutes;
-  const overtime     = Math.max(leaveMinutes - END_MINUTES, 0);
+  const endMinutes   = session.difficulty.endMinutes;
+  const overtime     = Math.max(leaveMinutes - endMinutes, 0);
   const baseScore    = session.correctChars * (accuracy / 100);
   const score        = Math.max(
     Math.round(baseScore * session.difficulty.multiplier * 100 - overtime * 20),
@@ -1238,7 +1262,8 @@ function finishGame() {
     misses:       session.misses,
     wpm:          Number.isFinite(wpm) ? wpm : 0,
     eventCount:   session.eventCount,
-    difficultyId: session.difficulty.id
+    difficultyId: session.difficulty.id,
+    endMinutes
   });
 
   const result = {
@@ -1246,6 +1271,7 @@ function finishGame() {
     difficultyName:  session.difficulty.name,
     leaveMinutes,
     overtimeMinutes: overtime,
+    endMinutes,
     score,
     wpm:      Number.isFinite(wpm) ? wpm : 0,
     accuracy,
@@ -1272,7 +1298,7 @@ function renderResult(result, recordStatus, prevResult) {
   el.resultHero.classList.add(result.overtimeMinutes > 0 ? "is-overtime" : "is-success");
 
   el.resultLeaveTime.textContent  = fmtMin(result.leaveMinutes);
-  const earlyMin = END_MINUTES - result.leaveMinutes;
+  const earlyMin = (result.endMinutes || END_MINUTES) - result.leaveMinutes;
   el.resultStatus.textContent     = result.overtimeMinutes > 0
     ? `残業 ${fmtDuration(result.overtimeMinutes)}`
     : earlyMin > 0
@@ -1307,30 +1333,13 @@ function renderResult(result, recordStatus, prevResult) {
       ? "最速退勤更新！"
       : "変化なし";
 
-  // 前回比較
-  if (prevResult && prevResult.difficultyId === result.difficultyId) {
-    const scoreDiff = result.score - prevResult.score;
-    const timeDiff  = prevResult.leaveMinutes - result.leaveMinutes; // 正=早い
-    const scoreStr  = scoreDiff >= 0 ? `前回より +${scoreDiff}` : `前回より ${scoreDiff}`;
-    const timeStr   = timeDiff > 0
-      ? `前回より ${timeDiff}分早い退勤`
-      : timeDiff < 0
-        ? `前回より ${Math.abs(timeDiff)}分遅い退勤`
-        : "前回と同じ退勤時刻";
-
-    el.resultCompare.innerHTML = `<span>${scoreStr}</span><span>${timeStr}</span>`;
-    el.resultCompare.hidden = false;
-  } else {
-    el.resultCompare.hidden = true;
-  }
-
 }
 
 /* ===========================
    シェアテキスト構築
 =========================== */
 function buildShareText(result) {
-  const earlyMinShare = END_MINUTES - result.leaveMinutes;
+  const earlyMinShare = (result.endMinutes || END_MINUTES) - result.leaveMinutes;
   const statusText = result.overtimeMinutes > 0
     ? `残業 ${fmtDuration(result.overtimeMinutes)}`
     : earlyMinShare > 0
@@ -1356,8 +1365,11 @@ async function shareResult() {
   const text    = buildShareText(last);
   const gameUrl = window.location.href;
 
-  // Web Share API 対応（主にスマホ）
-  if (navigator.share) {
+  // file:// 環境や非セキュアコンテキストでは Web Share API を使わない
+  // （呼び出しが非同期になりポップアップブロッカーに引っかかるのを防ぐ）
+  const canWebShare = navigator.share && window.location.protocol !== "file:";
+
+  if (canWebShare) {
     try {
       await navigator.share({ title: "定時退ピング", text, url: gameUrl });
       return;
@@ -1440,7 +1452,7 @@ function renderLastResultSummary() {
     return;
   }
 
-  const earlyMinLast = END_MINUTES - last.leaveMinutes;
+  const earlyMinLast = (last.endMinutes || END_MINUTES) - last.leaveMinutes;
   const statusText = last.overtimeMinutes > 0
     ? `残業 ${fmtDuration(last.overtimeMinutes)}`
     : earlyMinLast > 0
@@ -1477,7 +1489,8 @@ function loadRecords() {
 /* ===========================
    称号判定
 =========================== */
-function resolveTitle({ leaveMinutes, overtimeMinutes, accuracy, misses, wpm, eventCount, difficultyId }) {
+function resolveTitle({ leaveMinutes, overtimeMinutes, accuracy, misses, wpm, eventCount, difficultyId, endMinutes }) {
+  const end = endMinutes || END_MINUTES;
   // 完璧な一日
   if (misses <= 0 && accuracy === 100) {
     return "完璧な一日";
@@ -1487,10 +1500,10 @@ function resolveTitle({ leaveMinutes, overtimeMinutes, accuracy, misses, wpm, ev
     return "光の速さで退勤";
   }
   // 伝説の早退
-  if (leaveMinutes <= END_MINUTES - 30) {
+  if (leaveMinutes <= end - 30) {
     return "伝説の早退";
   }
-  if (leaveMinutes <= END_MINUTES - 20 && accuracy >= 97 && misses <= 3) {
+  if (leaveMinutes <= end - 20 && accuracy >= 97 && misses <= 3) {
     return "退勤の神";
   }
   if (difficultyId === "black" && overtimeMinutes === 0) {
@@ -1514,7 +1527,7 @@ function resolveTitle({ leaveMinutes, overtimeMinutes, accuracy, misses, wpm, ev
   if (misses >= 25) {
     return "修正版に追われる人";
   }
-  if (leaveMinutes >= END_MINUTES + 60) {
+  if (leaveMinutes >= end + 60) {
     return "会議で1日終わる人";
   }
   if (overtimeMinutes >= 30) {
@@ -1547,8 +1560,8 @@ function fmtDuration(min) {
   return `${h}時間${m}分`;
 }
 
-function fmtRemain(currentMin) {
-  const remain = END_MINUTES - currentMin;
+function fmtRemain(currentMin, endMin) {
+  const remain = (endMin || END_MINUTES) - currentMin;
   if (remain >= 0) return fmtDuration(remain);
   return `残業 ${fmtDuration(Math.abs(remain))}`;
 }

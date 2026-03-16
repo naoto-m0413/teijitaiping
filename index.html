@@ -29,7 +29,7 @@
           <li>画面に表示された日本語をローマ字で <strong>キーボード入力</strong> する</li>
           <li>正確に速く打つほどゲーム内時間の消費が減る</li>
           <li>すべてのタスクを完了したら <strong>退勤時刻</strong> が確定</li>
-          <li>17:30 より前に退勤できれば <strong>定時退社成功！</strong></li>
+          <li>定時より前に退勤できれば <strong>定時退社成功！</strong></li>
         </ol>
         <div class="how-to-tips">
           <p class="label">ポイント</p>
@@ -48,7 +48,7 @@
       <header class="site-header">
         <div class="header-meta">
           <p class="eyebrow">BROWSER TYPING GAME</p>
-          <p class="header-clock">始業 08:30 &nbsp;/&nbsp; 定時 17:30</p>
+          <p class="header-clock" id="header-clock" hidden>始業 10:00 &nbsp;/&nbsp; 定時 19:00</p>
         </div>
         <p class="lead">仕事をさばいて、最速退勤を目指せ。</p>
       </header>
@@ -180,6 +180,7 @@
                   <div class="ready-diff-text">
                     <span class="ready-diff-name">ホワイト企業</span>
                     <span class="ready-diff-desc">業務量：少 / 割り込み：少</span>
+                    <span class="ready-diff-desc">始業 10:00 / 定時 19:00</span>
                     <span class="ready-diff-rate">スコア倍率 x1.0</span>
                   </div>
                 </button>
@@ -188,6 +189,7 @@
                   <div class="ready-diff-text">
                     <span class="ready-diff-name">ふつう企業</span>
                     <span class="ready-diff-desc">業務量：中 / 割り込み：中</span>
+                    <span class="ready-diff-desc">始業 09:00 / 定時 18:00</span>
                     <span class="ready-diff-rate">スコア倍率 x1.3</span>
                   </div>
                 </button>
@@ -196,6 +198,7 @@
                   <div class="ready-diff-text">
                     <span class="ready-diff-name">ブラック企業</span>
                     <span class="ready-diff-desc">業務量：多 / 割り込み：多</span>
+                    <span class="ready-diff-desc">始業 07:30 / 定時 22:00</span>
                     <span class="ready-diff-rate">スコア倍率 x1.8</span>
                   </div>
                 </button>
@@ -243,7 +246,7 @@
               <div class="status-grid">
                 <article class="panel stat-panel accent-panel">
                   <span class="stat-label">現在時刻</span>
-                  <strong id="current-time" class="stat-value">08:30</strong>
+                  <strong id="current-time" class="stat-value">--:--</strong>
                 </article>
                 <article class="panel stat-panel warn-panel">
                   <span class="stat-label">定時まで</span>
@@ -355,7 +358,6 @@
                 <h2 id="result-leave-time">17:30</h2>
                 <p id="result-status" class="result-status">定時退社成功</p>
                 <p id="result-title" class="result-title">定時の守護神</p>
-                <div class="result-compare" id="result-compare" hidden></div>
                 <button id="back-button" class="ghost-button result-hero-back-btn" type="button">タイトルへ戻る</button>
               </div>
 
