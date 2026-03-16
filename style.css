@@ -55,7 +55,7 @@ h1, h2, h3, p { margin-top: 0; }
    シェル・ヘッダー
 =========================== */
 .app-shell {
-  width: min(1180px, calc(100% - 20px));
+  width: min(1360px, calc(100% - 28px));
   margin: 0 auto;
   padding: 14px 0 32px;
 }
@@ -170,8 +170,12 @@ h1 {
 .title-layout,
 .screen-frame {
   display: grid;
-  grid-template-columns: 168px minmax(0, 1fr) 168px;
-  gap: 12px;
+  grid-template-columns:
+    minmax(180px, 220px)
+    minmax(0, 1fr)
+    minmax(180px, 220px);
+  gap: clamp(12px, 1.5vw, 18px);
+  align-items: start;
 }
 
 .side-rail,
@@ -265,8 +269,11 @@ h1 {
 =========================== */
 .office-title-stage {
   position: relative;
-  min-height: 520px;
-  padding: 16px 14px 14px;
+  min-height: clamp(520px, 44vw, 620px);
+  padding:
+    clamp(18px, 2vw, 24px)
+    clamp(150px, 16vw, 210px)
+    18px;
   overflow: hidden;
   border-width: 5px;
   border-color: #6e4c2e;
@@ -294,7 +301,7 @@ h1 {
 .office-title-stage::after {
   content: "";
   position: absolute;
-  left: 0; right: 0; bottom: 84px;
+  left: 0; right: 0; bottom: clamp(80px, 9vw, 96px);
   height: 3px;
   background: rgba(110, 80, 30, 0.18);
   box-shadow: 0 3px 0 rgba(0,0,0,0.06);
@@ -306,8 +313,8 @@ h1 {
 .title-board {
   position: relative;
   z-index: 4;
-  width: min(460px, 100%);
-  margin: 20px auto 0;
+  width: min(500px, 100%);
+  margin: clamp(28px, 4vw, 48px) auto 0;
   text-align: center;
 }
 
@@ -475,8 +482,8 @@ h1 {
   z-index: 2;
 }
 
-.office-scene-left  { left: 10px;  width: 210px; height: 100%; }
-.office-scene-right { right: 10px; width: 240px; height: 100%; }
+.office-scene-left  { left: clamp(8px, 1vw, 16px); width: clamp(190px, 18vw, 220px); height: 100%; }
+.office-scene-right { right: clamp(8px, 1vw, 16px); width: clamp(210px, 20vw, 250px); height: 100%; }
 
 /* ===========================
    走る社員（左キャラ）
@@ -484,7 +491,7 @@ h1 {
 .runner {
   position: absolute;
   left: 10px;
-  bottom: 90px;
+  bottom: clamp(86px, 9vw, 100px);
   width: 120px;
   height: 200px;
 }
@@ -747,7 +754,7 @@ h1 {
 .worker-scene {
   position: absolute;
   right: 0;
-  bottom: 84px;
+  bottom: clamp(82px, 9vw, 98px);
   width: 230px;
   height: 240px;
 }
@@ -1060,10 +1067,10 @@ h1 {
 =========================== */
 .floor-deco {
   position: absolute;
-  bottom: 84px;
+  bottom: clamp(80px, 9vw, 96px);
   left: 50%;
   transform: translateX(-50%);
-  width: 60%;
+  width: min(360px, 44%);
   height: 60px;
   z-index: 1;
 }
@@ -1309,7 +1316,10 @@ h1 {
 /* ===========================
    ゲーム画面・結果画面 共通フレーム
 =========================== */
-.frame-main { min-width: 0; }
+.frame-main {
+  min-width: 0;
+  width: 100%;
+}
 
 .compact-card p { margin-bottom: 0; }
 
@@ -1329,6 +1339,7 @@ h1 {
   gap: 8px;
   height: calc(100vh - 120px);
   min-height: 600px;
+  align-content: start;
 }
 
 /* ===========================
@@ -1863,6 +1874,21 @@ h1 {
   .side-rail,
   .frame-rail {
     grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1280px) {
+  .title-layout,
+  .screen-frame {
+    grid-template-columns:
+      minmax(190px, 220px)
+      minmax(760px, 920px)
+      minmax(190px, 220px);
+    justify-content: center;
+  }
+
+  .office-title-stage {
+    padding-inline: clamp(170px, 15vw, 230px);
   }
 }
 
