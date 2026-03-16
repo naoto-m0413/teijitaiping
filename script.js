@@ -1362,12 +1362,18 @@ function buildShareText(result) {
 async function shareResult() {
   const last = state.records.lastResult;
   if (!last) return;
-  const text    = buildShareText(last);
-  const gameUrl = window.location.href;
+  const text = buildShareText(last);
+  const gameUrl = `${window.location.origin}${window.location.pathname}`;
+  const shareUrl = new URL("https://twitter.com/intent/tweet");
+  shareUrl.searchParams.set("text", text);
+  shareUrl.searchParams.set("url", gameUrl);
 
-  // file:// 環境や非セキュアコンテキストでは Web Share API を使わない
-  // （呼び出しが非同期になりポップアップブロッカーに引っかかるのを防ぐ）
-  const canWebShare = navigator.share && window.location.protocol !== "file:";
+  // PC は Intent を即時に開き、モバイルだけ Web Share を優先する
+  const canWebShare =
+    navigator.share &&
+    /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent) &&
+    window.isSecureContext &&
+    window.location.protocol !== "file:";
 
   if (canWebShare) {
     try {
@@ -1378,13 +1384,10 @@ async function shareResult() {
     }
   }
 
-  // PC / 非対応環境 → Twitter Intent にフォールバック
-  const tweetText = text + "\n" + gameUrl;
-  window.open(
-    `https://twitter.com/intent/tweet?text=${encodeURIComponent(tweetText)}`,
-    "_blank",
-    "noopener,noreferrer"
-  );
+  const popup = window.open(shareUrl.toString(), "_blank", "noopener,noreferrer");
+  if (!popup) {
+    window.location.href = shareUrl.toString();
+  }
 }
 
 /* ===========================

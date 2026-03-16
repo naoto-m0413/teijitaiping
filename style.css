@@ -1285,6 +1285,7 @@ h1 {
 /* ゲーム画面 ナビゲーションボタン行 */
 .game-nav-row {
   display: flex;
+  flex-wrap: wrap;
   gap: 8px;
   justify-content: flex-end;
   margin-bottom: 6px;
