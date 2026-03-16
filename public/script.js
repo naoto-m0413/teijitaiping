@@ -388,11 +388,6 @@ const el = {
   modal:                document.getElementById("how-to-play-modal"),
   modalCloseBtn:        document.getElementById("modal-close-btn"),
   modalOkBtn:           document.getElementById("modal-ok-btn"),
-  recordsModal:         document.getElementById("records-modal"),
-  recordsModalCloseBtn: document.getElementById("records-modal-close-btn"),
-  recordsModalOkBtn:    document.getElementById("records-modal-ok-btn"),
-  recordsBestRecords:   document.getElementById("records-best-records"),
-  recordsLastSummary:   document.getElementById("records-last-result-summary"),
   mobileWarning:        document.getElementById("mobile-warning"),
   mobileWarningDismiss: document.getElementById("mobile-warning-dismiss")
 };
@@ -545,18 +540,10 @@ function bindEvents() {
   document.querySelectorAll(".how-to-btn").forEach((btn) => {
     btn.addEventListener("click", openModal);
   });
-  document.querySelectorAll(".records-btn").forEach((btn) => {
-    btn.addEventListener("click", openRecordsModal);
-  });
   el.modalCloseBtn.addEventListener("click", closeModal);
   el.modalOkBtn.addEventListener("click", closeModal);
   el.modal.addEventListener("click", (e) => {
     if (e.target === el.modal) closeModal();
-  });
-  el.recordsModalCloseBtn.addEventListener("click", closeRecordsModal);
-  el.recordsModalOkBtn.addEventListener("click", closeRecordsModal);
-  el.recordsModal.addEventListener("click", (e) => {
-    if (e.target === el.recordsModal) closeRecordsModal();
   });
 
   // モバイル警告 閉じる
@@ -644,12 +631,6 @@ function handleGlobalKeyDown(e) {
 
 function openModal()  { el.modal.hidden = false; }
 function closeModal() { el.modal.hidden = true; }
-function openRecordsModal() {
-  renderBestRecords();
-  renderLastResultSummary();
-  el.recordsModal.hidden = false;
-}
-function closeRecordsModal() { el.recordsModal.hidden = true; }
 
 /* ===========================
    難易度表示更新
@@ -1462,7 +1443,6 @@ function renderBestRecords() {
   });
   const gameEl = document.getElementById("best-records-game");
   if (gameEl) gameEl.innerHTML = el.bestRecords.innerHTML;
-  if (el.recordsBestRecords) el.recordsBestRecords.innerHTML = el.bestRecords.innerHTML;
 }
 
 /* ===========================
@@ -1472,9 +1452,6 @@ function renderLastResultSummary() {
   const last = state.records.lastResult;
   if (!last) {
     el.lastResultSummary.innerHTML = "<p>まだ退勤記録がありません。</p>";
-    const gameEl = document.getElementById("last-result-game");
-    if (gameEl) gameEl.innerHTML = el.lastResultSummary.innerHTML;
-    if (el.recordsLastSummary) el.recordsLastSummary.innerHTML = el.lastResultSummary.innerHTML;
     return;
   }
 
@@ -1493,7 +1470,6 @@ function renderLastResultSummary() {
   `;
   const gameEl = document.getElementById("last-result-game");
   if (gameEl) gameEl.innerHTML = el.lastResultSummary.innerHTML;
-  if (el.recordsLastSummary) el.recordsLastSummary.innerHTML = el.lastResultSummary.innerHTML;
 }
 
 /* ===========================
