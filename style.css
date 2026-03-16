@@ -270,41 +270,29 @@ h1 {
 .office-title-stage {
   position: relative;
   min-height: clamp(520px, 44vw, 620px);
-  padding:
-    clamp(18px, 2vw, 24px)
-    clamp(150px, 16vw, 210px)
-    18px;
+  padding: clamp(24px, 3vw, 40px) clamp(20px, 3vw, 36px) 28px;
   overflow: hidden;
-  border-width: 5px;
-  border-color: #6e4c2e;
-
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-width: 3px;
+  border-color: rgba(255, 255, 255, 0.08);
   background:
-    radial-gradient(ellipse at 50% 15%, rgba(255,255,240,0.3) 0%, transparent 40%),
-    linear-gradient(180deg,
-      #c8e0f4 0%,
-      #bbd4ec 28%,
-      #d4c49a 29%,
-      #c8b688 100%
-    );
+    radial-gradient(circle at 50% 16%, rgba(255, 188, 92, 0.08), transparent 24%),
+    linear-gradient(180deg, #08090d 0%, #11141b 100%);
 }
 
 .office-title-stage::before {
-  content: "";
-  position: absolute;
-  left: 0; right: 0; top: 28%;
-  height: 6px;
-  background: rgba(180, 150, 90, 0.35);
-  border-top: 1px solid rgba(180,150,90,0.5);
-  border-bottom: 1px solid rgba(180,150,90,0.5);
+  display: none;
 }
 
 .office-title-stage::after {
-  content: "";
-  position: absolute;
-  left: 0; right: 0; bottom: clamp(80px, 9vw, 96px);
-  height: 3px;
-  background: rgba(110, 80, 30, 0.18);
-  box-shadow: 0 3px 0 rgba(0,0,0,0.06);
+  display: none;
+}
+
+.office-title-stage .office-scene,
+.office-title-stage .floor-deco {
+  display: none;
 }
 
 /* ===========================
@@ -313,13 +301,23 @@ h1 {
 .title-board {
   position: relative;
   z-index: 4;
-  width: min(500px, 100%);
-  margin: clamp(28px, 4vw, 48px) auto 0;
+  width: min(100%, 980px);
+  margin: 0 auto;
   text-align: center;
 }
 
 .title-plaque {
-  padding: 0 8px 10px;
+  padding: 0;
+}
+
+.title-logo-image {
+  display: block;
+  width: min(90%, 900px);
+  max-width: 900px;
+  height: auto;
+  margin: 0 auto;
+  object-fit: contain;
+  filter: drop-shadow(0 18px 44px rgba(0, 0, 0, 0.52));
 }
 
 .game-title-text {
@@ -1886,10 +1884,6 @@ h1 {
       minmax(190px, 220px);
     justify-content: center;
   }
-
-  .office-title-stage {
-    padding-inline: clamp(170px, 15vw, 230px);
-  }
 }
 
 @media (max-width: 900px) {
@@ -1901,10 +1895,7 @@ h1 {
     align-items: flex-start;
   }
 
-  .office-title-stage { min-height: 640px; }
-
-  .office-scene-left  { width: 160px; }
-  .office-scene-right { width: 180px; }
+  .office-title-stage { min-height: 560px; }
 
   .game-main-grid {
     height: auto;
@@ -1926,12 +1917,14 @@ h1 {
   .bottom-grid      { grid-template-columns: 1fr; }
   .result-grid      { grid-template-columns: 1fr; }
 
-  .office-title-stage { min-height: 580px; }
+  .office-title-stage {
+    min-height: 460px;
+    padding: 20px 12px 24px;
+  }
 
-  .office-scene-left  { left: 0; width: 140px; }
-  .office-scene-right { right: 0; width: 150px; }
-
-  .game-title-text { font-size: 2.6rem; }
+  .title-logo-image {
+    width: 90%;
+  }
 
   .lead { text-align: left; }
 }
