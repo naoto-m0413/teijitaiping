@@ -167,7 +167,15 @@ h1 {
 /* ===========================
    3カラムレイアウト
 =========================== */
-.title-layout,
+.title-layout {
+  display: grid;
+  grid-template-columns:
+    minmax(0, 1fr)
+    minmax(180px, 220px);
+  gap: clamp(12px, 1.5vw, 18px);
+  align-items: start;
+}
+
 .screen-frame {
   display: grid;
   grid-template-columns:
@@ -1920,7 +1928,12 @@ h1 {
 }
 
 @media (min-width: 1280px) {
-  .title-layout,
+  .title-layout {
+    grid-template-columns:
+      minmax(760px, 920px)
+      minmax(190px, 220px);
+    justify-content: center;
+  }
   .screen-frame {
     grid-template-columns:
       minmax(190px, 220px)
