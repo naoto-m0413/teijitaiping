@@ -1128,11 +1128,13 @@ function autoSegmentParts(text, reading) {
       while (kanjiEnd < text.length && isKanjiChar(text[kanjiEnd])) kanjiEnd++;
       const kanjiSeg = text.slice(ti, kanjiEnd);
 
-      // 漢字読みの終端: 次の非漢字文字を reading から探す
+      // 漢字読みの終端: 次のひらがなセグメント全体を reading から探す（1文字だと誤マッチする場合があるため）
       let readingEnd;
       if (kanjiEnd < text.length) {
-        const nextCh = text[kanjiEnd];
-        const pos = reading.indexOf(nextCh, ri);
+        let nextSegEnd = kanjiEnd;
+        while (nextSegEnd < text.length && !isKanjiChar(text[nextSegEnd])) nextSegEnd++;
+        const nextHiragana = text.slice(kanjiEnd, nextSegEnd);
+        const pos = nextHiragana ? reading.indexOf(nextHiragana, ri) : -1;
         readingEnd = pos !== -1 ? pos : reading.length;
       } else {
         readingEnd = reading.length;
@@ -1235,12 +1237,20 @@ function renderJapaneseWithColor() {
 
     if (reading !== undefined) {
       // 漢字セグメント: <ruby>漢字<rt>色付き読み</rt></ruby>
+      // 漢字1文字ごとに span を作り、読み位置に応じて個別にカラーコーディング
       const ruby = document.createElement("ruby");
-      if (segEnd <= doneEnd)            ruby.className = "kana-done";
-      else if (segStart > doneEnd)      ruby.className = "kana-pending";
-      else if (segStart === doneEnd)    ruby.className = "kana-current";
-      else                              ruby.className = "kana-pending";
-      ruby.appendChild(document.createTextNode(text));
+      const readingLen = segEnd - segStart;
+      const kanjiLen   = text.length;
+      for (let k = 0; k < kanjiLen; k++) {
+        const kSpan = document.createElement("span");
+        kSpan.textContent = text[k];
+        const kReadStart = segStart + Math.round(k * readingLen / kanjiLen);
+        const kReadEnd   = segStart + Math.round((k + 1) * readingLen / kanjiLen);
+        if (kReadEnd <= doneEnd)                               kSpan.className = "kana-done";
+        else if (kReadStart <= doneEnd && doneEnd < kReadEnd)  kSpan.className = "kana-current";
+        else                                                   kSpan.className = "kana-pending";
+        ruby.appendChild(kSpan);
+      }
       const rt = document.createElement("rt");
       appendColoredKana(rt, reading, segStart, doneEnd, currentEnd);
       ruby.appendChild(rt);
