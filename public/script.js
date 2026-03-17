@@ -547,6 +547,54 @@ const SCENE_MAP = {
 };
 
 /* ===========================
+   ランク・称号定義
+   ※ RANK_THRESHOLDS は仮設定。今後プレイ結果に応じて閾値調整予定
+=========================== */
+const RANKS = ["SSS", "SS", "S", "A", "B", "C", "D", "E", "F"];
+
+const RANK_THRESHOLDS = {
+  white:  [9000, 8200, 7400, 6600, 5800, 5000, 4200, 3400],
+  normal: [9500, 8700, 7900, 7100, 6300, 5500, 4700, 3900],
+  black:  [10000, 9200, 8400, 7600, 6800, 6000, 5200, 4400]
+};
+
+const RANK_TITLES = {
+  white: {
+    SSS: "爆速処理の神",
+    SS:  "終業チャイム先読み勢",
+    S:   "退勤スプリンター",
+    A:   "ホワイト企業の優等生",
+    B:   "空気の読める仕事人",
+    C:   "今日も無難に労働",
+    D:   "ちょっとだけ沼る人",
+    E:   "雲行き怪しめ社員",
+    F:   "ホワイトなのに帰れない人"
+  },
+  normal: {
+    SSS: "退勤RTAの神",
+    SS:  "残業回避ガチ勢",
+    S:   "仕事さばきマシン",
+    A:   "だいぶ有能な会社員",
+    B:   "そこそこ頼れる社会人",
+    C:   "今日も労働完了",
+    D:   "定時がじわじわ逃げる人",
+    E:   "帰宅申請まだ通らない人",
+    F:   "まだ会社にいる人"
+  },
+  black: {
+    SSS: "地獄突破の神",
+    SS:  "終電回避の超人",
+    S:   "残業破壊神",
+    A:   "生還したバケモノ",
+    B:   "ギリ折れてない人",
+    C:   "今日も生存確認",
+    D:   "帰れそうで帰れない人",
+    E:   "退勤権を失った人",
+    F:   "会社に住みかけの人"
+  }
+};
+
+/* ===========================
    グローバル状態
 =========================== */
 const state = {
@@ -591,6 +639,7 @@ const el = {
   gameTip:              document.getElementById("game-tip"),
   resultLeaveTime:      document.getElementById("result-leave-time"),
   resultStatus:         document.getElementById("result-status"),
+  resultRank:           document.getElementById("result-rank"),
   resultTitle:          document.getElementById("result-title"),
   resultScore:          document.getElementById("result-score"),
   resultWpm:            document.getElementById("result-wpm"),
@@ -1568,16 +1617,8 @@ function finishGame() {
     Math.round(baseScore * session.difficulty.multiplier * 100 - overtime * 20),
     0
   );
-  const title = resolveTitle({
-    leaveMinutes,
-    overtimeMinutes: overtime,
-    accuracy,
-    misses:       session.misses,
-    wpm:          Number.isFinite(wpm) ? wpm : 0,
-    eventCount:   session.eventCount,
-    difficultyId: session.difficulty.id,
-    endMinutes
-  });
+  const rank  = resolveRank(score, session.difficulty.id);
+  const title = resolveTitle(rank, session.difficulty.id);
 
   const result = {
     difficultyId:    session.difficulty.id,
@@ -1589,6 +1630,7 @@ function finishGame() {
     wpm:      Number.isFinite(wpm) ? wpm : 0,
     accuracy,
     misses:   session.misses,
+    rank,
     title
   };
 
@@ -1617,6 +1659,7 @@ function renderResult(result, recordStatus, prevResult) {
     : earlyMin > 0
       ? `定時より ${fmtDuration(earlyMin)}早く退社！`
       : "ちょうど定時退社！";
+  if (el.resultRank)  el.resultRank.textContent = result.rank ?? "";
   el.resultTitle.textContent      = `称号：${result.title}`;
   el.resultScore.textContent      = result.score.toLocaleString("ja-JP");
   el.resultWpm.textContent        = String(result.wpm);
@@ -1664,7 +1707,7 @@ function buildShareText(result) {
     `難易度：${result.difficultyName}`,
     `退勤時刻：${fmtMin(result.leaveMinutes)}　${statusText}`,
     `スコア：${result.score.toLocaleString("ja-JP")}　WPM：${result.wpm}　正確率：${result.accuracy}%`,
-    `称号：${result.title}`,
+    `ランク：${result.rank ?? ""}　称号：${result.title}`,
     "#定時退ピング #タイピングゲーム"
   ].join("\n");
 }
@@ -1799,53 +1842,18 @@ function loadRecords() {
 }
 
 /* ===========================
-   称号判定
+   ランク・称号判定
 =========================== */
-function resolveTitle({ leaveMinutes, overtimeMinutes, accuracy, misses, wpm, eventCount, difficultyId, endMinutes }) {
-  const end = endMinutes || END_MINUTES;
-  // 完璧な一日
-  if (misses <= 0 && accuracy === 100) {
-    return "完璧な一日";
+function resolveRank(score, difficultyId) {
+  const thresholds = RANK_THRESHOLDS[difficultyId] ?? RANK_THRESHOLDS.normal;
+  for (let i = 0; i < thresholds.length; i++) {
+    if (score >= thresholds[i]) return RANKS[i];
   }
-  // 光の速さで退勤
-  if (wpm >= 300) {
-    return "光の速さで退勤";
-  }
-  // 伝説の早退
-  if (leaveMinutes <= end - 30) {
-    return "伝説の早退";
-  }
-  if (leaveMinutes <= end - 20 && accuracy >= 97 && misses <= 3) {
-    return "退勤の神";
-  }
-  if (difficultyId === "black" && overtimeMinutes === 0) {
-    return "ブラック企業の脱出者";
-  }
-  if (overtimeMinutes === 0 && accuracy >= 95) {
-    return "定時の守護神";
-  }
-  if (overtimeMinutes === 0) {
-    return "今日は定時で上がれた";
-  }
-  if (eventCount >= 4 && overtimeMinutes >= 30) {
-    return "上司に捕まる人";
-  }
-  if (eventCount >= 2 && accuracy >= 95) {
-    return "メール職人";
-  }
-  if (overtimeMinutes >= 120) {
-    return "会社に住む人";
-  }
-  if (misses >= 25) {
-    return "修正版に追われる人";
-  }
-  if (leaveMinutes >= end + 60) {
-    return "会議で1日終わる人";
-  }
-  if (overtimeMinutes >= 30) {
-    return "昼休憩を守れない人";
-  }
-  return "今日もなんとか退勤";
+  return "F";
+}
+
+function resolveTitle(rank, difficultyId) {
+  return RANK_TITLES[difficultyId]?.[rank] ?? "今日もなんとか退勤";
 }
 
 /* ===========================
