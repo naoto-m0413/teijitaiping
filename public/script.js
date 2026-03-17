@@ -785,8 +785,11 @@ function bindEvents() {
   document.addEventListener("keydown", handleGlobalKeyDown);
   el.gameImeInput.addEventListener("keydown", handleGameInputKeyDown);
   el.gameImeInput.addEventListener("input", handleGameInput);
-  el.gameImeInput.addEventListener("blur", () => {
+  el.gameImeInput.addEventListener("blur", (e) => {
     if (state.currentScreen === "game" && state.session) {
+      // フォーカス先がボタン等のインタラクティブ要素なら奪い返さない
+      const to = e.relatedTarget;
+      if (to && (to.tagName === "BUTTON" || to.tagName === "A" || to.tagName === "INPUT")) return;
       requestAnimationFrame(() => focusGameInput());
     }
   });
