@@ -1532,12 +1532,15 @@ h1 {
    プログレスバー（コンパクト）
 =========================== */
 .progress-bar-wrap {
-  padding: 6px 10px;
+  display: flex;
+  align-items: center;
+  padding: 10px 12px;
 }
 
 .progress-bar {
   position: relative;
   overflow: visible;
+  flex: 1;
   height: 14px;
   border: 1px solid rgba(0, 180, 255, 0.3);
   border-radius: 999px;
