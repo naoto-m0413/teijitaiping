@@ -364,7 +364,6 @@ const el = {
   taskName:             document.getElementById("task-name"),
   promptJapanese:       document.getElementById("prompt-japanese"),
   typingPreview:        document.getElementById("typing-preview"),
-  typingInput:          document.getElementById("typing-input"),
   wpmValue:             document.getElementById("wpm-value"),
   accuracyValue:        document.getElementById("accuracy-value"),
   missValue:            document.getElementById("miss-value"),
@@ -519,16 +518,9 @@ function bindEvents() {
     goToDifficulty();
   });
 
-  // タイピング入力
-  el.typingInput.addEventListener("beforeinput", handleBeforeInput);
-  el.typingInput.addEventListener("keydown",     handleTypingKeyDown);
-  el.typingInput.addEventListener("paste",       (e) => e.preventDefault());
-  // IMEコンポジション開始時にキャンセル（かな入力モード対策）
-  el.typingInput.addEventListener("compositionstart", (e) => {
-    if (state.currentScreen === "game" && state.session) {
-      e.target.blur();
-      e.target.focus();
-    }
+  // ゲーム画面クリック時にフォーカスを body に戻す（input要素への誤フォーカス防止）
+  document.getElementById("game-screen").addEventListener("click", () => {
+    document.activeElement?.blur();
   });
 
   // 結果画面ボタン
@@ -588,13 +580,43 @@ function bindEvents() {
 }
 
 function handleGlobalKeyDown(e) {
-  // ゲーム画面での直接キー入力（IMEバイパス）
+  // ============================================================
+  // ゲーム画面の入力処理（IME完全ブロック方式）
+  // keydown は IME が文字を受け取る前に発火するため、
+  // ここで preventDefault() を呼ぶことで IME への入力を防ぐ。
+  // ============================================================
   if (state.currentScreen === "game" && state.session) {
+    // IME が既に変換中の場合はブロックして無視
+    if (e.isComposing || e.key === "Process") {
+      e.preventDefault();
+      return;
+    }
+
+    // アルファベット入力
     if (e.key.length === 1 && /^[a-zA-Z]$/.test(e.key) && !e.ctrlKey && !e.metaKey && !e.altKey) {
       e.preventDefault();
       processChar(e.key.toLowerCase());
       return;
     }
+
+    // Backspace
+    if (e.key === "Backspace") {
+      e.preventDefault();
+      if (state.session.currentTyped.length > 0) {
+        state.session.currentTyped = state.session.currentTyped.slice(0, -1);
+        renderJapaneseWithColor();
+        renderTypingPreview();
+      }
+      return;
+    }
+
+    // Tab / Space はゲーム中ブロック
+    if (e.key === "Tab" || e.code === "Space") {
+      e.preventDefault();
+      return;
+    }
+
+    return;
   }
 
   // Escape キー処理
@@ -650,12 +672,6 @@ function handleGlobalKeyDown(e) {
     if (state.currentScreen === "ready") {
       e.preventDefault();
       startGame();
-      return;
-    }
-    if (state.currentScreen === "game") {
-      if (document.activeElement !== el.typingInput) {
-        e.preventDefault();
-      }
       return;
     }
     if (state.currentScreen === "result") {
@@ -761,8 +777,8 @@ function startGame() {
   };
 
   switchScreen("game");
-  el.typingInput.value = "";
-  el.typingInput.focus();
+  // フォーカスを外して IME が介入できる要素をなくす
+  document.activeElement?.blur();
   el.eventMessage.textContent = "静かな一日が始まりました。";
 
   if (el.gameTip) {
@@ -814,7 +830,6 @@ function renderCurrentTask() {
   session.minutesPerToken = (task.baseMinutes * session.difficulty.timePressure) / Math.max(session.tokens.length, 1);
   session.tokenMinutesUsed = 0;
 
-  el.typingInput.value = "";
   el.taskName.textContent       = task.name;
 
   renderJapaneseWithColor();
@@ -948,34 +963,10 @@ function renderTypingPreview() {
 /* ===========================
    入力処理（かなエンジン）
 =========================== */
-function handleBeforeInput(event) {
-  if (!state.session || state.currentScreen !== "game") return;
-  if (event.inputType !== "insertText" || !event.data)   return;
-
-  event.preventDefault();
-
-  const char = event.data;
-  if (char.length === 1) processChar(char);
-}
+// handleBeforeInput は input 要素削除により不要（handleGlobalKeyDown に統合済み）
 
 function handleTypingKeyDown(event) {
-  if (!state.session || state.currentScreen !== "game") return;
-
-  if (event.key === "Backspace") {
-    event.preventDefault();
-    // かなエンジン：currentTypedを1文字戻す
-    if (state.session.currentTyped.length > 0) {
-      state.session.currentTyped = state.session.currentTyped.slice(0, -1);
-      renderJapaneseWithColor();
-      renderTypingPreview();
-    }
-    el.typingInput.value = "";
-    return;
-  }
-  if (event.key === "Tab") {
-    event.preventDefault();
-    return;
-  }
+  // この関数は input 要素削除に伴い無効化（handleGlobalKeyDown に統合済み）
   if (event.code === "Space") {
     event.preventDefault();
     return;

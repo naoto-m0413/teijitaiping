@@ -1613,15 +1613,6 @@ h1 {
   background: rgba(220, 60, 60, 0.08);
 }
 
-.hidden-input {
-  position: fixed;
-  top: -200px;
-  left: -200px;
-  width: 1px;
-  height: 1px;
-  opacity: 0;
-  pointer-events: none;
-}
 
 .typing-preview.input-error {
   border-color: #cc3030 !important;
