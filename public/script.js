@@ -1861,6 +1861,8 @@ function updateStats() {
   el.timeLeft.textContent      = fmtRemain(session.gameMinutes, session.difficulty.endMinutes);
   el.progressText.textContent  = `残り${Math.max(total - tasksDone, 0)}件`;
   el.progressFill.style.width  = `${pct}%`;
+  const pctEl = document.getElementById("progress-pct");
+  if (pctEl) pctEl.textContent = pct >= 1 ? `${Math.round(pct)}%` : "";
   el.cpsValue.textContent      = (Number.isFinite(+cps) ? cps : "0.0") + "回/秒";
   el.accuracyValue.textContent = `${accuracy}%`;
   el.missValue.textContent     = String(session.misses);

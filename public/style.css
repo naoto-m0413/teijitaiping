@@ -81,8 +81,11 @@ h1, h2, h3, p { margin-top: 0; }
    トップバー
 =========================== */
 .top-bar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
   width: 100%;
-  background: rgba(8, 14, 28, 0.95);
+  background: rgba(8, 14, 28, 0.97);
   border-bottom: 1px solid rgba(0, 180, 255, 0.25);
 }
 
@@ -1529,23 +1532,40 @@ h1 {
    プログレスバー（コンパクト）
 =========================== */
 .progress-bar-wrap {
-  padding: 4px 10px;
+  padding: 6px 10px;
 }
 
 .progress-bar {
-  overflow: hidden;
-  height: 10px;
-  border: 2px solid rgba(80, 160, 220, 0.14);
+  position: relative;
+  overflow: visible;
+  height: 14px;
+  border: 1px solid rgba(0, 180, 255, 0.3);
   border-radius: 999px;
-  background: rgba(0, 15, 40, 0.4);
+  background: rgba(0, 15, 40, 0.6);
+  box-shadow: 0 0 8px rgba(0, 180, 255, 0.1) inset;
 }
 
 .progress-fill {
+  position: relative;
   width: 0%;
   height: 100%;
   border-radius: inherit;
   background: linear-gradient(90deg, #0070d0 0%, #00c8e8 50%, #00e870 100%);
+  box-shadow: 0 0 10px rgba(0, 200, 232, 0.5);
   transition: width 220ms ease;
+}
+
+.progress-pct {
+  position: absolute;
+  right: -2px;
+  top: 50%;
+  transform: translate(100%, -50%);
+  margin-left: 6px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #00c8e8;
+  white-space: nowrap;
+  pointer-events: none;
 }
 
 /* ===========================
