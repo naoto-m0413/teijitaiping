@@ -1417,8 +1417,8 @@ h1 {
   flex-direction: column;
   gap: 3px;
   flex: 1;
-  text-align: left;
-  align-items: flex-start;
+  text-align: center;
+  align-items: center;
 }
 
 .ready-diff-name {
