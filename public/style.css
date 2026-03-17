@@ -1212,10 +1212,10 @@ h1 {
    起床！フラッシュオーバーレイ
 =========================== */
 .kiso-flash {
+  display: none;
   position: fixed;
   inset: 0;
   z-index: 9999;
-  display: flex;
   align-items: center;
   justify-content: center;
   background: rgba(0, 0, 0, 0.55);
@@ -1224,6 +1224,10 @@ h1 {
   color: #fff;
   letter-spacing: 0.05em;
   pointer-events: none;
+}
+
+.kiso-flash.active {
+  display: flex;
   animation: kiso-pop 0.75s ease-out forwards;
 }
 

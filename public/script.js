@@ -750,10 +750,9 @@ function hideHeaderClock() {
 =========================== */
 function showKisoFlash(callback) {
   const flash = document.getElementById("kiso-flash");
-  flash.hidden = false;
-  // アニメーション終了後に非表示にしてコールバック実行
+  flash.classList.add("active");
   flash.addEventListener("animationend", () => {
-    flash.hidden = true;
+    flash.classList.remove("active");
     callback();
   }, { once: true });
 }
