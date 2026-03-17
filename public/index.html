@@ -3,21 +3,11 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>定時退ピング | タイピングで仕事をさばいて最速退勤を目指せ！</title>
-    <meta name="description" content="定時退ピング | タイピングで仕事をさばいて最速退勤を目指せ！ブラウザで遊べる無料タイピングゲーム。遊びながらタイピング練習や暇つぶしができます。目指せ、残業ゼロの定時退社！" />
-    <!-- OGP -->
-    <meta property="og:title" content="定時退ピング | タイピングで仕事をさばいて最速退勤を目指せ！" />
-    <meta property="og:description" content="定時退ピング | タイピングで仕事をさばいて最速退勤を目指せ！ブラウザで遊べる無料タイピングゲーム。遊びながらタイピング練習や暇つぶしができます。目指せ、残業ゼロの定時退社！" />
-    <meta property="og:type" content="website" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="定時退ピング | タイピングで仕事をさばいて最速退勤を目指せ！" />
-    <meta name="twitter:description" content="定時退ピング | タイピングで仕事をさばいて最速退勤を目指せ！ブラウザで遊べる無料タイピングゲーム。遊びながらタイピング練習や暇つぶしができます。目指せ、残業ゼロの定時退社！" />
+    <title>定時退ピング</title>
+    <meta name="description" content="仕事をタイピングで片付けて、定時退社を目指す社会人ネタのブラウザゲーム" />
     <link rel="stylesheet" href="./style.css" />
   </head>
   <body>
-
-    <!-- 起床フラッシュオーバーレイ -->
-    <div id="kiso-flash" class="kiso-flash">起床！</div>
 
     <!-- モバイル警告オーバーレイ -->
     <div id="mobile-warning" class="mobile-warning" hidden>
@@ -150,7 +140,7 @@
                 <div class="title-plaque">
                   <img
                     class="title-logo-image"
-                    src="./title-logo.jpg"
+                    src="./public/title-logo.jpg"
                     alt="定時退ピング タイトルロゴ"
                   />
                 </div>
@@ -344,8 +334,10 @@
                 </div>
                 <h2 id="result-leave-time">17:30</h2>
                 <p id="result-status" class="result-status">定時退社成功</p>
-                <p id="result-rank" class="result-rank">SSS</p>
-                <p id="result-title" class="result-title">定時の守護神</p>
+                <div class="result-rank-row">
+                  <p id="result-rank" class="result-rank">SSS</p>
+                  <p id="result-title" class="result-title">定時の守護神</p>
+                </div>
                 <button id="back-button" class="ghost-button result-hero-back-btn" type="button">タイトルへ戻る</button>
               </div>
 

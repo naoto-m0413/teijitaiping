@@ -1187,8 +1187,9 @@ function renderJapaneseWithColor() {
       // 漢字セグメント: <ruby>漢字<rt>色付き読み</rt></ruby>
       const ruby = document.createElement("ruby");
       if (segEnd <= doneEnd)            ruby.className = "kana-done";
-      else if (segStart >= currentEnd)  ruby.className = "kana-pending";
-      else                              ruby.className = "kana-current";
+      else if (segStart > doneEnd)      ruby.className = "kana-pending";
+      else if (segStart === doneEnd)    ruby.className = "kana-current";
+      else                              ruby.className = "kana-pending";
       ruby.appendChild(document.createTextNode(text));
       const rt = document.createElement("rt");
       appendColoredKana(rt, reading, segStart, doneEnd, currentEnd);
@@ -1206,9 +1207,9 @@ function appendColoredKana(parent, text, startPos, doneEnd, currentEnd) {
   for (const ch of text) {
     const span = document.createElement("span");
     span.textContent = ch;
-    if (pos < doneEnd)         span.className = "kana-done";
-    else if (pos < currentEnd) span.className = "kana-current";
-    else                       span.className = "kana-pending";
+    if (pos < doneEnd)        span.className = "kana-done";
+    else if (pos === doneEnd) span.className = "kana-current";
+    else                      span.className = "kana-pending";
     parent.appendChild(span);
     pos++;
   }
@@ -1334,9 +1335,8 @@ function processChar(char) {
 
   // ん 特殊処理
   if (token === "ん") {
-    const validPatterns = getNPatterns(tokens, idx);
-    // 完全一致チェック
-    if (validPatterns.includes(newTyped)) {
+    // "nn" で完全確定
+    if (newTyped === "nn") {
       session.correctChars++;
       session.taskCorrectChars++;
       session.tokenIndex++;
@@ -1354,9 +1354,47 @@ function processChar(char) {
       updateStats();
       return;
     }
-    // プレフィックスチェック
-    if (validPatterns.some(p => p.startsWith(newTyped))) {
-      session.currentTyped = newTyped;
+    // currentTyped が "n" のとき次の文字が来た → n単体でん確定してから次の文字を処理
+    if (session.currentTyped === "n" && char !== "n") {
+      session.correctChars++;
+      session.taskCorrectChars++;
+      session.tokenIndex++;
+      session.currentTyped = "";
+      session.gameMinutes += session.minutesPerToken;
+      session.tokenMinutesUsed += session.minutesPerToken;
+      playKeySound(true);
+      if (session.tokenIndex >= tokens.length) {
+        playTaskCompleteSound();
+        completeTask();
+        return;
+      }
+      // 続けて次のトークンにその文字を処理（totalInputsは二重計上しない）
+      session.totalInputs--;
+      processChar(char);
+      return;
+    }
+    // "n" をプレフィックスとして保持（最終トークンなら即確定）
+    if (char === "n") {
+      if (idx + 1 >= tokens.length) {
+        // 最後のトークンなら n 単体で即確定
+        session.correctChars++;
+        session.taskCorrectChars++;
+        session.tokenIndex++;
+        session.currentTyped = "";
+        session.gameMinutes += session.minutesPerToken;
+        session.tokenMinutesUsed += session.minutesPerToken;
+        playKeySound(true);
+        if (session.tokenIndex >= tokens.length) {
+          playTaskCompleteSound();
+          completeTask();
+          return;
+        }
+        renderJapaneseWithColor();
+        renderTypingPreview();
+        updateStats();
+        return;
+      }
+      session.currentTyped = "n";
       session.correctChars++;
       session.taskCorrectChars++;
       playKeySound(true);

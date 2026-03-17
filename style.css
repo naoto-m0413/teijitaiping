@@ -1405,7 +1405,7 @@ h1 {
 .game-main-grid {
   display: grid;
   grid-template-rows: auto auto 1fr auto;
-  gap: 8px;
+  gap: 6px;
   height: calc(100vh - 120px);
   min-height: 600px;
   align-content: start;
@@ -1448,7 +1448,7 @@ h1 {
    プログレスバー（コンパクト）
 =========================== */
 .progress-bar-wrap {
-  padding: 6px 10px;
+  padding: 4px 10px;
 }
 
 .progress-bar {
@@ -1740,6 +1740,13 @@ h1 {
   font-size: 1.18rem;
   font-weight: 900;
   color: var(--text);
+}
+
+.result-rank-row {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  justify-content: center;
 }
 
 .result-rank {

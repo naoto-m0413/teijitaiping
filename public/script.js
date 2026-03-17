@@ -330,6 +330,7 @@ const TIPS = [
    難易度別業務メッセージプール
    構造: difficultyMessagePools[diffId][scene][lengthType][]
    scene: early（序盤）/ middle（中盤）/ late（終盤）
+   lengthType: short / medium / long
 =========================== */
 const difficultyMessagePools = {
   white: {
@@ -413,8 +414,8 @@ const difficultyMessagePools = {
         { text: "本日中に一度送ります",     reading: "ほんじつちゅうにいちどおくります",       lengthType: "medium" }
       ],
       long: [
-        { text: "本件について先方より連絡がありましたのでご報告します", reading: "ほんけんについてせんぽうよりれんらくがありましたのでごほうこくします",   lengthType: "long" },
-        { text: "念のため関係者にも同じ内容を共有しておいてください",   reading: "ねんのためかんけいしゃにもおなじないようをきょうゆうしておいてください", lengthType: "long" }
+        { text: "本件について先方より連絡がありましたのでご報告します",   reading: "ほんけんについてせんぽうよりれんらくがありましたのでごほうこくします",     lengthType: "long" },
+        { text: "念のため関係者にも同じ内容を共有しておいてください",     reading: "ねんのためかんけいしゃにもおなじないようをきょうゆうしておいてください",   lengthType: "long" }
       ]
     },
     middle: {
@@ -478,8 +479,8 @@ const difficultyMessagePools = {
         { text: "先に修正版を出してください", reading: "さきにしゅうせいばんをだしてください", lengthType: "medium" }
       ],
       long: [
-        { text: "先方が待てないと言っているので今すぐ再送してください",   reading: "せんぽうがまてないといっているのでいますぐさいそうしてください",         lengthType: "long" },
-        { text: "今日中対応が前提なので他の作業は後回しにしてください",   reading: "きょうちゅうたいおうがぜんていなのでほかのさぎょうはあとまわしにしてください", lengthType: "long" }
+        { text: "先方が待てないと言っているので今すぐ再送してください",       reading: "せんぽうがまてないといっているのでいますぐさいそうしてください",         lengthType: "long" },
+        { text: "今日中対応が前提なので他の作業は後回しにしてください",       reading: "きょうちゅうたいおうがぜんていなのでほかのさぎょうはあとまわしにしてください", lengthType: "long" }
       ]
     },
     middle: {
@@ -513,10 +514,10 @@ const difficultyMessagePools = {
         { text: "先に出してください", reading: "さきにだしてください", lengthType: "short" }
       ],
       medium: [
-        { text: "今日の分全部やり直してください",     reading: "きょうのぶんぜんぶやりなおしてください",       lengthType: "medium" },
+        { text: "今日の分全部やり直してください",   reading: "きょうのぶんぜんぶやりなおしてください", lengthType: "medium" },
         { text: "もう一度確認して送り直してください", reading: "もういちどかくにんしておくりなおしてください", lengthType: "medium" },
         { text: "今から修正版を至急出してください",   reading: "いまからしゅうせいばんをしきゅうだしてください", lengthType: "medium" },
-        { text: "まだ対応終わってないですよね",       reading: "まだたいおうおわってないですよね",             lengthType: "medium" }
+        { text: "まだ対応終わってないですよね",       reading: "まだたいおうおわってないですよね",           lengthType: "medium" }
       ],
       long: [
         { text: "先方から差し戻しが来ましたので本日中に対応してください",             reading: "せんぽうからさしもどしがきましたのでほんじつちゅうにたいおうしてください",       lengthType: "long" },
@@ -530,6 +531,7 @@ const difficultyMessagePools = {
 
 /* ===========================
    出題プラン（難易度ごとの lengthType 順序）
+   各プレイ開始時に先頭 taskCount 個を使用する
 =========================== */
 const MESSAGE_PLANS = {
   white:  ["short","short","short","medium","short","medium","short","medium"],
@@ -539,6 +541,7 @@ const MESSAGE_PLANS = {
 
 /* ===========================
    場面マップ（タスクインデックス → early / middle / late）
+   white: 6タスク / normal: 7タスク / black: 8タスク
 =========================== */
 const SCENE_MAP = {
   white:  ["early","early","middle","middle","late","late"],
@@ -1021,20 +1024,7 @@ function hideHeaderClock() {
 /* ===========================
    ゲーム開始
 =========================== */
-function showKisoFlash(callback) {
-  const flash = document.getElementById("kiso-flash");
-  flash.classList.add("active");
-  flash.addEventListener("animationend", () => {
-    flash.classList.remove("active");
-    callback();
-  }, { once: true });
-}
-
 function startGame() {
-  _startGame();
-}
-
-function _startGame() {
   stopStatTicker();
 
   const difficulty = DIFFICULTIES[state.selectedDifficulty];
@@ -1063,7 +1053,6 @@ function _startGame() {
   };
 
   switchScreen("game");
-  showKisoFlash(() => {});
   // フォーカスを外して IME が介入できる要素をなくす
   document.activeElement?.blur();
   el.eventMessage.textContent = "静かな一日が始まりました。";
@@ -1091,6 +1080,7 @@ function pickMessage(diffId, taskIndex, taskTotal, usedTexts) {
   const lengthType = MESSAGE_PLANS[diffId][taskIndex] ?? "medium";
   const pool       = difficultyMessagePools[diffId];
 
+  // 優先順: (指定scene, 指定length) → (指定scene, 他length) → (他scene, 指定length) → (他scene, 他length)
   const scenes  = ["early", "middle", "late"];
   const lengths = ["short", "medium", "long"];
   const sceneOrder  = [scene,      ...scenes.filter(s => s !== scene)];
@@ -1106,6 +1096,7 @@ function pickMessage(diffId, taskIndex, taskTotal, usedTexts) {
     }
   }
 
+  // 最終フォールバック（重複を許容）
   const fallback = pool[scene]?.[lengthType] ?? [];
   return fallback[Math.floor(Math.random() * fallback.length)]
     ?? { text: "確認中です", reading: "かくにんちゅうです", lengthType: "short" };
@@ -1119,11 +1110,13 @@ function buildTaskList(difficulty) {
   );
   const chosen = [commuteTask, ...middle.slice(0, difficulty.taskCount - 2), finalTask];
 
+  // 同一プレイ中の重複防止用セット
   const usedTexts = new Set();
 
   return chosen.map((task, idx) => {
     const msg    = pickMessage(difficulty.id, idx, chosen.length, usedTexts);
     usedTexts.add(msg.text);
+    // text に漢字が含まれる場合は ruby 付き表示、ひらがなのみなら plain
     const hasKanji = msg.text !== msg.reading;
     const prompt = {
       jp:    msg.reading,
@@ -1194,8 +1187,9 @@ function renderJapaneseWithColor() {
       // 漢字セグメント: <ruby>漢字<rt>色付き読み</rt></ruby>
       const ruby = document.createElement("ruby");
       if (segEnd <= doneEnd)            ruby.className = "kana-done";
-      else if (segStart >= currentEnd)  ruby.className = "kana-pending";
-      else                              ruby.className = "kana-current";
+      else if (segStart > doneEnd)      ruby.className = "kana-pending";
+      else if (segStart === doneEnd)    ruby.className = "kana-current";
+      else                              ruby.className = "kana-pending";
       ruby.appendChild(document.createTextNode(text));
       const rt = document.createElement("rt");
       appendColoredKana(rt, reading, segStart, doneEnd, currentEnd);
@@ -1213,9 +1207,9 @@ function appendColoredKana(parent, text, startPos, doneEnd, currentEnd) {
   for (const ch of text) {
     const span = document.createElement("span");
     span.textContent = ch;
-    if (pos < doneEnd)         span.className = "kana-done";
-    else if (pos < currentEnd) span.className = "kana-current";
-    else                       span.className = "kana-pending";
+    if (pos < doneEnd)        span.className = "kana-done";
+    else if (pos === doneEnd) span.className = "kana-current";
+    else                      span.className = "kana-pending";
     parent.appendChild(span);
     pos++;
   }
@@ -1341,9 +1335,8 @@ function processChar(char) {
 
   // ん 特殊処理
   if (token === "ん") {
-    const validPatterns = getNPatterns(tokens, idx);
-    // 完全一致チェック
-    if (validPatterns.includes(newTyped)) {
+    // "nn" で完全確定
+    if (newTyped === "nn") {
       session.correctChars++;
       session.taskCorrectChars++;
       session.tokenIndex++;
@@ -1361,9 +1354,47 @@ function processChar(char) {
       updateStats();
       return;
     }
-    // プレフィックスチェック
-    if (validPatterns.some(p => p.startsWith(newTyped))) {
-      session.currentTyped = newTyped;
+    // currentTyped が "n" のとき次の文字が来た → n単体でん確定してから次の文字を処理
+    if (session.currentTyped === "n" && char !== "n") {
+      session.correctChars++;
+      session.taskCorrectChars++;
+      session.tokenIndex++;
+      session.currentTyped = "";
+      session.gameMinutes += session.minutesPerToken;
+      session.tokenMinutesUsed += session.minutesPerToken;
+      playKeySound(true);
+      if (session.tokenIndex >= tokens.length) {
+        playTaskCompleteSound();
+        completeTask();
+        return;
+      }
+      // 続けて次のトークンにその文字を処理（totalInputsは二重計上しない）
+      session.totalInputs--;
+      processChar(char);
+      return;
+    }
+    // "n" をプレフィックスとして保持（最終トークンなら即確定）
+    if (char === "n") {
+      if (idx + 1 >= tokens.length) {
+        // 最後のトークンなら n 単体で即確定
+        session.correctChars++;
+        session.taskCorrectChars++;
+        session.tokenIndex++;
+        session.currentTyped = "";
+        session.gameMinutes += session.minutesPerToken;
+        session.tokenMinutesUsed += session.minutesPerToken;
+        playKeySound(true);
+        if (session.tokenIndex >= tokens.length) {
+          playTaskCompleteSound();
+          completeTask();
+          return;
+        }
+        renderJapaneseWithColor();
+        renderTypingPreview();
+        updateStats();
+        return;
+      }
+      session.currentTyped = "n";
       session.correctChars++;
       session.taskCorrectChars++;
       playKeySound(true);
