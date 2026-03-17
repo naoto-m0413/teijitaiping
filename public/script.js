@@ -1997,7 +1997,7 @@ function buildShareText(result) {
 /* ===========================
    シェア（Web Share API / Twitter フォールバック）
 =========================== */
-async function shareResult() {
+function shareResult() {
   const last = state.records.lastResult;
   if (!last) return;
   const text = buildShareText(last);
@@ -2006,26 +2006,7 @@ async function shareResult() {
   shareUrl.searchParams.set("text", text);
   shareUrl.searchParams.set("url", gameUrl);
 
-  // PC は Intent を即時に開き、モバイルだけ Web Share を優先する
-  const canWebShare =
-    navigator.share &&
-    /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent) &&
-    window.isSecureContext &&
-    window.location.protocol !== "file:";
-
-  if (canWebShare) {
-    try {
-      await navigator.share({ title: "定時退ピング", text, url: gameUrl });
-      return;
-    } catch (e) {
-      if (e.name === "AbortError") return; // ユーザーがキャンセル
-    }
-  }
-
-  const popup = window.open(shareUrl.toString(), "_blank", "noopener,noreferrer");
-  if (!popup) {
-    window.location.href = shareUrl.toString();
-  }
+  window.open(shareUrl.toString(), "_blank", "noopener,noreferrer");
 }
 
 /* ===========================
