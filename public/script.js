@@ -831,9 +831,13 @@ function handleGlobalKeyDown(e) {
   // ここで preventDefault() を呼ぶことで IME への入力を防ぐ。
   // ============================================================
   if (state.currentScreen === "game" && state.session) {
-    // IME が既に変換中の場合はブロックして無視
+    // 全角モード時: e.key === "Process" になるが e.code から実キーを取得して処理する
     if (e.isComposing || e.key === "Process") {
       e.preventDefault();
+      if (e.code && e.code.startsWith("Key") && !e.ctrlKey && !e.metaKey && !e.altKey) {
+        const char = e.code.slice(3).toLowerCase();
+        if (/^[a-z]$/.test(char)) processChar(char);
+      }
       return;
     }
 
