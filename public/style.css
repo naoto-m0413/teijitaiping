@@ -1731,6 +1731,27 @@ h1 {
 }
 
 
+.hero-share-btn {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  padding: 6px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  letter-spacing: 0.04em;
+  transition: background 120ms;
+}
+
+.hero-share-btn:hover {
+  background: rgba(255, 255, 255, 0.16);
+}
+
 .result-hero-badges {
   display: flex;
   align-items: center;

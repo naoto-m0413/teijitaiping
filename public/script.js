@@ -770,6 +770,7 @@ function bindEvents() {
   });
 
   // 結果画面ボタン
+  document.getElementById("hero-share-btn").addEventListener("click", shareResult);
   el.retryButton.addEventListener("click", goToReady);
   el.changeDifficultyBtn.addEventListener("click", goToDifficulty);
   el.backButton.addEventListener("click", () => {
@@ -1971,6 +1972,34 @@ function renderResult(result, recordStatus, prevResult) {
 
 }
 
+
+/* ===========================
+   Xシェア
+=========================== */
+function shareResult() {
+  const last = state.records.lastResult;
+  if (!last) return;
+
+  const earlyMin = (last.endMinutes || END_MINUTES) - last.leaveMinutes;
+  const statusText = last.overtimeMinutes > 0
+    ? `残業 ${fmtDuration(last.overtimeMinutes)}`
+    : earlyMin > 0
+      ? `定時より ${fmtDuration(earlyMin)}早く退社！`
+      : "ちょうど定時退社！";
+
+  const text = [
+    "【定時退ピング】",
+    `難易度：${last.difficultyName}`,
+    `退勤時刻：${fmtMin(last.leaveMinutes)}　${statusText}`,
+    `スコア：${last.score.toLocaleString("ja-JP")}　速度：${last.cps}回/秒　正確率：${last.accuracy}%`,
+    `${last.rank ?? ""}　${last.title}`,
+    "#定時退ピング #タイピングゲーム"
+  ].join("\n");
+
+  const gameUrl = window.location.origin + window.location.pathname;
+  const url = "https://twitter.com/intent/tweet?text=" + encodeURIComponent(text) + "&url=" + encodeURIComponent(gameUrl);
+  window.open(url, "_blank", "noopener,noreferrer");
+}
 
 /* ===========================
    記録保存
