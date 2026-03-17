@@ -1309,54 +1309,55 @@ h1 {
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 12px;
-  padding: 10px 14px;
-  border: 3px solid transparent;
-  border-radius: 12px;
+  gap: 16px;
+  padding: 12px 16px;
+  border: 2px solid transparent;
+  border-radius: 14px;
   cursor: pointer;
   text-align: left;
-  transition: transform 120ms, box-shadow 120ms, border-color 120ms;
+  transition: transform 150ms, box-shadow 150ms, border-color 150ms, background 150ms;
   width: 100%;
 }
 
 .ready-diff-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+  transform: translateY(-3px);
 }
 
 .ready-diff-card.selected {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+  transform: translateY(-3px);
 }
 
 /* ホワイト企業：シアン系 */
 .ready-diff-white {
-  background: linear-gradient(135deg, #0a2030 0%, #102840 100%);
-  border-color: rgba(0, 200, 240, 0.45);
+  background: linear-gradient(135deg, #0a2030 0%, #112e44 100%);
+  border-color: rgba(0, 200, 240, 0.5);
   color: #80e8ff;
 }
-.ready-diff-white.selected { border-color: #00c8e8; box-shadow: 0 6px 20px rgba(0,200,240,0.3); }
+.ready-diff-white:hover { background: linear-gradient(135deg, #0d2838 0%, #153650 100%); }
+.ready-diff-white.selected { border-color: #00c8e8; box-shadow: 0 0 20px rgba(0,200,240,0.25), 0 6px 16px rgba(0,0,0,0.3); }
 
-/* ふつうの企業：オレンジ・アンバー系 */
+/* ふつうの企業：オレンジ・アンバー系（存在感強化） */
 .ready-diff-normal {
-  background: linear-gradient(135deg, #201408 0%, #2e1c0a 100%);
-  border-color: rgba(255, 160, 40, 0.45);
-  color: #ffd090;
+  background: linear-gradient(135deg, #281a08 0%, #362210 100%);
+  border-color: rgba(255, 160, 40, 0.6);
+  color: #ffd890;
 }
-.ready-diff-normal.selected { border-color: #ffa030; box-shadow: 0 6px 20px rgba(255,160,40,0.3); }
+.ready-diff-normal:hover { background: linear-gradient(135deg, #301e0a 0%, #3e2a14 100%); }
+.ready-diff-normal.selected { border-color: #ffaa30; box-shadow: 0 0 20px rgba(255,160,40,0.28), 0 6px 16px rgba(0,0,0,0.3); }
 
 /* ブラック企業：深い赤・ダーク */
 .ready-diff-black {
-  background: linear-gradient(135deg, #150808 0%, #200a0a 100%);
-  border-color: rgba(220, 60, 40, 0.45);
-  color: #ffb0a0;
+  background: linear-gradient(135deg, #1a0808 0%, #260c0c 100%);
+  border-color: rgba(220, 60, 40, 0.55);
+  color: #ffb8a8;
 }
-.ready-diff-black.selected { border-color: #e04030; box-shadow: 0 6px 20px rgba(220,60,40,0.4); }
+.ready-diff-black:hover { background: linear-gradient(135deg, #1e0a0a 0%, #2c0e0e 100%); }
+.ready-diff-black.selected { border-color: #e04030; box-shadow: 0 0 20px rgba(220,60,40,0.3), 0 6px 16px rgba(0,0,0,0.3); }
 
 .ready-diff-icon {
   flex-shrink: 0;
-  width: 72px;
-  height: 72px;
+  width: 86px;
+  height: 86px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1371,70 +1372,83 @@ h1 {
   object-fit: cover;
   border-radius: 8px;
   display: block;
-  transition: transform 120ms, filter 120ms;
+  mix-blend-mode: screen;
+  transition: transform 150ms, filter 150ms;
 }
 
 .ready-diff-card:hover .diff-icon-img,
 .ready-diff-card.selected .diff-icon-img {
-  transform: scale(1.06);
+  transform: scale(1.08);
 }
 
 .ready-diff-white .diff-icon-img {
-  filter: drop-shadow(0 0 8px rgba(0, 200, 240, 0.6));
+  filter: drop-shadow(0 0 10px rgba(0, 200, 240, 0.7)) brightness(1.1);
 }
 .ready-diff-white:hover .diff-icon-img,
 .ready-diff-white.selected .diff-icon-img {
-  filter: drop-shadow(0 0 14px rgba(0, 200, 240, 0.9));
+  filter: drop-shadow(0 0 18px rgba(0, 200, 240, 1.0)) brightness(1.2);
 }
 
 .ready-diff-normal .diff-icon-img {
-  filter: drop-shadow(0 0 8px rgba(255, 160, 40, 0.6));
+  filter: drop-shadow(0 0 10px rgba(255, 160, 40, 0.8)) brightness(1.15) contrast(1.1);
 }
 .ready-diff-normal:hover .diff-icon-img,
 .ready-diff-normal.selected .diff-icon-img {
-  filter: drop-shadow(0 0 14px rgba(255, 160, 40, 0.9));
+  filter: drop-shadow(0 0 18px rgba(255, 160, 40, 1.0)) brightness(1.25) contrast(1.1);
 }
 
 .ready-diff-black .diff-icon-img {
-  filter: drop-shadow(0 0 8px rgba(220, 60, 40, 0.6));
+  filter: drop-shadow(0 0 10px rgba(220, 60, 40, 0.7)) brightness(1.1) contrast(1.25);
 }
 .ready-diff-black:hover .diff-icon-img,
 .ready-diff-black.selected .diff-icon-img {
-  filter: drop-shadow(0 0 14px rgba(220, 60, 40, 0.9));
+  filter: drop-shadow(0 0 18px rgba(220, 60, 40, 1.0)) brightness(1.2) contrast(1.3);
 }
 
 @media (max-width: 600px) {
   .ready-diff-icon {
-    width: 56px;
-    height: 56px;
+    width: 64px;
+    height: 64px;
   }
 }
 
 .ready-diff-text {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 3px;
   flex: 1;
-  text-align: center;
-  align-items: center;
+  text-align: left;
+  align-items: flex-start;
 }
 
 .ready-diff-name {
-  font-size: 1.15rem;
+  font-size: 1.18rem;
   font-weight: 900;
+  letter-spacing: 0.03em;
 }
 
 .ready-diff-desc {
   font-size: 0.78rem;
-  opacity: 0.85;
-  line-height: 1.4;
+  opacity: 0.82;
+  line-height: 1.5;
 }
 
 .ready-diff-rate {
-  font-size: 0.72rem;
+  font-size: 0.74rem;
   font-weight: 800;
+  margin-top: 4px;
   opacity: 0.9;
-  margin-top: 2px;
+}
+
+.diff-back-btn {
+  font-size: 0.9rem;
+  color: #7090b0;
+  border-color: rgba(80, 140, 200, 0.2);
+  min-height: 40px;
+}
+.diff-back-btn:hover {
+  color: #a0c8e8;
+  border-color: rgba(80, 140, 200, 0.45);
 }
 
 .ready-selected-label {
