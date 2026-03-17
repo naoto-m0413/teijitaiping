@@ -1102,6 +1102,57 @@ function pickMessage(diffId, taskIndex, taskTotal, usedTexts) {
     ?? { text: "確認中です", reading: "かくにんちゅうです", lengthType: "short" };
 }
 
+/* ===========================
+   漢字判定
+=========================== */
+function isKanjiChar(ch) {
+  const code = ch.charCodeAt(0);
+  return (code >= 0x4E00 && code <= 0x9FFF) || (code >= 0x3400 && code <= 0x4DBF);
+}
+
+/* ===========================
+   テキストを漢字/非漢字セグメントに自動分割してparts配列を生成
+   漢字セグメントには reading を付与、ひらがな等は reading なし
+=========================== */
+function autoSegmentParts(text, reading) {
+  if (!text || text === reading) return [[text]];
+
+  const parts = [];
+  let ti = 0; // text index
+  let ri = 0; // reading index
+
+  while (ti < text.length) {
+    if (isKanjiChar(text[ti])) {
+      // 漢字の連続を収集
+      let kanjiEnd = ti;
+      while (kanjiEnd < text.length && isKanjiChar(text[kanjiEnd])) kanjiEnd++;
+      const kanjiSeg = text.slice(ti, kanjiEnd);
+
+      // 漢字読みの終端: 次の非漢字文字を reading から探す
+      let readingEnd;
+      if (kanjiEnd < text.length) {
+        const nextCh = text[kanjiEnd];
+        const pos = reading.indexOf(nextCh, ri);
+        readingEnd = pos !== -1 ? pos : reading.length;
+      } else {
+        readingEnd = reading.length;
+      }
+      parts.push([kanjiSeg, reading.slice(ri, readingEnd)]);
+      ti = kanjiEnd;
+      ri = readingEnd;
+    } else {
+      // 非漢字の連続を収集（ひらがな・記号等）
+      let end = ti;
+      while (end < text.length && !isKanjiChar(text[end])) end++;
+      const seg = text.slice(ti, end);
+      parts.push([seg]);
+      ti = end;
+      ri += seg.length;
+    }
+  }
+  return parts;
+}
+
 function buildTaskList(difficulty) {
   const commuteTask = TASK_POOL.find((t) => t.id === "commute");
   const finalTask   = TASK_POOL.find((t) => t.id === "final-task");
@@ -1116,11 +1167,10 @@ function buildTaskList(difficulty) {
   return chosen.map((task, idx) => {
     const msg    = pickMessage(difficulty.id, idx, chosen.length, usedTexts);
     usedTexts.add(msg.text);
-    // text に漢字が含まれる場合は ruby 付き表示、ひらがなのみなら plain
     const hasKanji = msg.text !== msg.reading;
     const prompt = {
       jp:    msg.reading,
-      parts: hasKanji ? [[msg.text, msg.reading]] : [[msg.text]]
+      parts: hasKanji ? autoSegmentParts(msg.text, msg.reading) : [[msg.text]]
     };
     return { ...task, prompt };
   });
