@@ -2171,9 +2171,6 @@ function switchScreen(name) {
   Object.entries(el.screens).forEach(([key, screen]) => {
     screen.classList.toggle("active", key === name);
   });
-  // ゲーム中はフッターを非表示（ボタンへの重なり防止）
-  const footer = document.querySelector(".dev-footer");
-  if (footer) footer.hidden = name === "game";
 }
 
 function clamp(v, lo, hi) { return Math.min(Math.max(v, lo), hi); }
