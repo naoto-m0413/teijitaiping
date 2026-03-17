@@ -1801,6 +1801,17 @@ h1 {
   animation: modalIn 180ms ease;
 }
 
+#records-modal .modal-box {
+  width: min(640px, 100%);
+}
+
+.records-modal-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
 @keyframes modalIn {
   from { transform: scale(0.94) translateY(8px); opacity: 0; }
   to   { transform: scale(1) translateY(0); opacity: 1; }
