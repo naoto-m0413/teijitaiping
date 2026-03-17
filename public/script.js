@@ -177,7 +177,7 @@ const DIFFICULTIES = {
 const TASK_POOL = [
   {
     id: "commute",
-    name: "通勤",
+    name: "出社",
     baseMinutes: 20,
     type: "commute",
     prompts: [
