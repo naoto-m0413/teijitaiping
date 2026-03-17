@@ -1725,6 +1725,13 @@ h1 {
   padding: 8px 12px;
 }
 
+.result-section-title {
+  margin: 0 0 10px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
 .result-row {
   display: flex;
   align-items: center;
