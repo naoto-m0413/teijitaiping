@@ -321,7 +321,7 @@ const difficultyMessagePools = {
       medium: [
         { text: "本日もよろしくお願いします",     reading: "ほんじつもよろしくおねがいします",     lengthType: "medium" },
         { text: "ご連絡ありがとうございます",     reading: "ごれんらくありがとうございます",       lengthType: "medium" },
-        { text: "会議の時間をご共有します",       reading: "かいぎのじかんをきょうゆうします",     lengthType: "medium" },
+        { text: "会議の時間をご共有します",       reading: "かいぎのじかんをごきょうゆうします",     lengthType: "medium" },
         { text: "こちらで確認を進めます",         reading: "こちらでかくにんをすすめます",         lengthType: "medium" },
         { text: "先に状況をご報告します",         reading: "さきにじょうきょうをごほうこくします", lengthType: "medium" }
       ],
