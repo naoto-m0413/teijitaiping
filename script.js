@@ -327,6 +327,229 @@ const TIPS = [
 ];
 
 /* ===========================
+   難易度別業務メッセージプール
+   構造: difficultyMessagePools[diffId][scene][lengthType][]
+   scene: early（序盤）/ middle（中盤）/ late（終盤）
+   lengthType: short / medium / long
+=========================== */
+const difficultyMessagePools = {
+  white: {
+    early: {
+      short: [
+        { text: "出社しました",           reading: "しゅっしゃしました",           lengthType: "short" },
+        { text: "確認しました",           reading: "かくにんしました",             lengthType: "short" },
+        { text: "承知しました",           reading: "しょうちしました",             lengthType: "short" },
+        { text: "かしこまりました",       reading: "かしこまりました",             lengthType: "short" },
+        { text: "お疲れ様です",           reading: "おつかれさまです",             lengthType: "short" },
+        { text: "よろしくお願いします",   reading: "よろしくおねがいします",       lengthType: "short" },
+        { text: "準備できました",         reading: "じゅんびできました",           lengthType: "short" }
+      ],
+      medium: [
+        { text: "本日もよろしくお願いします",     reading: "ほんじつもよろしくおねがいします",     lengthType: "medium" },
+        { text: "ご連絡ありがとうございます",     reading: "ごれんらくありがとうございます",       lengthType: "medium" },
+        { text: "会議の時間をご共有します",       reading: "かいぎのじかんをきょうゆうします",     lengthType: "medium" },
+        { text: "こちらで確認を進めます",         reading: "こちらでかくにんをすすめます",         lengthType: "medium" },
+        { text: "先に状況をご報告します",         reading: "さきにじょうきょうをごほうこくします", lengthType: "medium" }
+      ],
+      long: [
+        { text: "先ほどの件につきまして内容を整理してご共有いたします", reading: "さきほどのけんにつきましてないようをせいりしてごきょうゆういたします", lengthType: "long" },
+        { text: "本件は大きな問題なくこのまま進行できそうです",         reading: "ほんけんはおおきなもんだいなくこのまましんこうできそうです",         lengthType: "long" }
+      ]
+    },
+    middle: {
+      short: [
+        { text: "ご確認ください",     reading: "ごかくにんください",       lengthType: "short" },
+        { text: "問題ありません",     reading: "もんだいありません",       lengthType: "short" },
+        { text: "さっそく対応します", reading: "さっそくたいおうします",   lengthType: "short" },
+        { text: "共有しました",       reading: "きょうゆうしました",       lengthType: "short" },
+        { text: "対応中です",         reading: "たいおうちゅうです",       lengthType: "short" },
+        { text: "進めております",     reading: "すすめております",         lengthType: "short" }
+      ],
+      medium: [
+        { text: "お忙しいところすみませんでした",   reading: "おいそがしいところすみませんでした",       lengthType: "medium" },
+        { text: "資料をご確認いただけますか",       reading: "しりょうをごかくにんいただけますか",       lengthType: "medium" },
+        { text: "手配の方を進めてまいります",       reading: "てはいのほうをすすめてまいります",         lengthType: "medium" },
+        { text: "修正版をご確認いただけますか",     reading: "しゅうせいばんをごかくにんいただけますか", lengthType: "medium" },
+        { text: "念のため内容を共有します",         reading: "ねんのためないようをきょうゆうします",     lengthType: "medium" },
+        { text: "本件承知いたしました",             reading: "ほんけんしょうちいたしました",             lengthType: "medium" },
+        { text: "この内容で進めてまいります",       reading: "このないようですすめてまいります",         lengthType: "medium" }
+      ],
+      long: [
+        { text: "ご確認いただけましたらこの内容で進めてまいります",       reading: "ごかくにんいただけましたらこのないようですすめてまいります",         lengthType: "long" },
+        { text: "念のため修正版をお送りしますのでご確認をお願いいたします", reading: "ねんのためしゅうせいばんをおおくりしますのでごかくにんをおねがいいたします", lengthType: "long" }
+      ]
+    },
+    late: {
+      short: [
+        { text: "送付しました",   reading: "そうふしました",     lengthType: "short" },
+        { text: "完了しました",   reading: "かんりょうしました", lengthType: "short" },
+        { text: "失礼いたします", reading: "しつれいいたします", lengthType: "short" }
+      ],
+      medium: [
+        { text: "取り急ぎご連絡します",           reading: "とりいそぎごれんらくします",           lengthType: "medium" },
+        { text: "ご確認いただきありがとうございます", reading: "ごかくにんいただきありがとうございます", lengthType: "medium" },
+        { text: "対応完了しました",               reading: "たいおうかんりょうしました",           lengthType: "medium" },
+        { text: "最終版を送付しました",           reading: "さいしゅうばんをそうふしました",       lengthType: "medium" }
+      ],
+      long: [
+        { text: "お忙しい中ご確認いただきありがとうございました", reading: "おいそがしいなかごかくにんいただきありがとうございました", lengthType: "long" },
+        { text: "皆様のおかげで順調に進めることができています",   reading: "みなさまのおかげでじゅんちょうにすすめることができています", lengthType: "long" }
+      ]
+    }
+  },
+
+  normal: {
+    early: {
+      short: [
+        { text: "お世話になっております", reading: "おせわになっております",   lengthType: "short" },
+        { text: "折り返し連絡します",     reading: "おりかえしれんらくします", lengthType: "short" },
+        { text: "確認お願いします",       reading: "かくにんおねがいします",   lengthType: "short" },
+        { text: "共有します",             reading: "きょうゆうします",         lengthType: "short" }
+      ],
+      medium: [
+        { text: "本日の進捗を共有します",   reading: "ほんじつのしんちょくをきょうゆうします", lengthType: "medium" },
+        { text: "会議室が変更になりました", reading: "かいぎしつがへんこうになりました",       lengthType: "medium" },
+        { text: "本件先に共有しておきます", reading: "ほんけんさきにきょうゆうしておきます",   lengthType: "medium" },
+        { text: "取り急ぎ状況共有します",   reading: "とりいそぎじょうきょうきょうゆうします", lengthType: "medium" },
+        { text: "本日中に一度送ります",     reading: "ほんじつちゅうにいちどおくります",       lengthType: "medium" }
+      ],
+      long: [
+        { text: "本件について先方より連絡がありましたのでご報告します",   reading: "ほんけんについてせんぽうよりれんらくがありましたのでごほうこくします",     lengthType: "long" },
+        { text: "念のため関係者にも同じ内容を共有しておいてください",     reading: "ねんのためかんけいしゃにもおなじないようをきょうゆうしておいてください",   lengthType: "long" }
+      ]
+    },
+    middle: {
+      short: [
+        { text: "ちょっといいですか", reading: "ちょっといいですか",   lengthType: "short" },
+        { text: "至急対応します",     reading: "しきゅうたいおうします", lengthType: "short" },
+        { text: "修正します",         reading: "しゅうせいします",       lengthType: "short" },
+        { text: "再送します",         reading: "さいそうします",         lengthType: "short" },
+        { text: "一旦送ります",       reading: "いったんおくります",     lengthType: "short" },
+        { text: "反映します",         reading: "はんえいします",         lengthType: "short" }
+      ],
+      medium: [
+        { text: "念のため再度ご確認ください",     reading: "ねんのためさいどごかくにんください",       lengthType: "medium" },
+        { text: "先ほどの件修正版をお送りします", reading: "さきほどのけんしゅうせいばんをおおくりします", lengthType: "medium" },
+        { text: "仕様変更の内容を反映します",     reading: "しようへんこうのないようをはんえいします",   lengthType: "medium" },
+        { text: "一旦この方向で進めます",         reading: "いったんこのほうこうですすめます",           lengthType: "medium" },
+        { text: "こちら認識齟齬がありました",     reading: "こちらにんしきそごがありました",             lengthType: "medium" },
+        { text: "先方確認が必要です",             reading: "せんぽうかくにんがひつようです",             lengthType: "medium" },
+        { text: "修正版を反映して送ります",       reading: "しゅうせいばんをはんえいしておくります",     lengthType: "medium" },
+        { text: "念のため再確認します",           reading: "ねんのためさいかくにんします",               lengthType: "medium" }
+      ],
+      long: [
+        { text: "こちら認識齟齬がありましたので再確認をお願いします",         reading: "こちらにんしきそごがありましたのでさいかくにんをおねがいします",       lengthType: "long" },
+        { text: "会議内容を反映した資料を再度送付いたします",                 reading: "かいぎないようをはんえいしたしりょうをさいどそうふいたします",         lengthType: "long" },
+        { text: "先ほどの内容に修正が入ったため差し替えをお願いします",       reading: "さきほどのないようにしゅうせいがはいったためさしかえをおねがいします", lengthType: "long" }
+      ]
+    },
+    late: {
+      short: [
+        { text: "対応完了です",   reading: "たいおうかんりょうです",   lengthType: "short" },
+        { text: "最終確認します", reading: "さいしゅうかくにんします", lengthType: "short" },
+        { text: "先方へ送ります", reading: "せんぽうへおくります",     lengthType: "short" }
+      ],
+      medium: [
+        { text: "すみません本日中に対応お願いします", reading: "すみませんほんじつちゅうにたいおうおねがいします", lengthType: "medium" },
+        { text: "本件先に送付します",               reading: "ほんけんさきにそうふします",                   lengthType: "medium" },
+        { text: "最終版を共有します",               reading: "さいしゅうばんをきょうゆうします",             lengthType: "medium" },
+        { text: "本日中に対応完了予定です",         reading: "ほんじつちゅうにたいおうかんりょうよていです", lengthType: "medium" }
+      ],
+      long: [
+        { text: "誤字が見つかりましたので至急修正して再送をお願いします",   reading: "ごじがみつかりましたのでしきゅうしゅうせいしてさいそうをおねがいします",   lengthType: "long" },
+        { text: "先方確認が必要なため修正版を先に共有いたします",           reading: "せんぽうかくにんがひつようなためしゅうせいばんをさきにきょうゆういたします", lengthType: "long" },
+        { text: "本日中の対応が必要ですので優先して進めてください",         reading: "ほんじつちゅうのたいおうがひつようですのでゆうせんしてすすめてください",   lengthType: "long" }
+      ]
+    }
+  },
+
+  black: {
+    early: {
+      short: [
+        { text: "ちょっといいですか", reading: "ちょっといいですか", lengthType: "short" },
+        { text: "すぐ確認して",       reading: "すぐかくにんして",   lengthType: "short" },
+        { text: "先にこれやって",     reading: "さきにこれやって",   lengthType: "short" },
+        { text: "今日中です",         reading: "きょうちゅうです",   lengthType: "short" }
+      ],
+      medium: [
+        { text: "明日の朝一でお願いします",   reading: "あしたのあさいちでおねがいします",   lengthType: "medium" },
+        { text: "先方がかなり急いでいます",   reading: "せんぽうがかなりいそいでいます",     lengthType: "medium" },
+        { text: "この件最優先でお願いします", reading: "このけんさいゆうせんでおねがいします", lengthType: "medium" },
+        { text: "今日中対応で確定しました",   reading: "きょうちゅうたいおうでかくていしました", lengthType: "medium" },
+        { text: "先に修正版を出してください", reading: "さきにしゅうせいばんをだしてください", lengthType: "medium" }
+      ],
+      long: [
+        { text: "先方が待てないと言っているので今すぐ再送してください",       reading: "せんぽうがまてないといっているのでいますぐさいそうしてください",         lengthType: "long" },
+        { text: "今日中対応が前提なので他の作業は後回しにしてください",       reading: "きょうちゅうたいおうがぜんていなのでほかのさぎょうはあとまわしにしてください", lengthType: "long" }
+      ]
+    },
+    middle: {
+      short: [
+        { text: "今すぐ対応して", reading: "いますぐたいおうして", lengthType: "short" },
+        { text: "まだですか",     reading: "まだですか",           lengthType: "short" },
+        { text: "急いでください", reading: "いそいでください",     lengthType: "short" },
+        { text: "早く送って",     reading: "はやくおくって",       lengthType: "short" },
+        { text: "もう見ましたか", reading: "もうみましたか",       lengthType: "short" }
+      ],
+      medium: [
+        { text: "さっき言った修正まだですか",         reading: "さっきいったしゅうせいまだですか",         lengthType: "medium" },
+        { text: "なんでまだ終わってないんですか",     reading: "なんでまだおわってないんですか",           lengthType: "medium" },
+        { text: "今日中に絶対終わらせてください",     reading: "きょうちゅうにぜったいおわらせてください", lengthType: "medium" },
+        { text: "緊急で会議が入りました",             reading: "きんきゅうでかいぎがはいりました",         lengthType: "medium" },
+        { text: "上司がちょっと来いと言っています",   reading: "じょうしがちょっとこいといっています",     lengthType: "medium" },
+        { text: "いつまで待たせれば気が済むんですか", reading: "いつまでまたせればきがすむんですか",       lengthType: "medium" },
+        { text: "とりあえず先にこれ出して",           reading: "とりあえずさきにこれだして",               lengthType: "medium" },
+        { text: "まだ共有されてないんですか",         reading: "まだきょうゆうされてないんですか",         lengthType: "medium" }
+      ],
+      long: [
+        { text: "先ほど送った資料に厳しい指摘が入りました",         reading: "さきほどそうしんしたしりょうにきびしいしてきがはいりました",     lengthType: "long" },
+        { text: "お客様が怒ってるので今すぐ電話してください",       reading: "おきゃくさまがおこってるのでいますぐでんわしてください",         lengthType: "long" },
+        { text: "上司が怒ってるので早急に対応してください",         reading: "じょうしがおこってるのでさっきゅうにたいおうしてください",       lengthType: "long" },
+        { text: "この件まだ終わっていない理由を先に説明してください", reading: "このけんまだおわっていないりゆうをさきにせつめいしてください",   lengthType: "long" }
+      ]
+    },
+    late: {
+      short: [
+        { text: "まだ終わりませんか", reading: "まだおわりませんか",   lengthType: "short" },
+        { text: "先に出してください", reading: "さきにだしてください", lengthType: "short" }
+      ],
+      medium: [
+        { text: "今日の分全部やり直してください",   reading: "きょうのぶんぜんぶやりなおしてください", lengthType: "medium" },
+        { text: "もう一度確認して送り直してください", reading: "もういちどかくにんしておくりなおしてください", lengthType: "medium" },
+        { text: "今から修正版を至急出してください",   reading: "いまからしゅうせいばんをしきゅうだしてください", lengthType: "medium" },
+        { text: "まだ対応終わってないですよね",       reading: "まだたいおうおわってないですよね",           lengthType: "medium" }
+      ],
+      long: [
+        { text: "先方から差し戻しが来ましたので本日中に対応してください",             reading: "せんぽうからさしもどしがきましたのでほんじつちゅうにたいおうしてください",       lengthType: "long" },
+        { text: "誤字がありましたので全部修正して至急再送してください",               reading: "ごじがありましたのでぜんぶしゅうせいしてしきゅうさいそうしてください",           lengthType: "long" },
+        { text: "これ頼んだのいつだと思ってるんですかまだできていないんですか",       reading: "これたのんだのいつだとおもってるんですかまだできていないんですか",               lengthType: "long" },
+        { text: "さっきの会議内容を全部反映してすぐに送り直してください",             reading: "さっきのかいぎないようをぜんぶはんえいしてすぐにおくりなおしてください",         lengthType: "long" }
+      ]
+    }
+  }
+};
+
+/* ===========================
+   出題プラン（難易度ごとの lengthType 順序）
+   各プレイ開始時に先頭 taskCount 個を使用する
+=========================== */
+const MESSAGE_PLANS = {
+  white:  ["short","short","short","medium","short","medium","short","medium"],
+  normal: ["short","medium","medium","short","medium","medium","long","long"],
+  black:  ["medium","medium","long","medium","long","medium","long","long"]
+};
+
+/* ===========================
+   場面マップ（タスクインデックス → early / middle / late）
+   white: 6タスク / normal: 7タスク / black: 8タスク
+=========================== */
+const SCENE_MAP = {
+  white:  ["early","early","middle","middle","late","late"],
+  normal: ["early","early","middle","middle","middle","late","late"],
+  black:  ["early","early","middle","middle","middle","late","late","late"]
+};
+
+/* ===========================
    グローバル状態
 =========================== */
 const state = {
@@ -793,6 +1016,39 @@ function startGame() {
 /* ===========================
    タスクリスト構築
 =========================== */
+
+/**
+ * 難易度・タスクインデックス・場面・lengthType に基づき
+ * 未使用文言をランダムに1件選ぶ。
+ * 該当バケツが枯渇した場合は同難易度内でフォールバック。
+ */
+function pickMessage(diffId, taskIndex, taskTotal, usedTexts) {
+  const scene      = SCENE_MAP[diffId][taskIndex] ?? "middle";
+  const lengthType = MESSAGE_PLANS[diffId][taskIndex] ?? "medium";
+  const pool       = difficultyMessagePools[diffId];
+
+  // 優先順: (指定scene, 指定length) → (指定scene, 他length) → (他scene, 指定length) → (他scene, 他length)
+  const scenes  = ["early", "middle", "late"];
+  const lengths = ["short", "medium", "long"];
+  const sceneOrder  = [scene,      ...scenes.filter(s => s !== scene)];
+  const lengthOrder = [lengthType, ...lengths.filter(l => l !== lengthType)];
+
+  for (const s of sceneOrder) {
+    for (const l of lengthOrder) {
+      const bucket    = pool[s]?.[l] ?? [];
+      const available = bucket.filter(m => !usedTexts.has(m.text));
+      if (available.length > 0) {
+        return available[Math.floor(Math.random() * available.length)];
+      }
+    }
+  }
+
+  // 最終フォールバック（重複を許容）
+  const fallback = pool[scene]?.[lengthType] ?? [];
+  return fallback[Math.floor(Math.random() * fallback.length)]
+    ?? { text: "確認中です", reading: "かくにんちゅうです", lengthType: "short" };
+}
+
 function buildTaskList(difficulty) {
   const commuteTask = TASK_POOL.find((t) => t.id === "commute");
   const finalTask   = TASK_POOL.find((t) => t.id === "final-task");
@@ -801,8 +1057,14 @@ function buildTaskList(difficulty) {
   );
   const chosen = [commuteTask, ...middle.slice(0, difficulty.taskCount - 2), finalTask];
 
-  return chosen.map((task) => {
-    const prompt = task.prompts[Math.floor(Math.random() * task.prompts.length)];
+  // 同一プレイ中の重複防止用セット
+  const usedTexts = new Set();
+
+  return chosen.map((task, idx) => {
+    const msg    = pickMessage(difficulty.id, idx, chosen.length, usedTexts);
+    usedTexts.add(msg.text);
+    // message → prompt 形式に変換（jp: ひらがな読み / parts: 表示テキスト）
+    const prompt = { jp: msg.reading, parts: [[msg.text]] };
     return { ...task, prompt };
   });
 }
