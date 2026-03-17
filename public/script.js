@@ -146,10 +146,8 @@ const DIFFICULTIES = {
     id: "white",
     name: "ホワイト企業",
     multiplier: 1.0,
-    eventRate: 0.15,
     taskCount: 8,
     timePressure: 0.90,
-    eventPenaltyScale: 0.9,
     startMinutes: 10 * 60,        // 10:00
     endMinutes:   19 * 60         // 19:00
   },
@@ -157,10 +155,8 @@ const DIFFICULTIES = {
     id: "normal",
     name: "ふつう企業",
     multiplier: 1.3,
-    eventRate: 0.30,
     taskCount: 8,
     timePressure: 1.0,
-    eventPenaltyScale: 1.05,
     startMinutes: 9 * 60,         // 09:00
     endMinutes:   18 * 60         // 18:00
   },
@@ -168,10 +164,8 @@ const DIFFICULTIES = {
     id: "black",
     name: "ブラック企業",
     multiplier: 1.8,
-    eventRate: 0.50,
     taskCount: 8,
     timePressure: 1.12,
-    eventPenaltyScale: 1.18,
     startMinutes: 7 * 60 + 30,    // 07:30
     endMinutes:   22 * 60         // 22:00
   }
@@ -186,7 +180,6 @@ const TASK_POOL = [
     name: "通勤",
     baseMinutes: 20,
     type: "commute",
-    eventEligible: false,
     prompts: [
       { jp: "ほんじつもよろしくおねがいします",
         parts: [["本日","ほんじつ"],["もよろしくお"],["願","ねが"],["いします"]] },
@@ -199,7 +192,6 @@ const TASK_POOL = [
     name: "朝会",
     baseMinutes: 36,
     type: "meeting",
-    eventEligible: true,
     prompts: [
       { jp: "ほんじつのしんちょくをきょうゆうします",
         parts: [["本日","ほんじつ"],["の"],["進捗","しんちょく"],["を"],["共有","きょうゆう"],["します"]] },
@@ -212,7 +204,6 @@ const TASK_POOL = [
     name: "メール返信",
     baseMinutes: 54,
     type: "mail",
-    eventEligible: true,
     prompts: [
       { jp: "おせわになっております",
         parts: [["お"],["世話","せわ"],["になっております"]] },
@@ -227,7 +218,6 @@ const TASK_POOL = [
     name: "会議",
     baseMinutes: 68,
     type: "meeting",
-    eventEligible: true,
     prompts: [
       { jp: "かいぎしつがへんこうになりました",
         parts: [["会議室","かいぎしつ"],["が"],["変更","へんこう"],["になりました"]] },
@@ -242,7 +232,6 @@ const TASK_POOL = [
     name: "昼休憩前の作業",
     baseMinutes: 50,
     type: "document",
-    eventEligible: true,
     prompts: [
       { jp: "こちらにんしきそごがありました",
         parts: [["こちら"],["認識","にんしき"],["齟齬","そご"],["がありました"]] },
@@ -257,7 +246,6 @@ const TASK_POOL = [
     name: "資料修正",
     baseMinutes: 64,
     type: "document",
-    eventEligible: true,
     prompts: [
       { jp: "しようへんこうのないようをはんえいします",
         parts: [["仕様","しよう"],["変更","へんこう"],["の"],["内容","ないよう"],["を"],["反映","はんえい"],["します"]] },
@@ -272,7 +260,6 @@ const TASK_POOL = [
     name: "上司からの依頼",
     baseMinutes: 72,
     type: "request",
-    eventEligible: true,
     prompts: [
       { jp: "すみませんほんじつちゅうにたいおうおねがいします",
         parts: [["すみません"],["本日中","ほんじつちゅう"],["に"],["対応","たいおう"],["お"],["願","ねが"],["いします"]] },
@@ -287,7 +274,6 @@ const TASK_POOL = [
     name: "最終タスク",
     baseMinutes: 80,
     type: "final",
-    eventEligible: true,
     prompts: [
       { jp: "きょうもいちにちおつかれさまでした",
         parts: [["今日","きょう"],["も"],["一日","いちにち"],["お"],["疲","つか"],["れ"],["様","さま"],["でした"]] },
@@ -299,18 +285,6 @@ const TASK_POOL = [
   }
 ];
 
-/* ===========================
-   ランダムイベント
-=========================== */
-const EVENTS = [
-  { message: "上司「ちょっといい？」 — 会話で 7 分消費。",         minutes: 7,  tag: "boss" },
-  { message: "緊急会議が追加されました。12 分消費。",               minutes: 12, tag: "meeting" },
-  { message: "修正版お願いします。差し戻しで 9 分消費。",           minutes: 9,  tag: "revision" },
-  { message: "誤字が見つかりました。再送対応で 6 分消費。",         minutes: 6,  tag: "revision" },
-  { message: "本日中対応の依頼が飛んできました。10 分消費。",       minutes: 10, tag: "rush" },
-  { message: "昼休憩が 5 分短縮されました。",                       minutes: 5,  tag: "lunch" },
-  { message: "仕様変更が入りました。調整対応で 11 分消費。",        minutes: 11, tag: "spec" }
-];
 
 /* ===========================
    攻略ヒント
@@ -638,7 +612,6 @@ const el = {
   wpmValue:             document.getElementById("wpm-value"),
   accuracyValue:        document.getElementById("accuracy-value"),
   missValue:            document.getElementById("miss-value"),
-  eventMessage:         document.getElementById("event-message"),
   gameTip:              document.getElementById("game-tip"),
   resultLeaveTime:      document.getElementById("result-leave-time"),
   resultStatus:         document.getElementById("result-status"),
@@ -1045,8 +1018,6 @@ function startGame() {
     correctChars:   0,
     misses:         0,
     totalInputs:    0,
-    eventCount:     0,
-    eventLog:       [],
     taskStartedAt:  now,
     taskCorrectChars: 0,
     taskMisses:       0
@@ -1055,7 +1026,6 @@ function startGame() {
   switchScreen("game");
   // フォーカスを外して IME が介入できる要素をなくす
   document.activeElement?.blur();
-  el.eventMessage.textContent = "静かな一日が始まりました。";
 
   if (el.gameTip) {
     el.gameTip.textContent = TIPS[Math.floor(Math.random() * TIPS.length)];
@@ -1758,14 +1728,12 @@ function completeTask() {
   const taskWpm       = (charCount / 5) / (elapsedSec / 60);
   const taskAccuracy  = calcAccuracy(session.taskCorrectChars, session.taskMisses);
 
-  const eventResult   = maybeTriggerEvent(task, session.difficulty);
   const speedBonus    = clamp(Math.round((taskWpm - 40) * 0.12), 0, 18);
   const accBonus      = taskAccuracy >= 97 ? 7 : taskAccuracy >= 93 ? 4 : 0;
   const missPenalty   = Math.round(Math.max(session.taskMisses * 0.75, 0));
 
   let spent =
     Math.round(task.baseMinutes * session.difficulty.timePressure) +
-    eventResult.minutes +
     missPenalty -
     speedBonus -
     accBonus;
@@ -1777,12 +1745,6 @@ function completeTask() {
   session.gameMinutes      += spent;
   session.currentTaskIndex += 1;
 
-  const log = eventResult.message
-    ? `${task.name} 完了。${spent}分消費。正確率${taskAccuracy}%。${eventResult.message}`
-    : `${task.name} 完了。${spent}分で片付きました。正確率${taskAccuracy}%。`;
-
-  el.eventMessage.textContent = log;
-
   if (session.currentTaskIndex >= session.tasks.length) {
     finishGame();
     return;
@@ -1791,22 +1753,6 @@ function completeTask() {
   renderCurrentTask();
 }
 
-/* ===========================
-   ランダムイベント
-=========================== */
-function maybeTriggerEvent(task, difficulty) {
-  if (!task.eventEligible || Math.random() > difficulty.eventRate) {
-    return { minutes: 0, message: "" };
-  }
-
-  const ev      = EVENTS[Math.floor(Math.random() * EVENTS.length)];
-  const minutes = Math.round(ev.minutes * difficulty.eventPenaltyScale);
-
-  state.session.eventCount++;
-  state.session.eventLog.push(ev.tag);
-
-  return { minutes, message: ev.message };
-}
 
 /* ===========================
    リアルタイム統計更新
