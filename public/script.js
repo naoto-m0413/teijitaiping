@@ -153,7 +153,7 @@ const DIFFICULTIES = {
   },
   normal: {
     id: "normal",
-    name: "ふつう企業",
+    name: "ふつうの企業",
     multiplier: 1.3,
     taskCount: 8,
     timePressure: 1.0,

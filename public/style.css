@@ -1334,7 +1334,7 @@ h1 {
 }
 .ready-diff-white.selected { border-color: #00c8e8; box-shadow: 0 6px 20px rgba(0,200,240,0.3); }
 
-/* ふつう企業：オレンジ・アンバー系 */
+/* ふつうの企業：オレンジ・アンバー系 */
 .ready-diff-normal {
   background: linear-gradient(135deg, #201408 0%, #2e1c0a 100%);
   border-color: rgba(255, 160, 40, 0.45);
