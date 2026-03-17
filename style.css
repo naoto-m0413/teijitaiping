@@ -196,13 +196,8 @@ h1 {
 }
 
 .screen-frame {
-  display: grid;
-  grid-template-columns:
-    minmax(180px, 220px)
-    minmax(0, 1fr)
-    minmax(180px, 220px);
-  gap: clamp(12px, 1.5vw, 18px);
-  align-items: start;
+  width: min(960px, calc(100vw - 28px));
+  margin: 0 auto;
 }
 
 .side-rail,
@@ -1164,9 +1159,9 @@ h1 {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100vh;
-  max-height: 100vh;
-  overflow: hidden;
+  width: min(960px, calc(100vw - 28px));
+  margin: 0 auto;
+  min-height: 560px;
   padding: 16px;
   box-sizing: border-box;
 }
@@ -2015,25 +2010,6 @@ h1 {
 /* ===========================
    レスポンシブ
 =========================== */
-@media (max-width: 1100px) {
-  .screen-frame {
-    grid-template-columns: 1fr;
-  }
-  .side-rail,
-  .frame-rail {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-}
-
-@media (min-width: 1280px) {
-  .screen-frame {
-    grid-template-columns:
-      minmax(190px, 220px)
-      minmax(760px, 920px)
-      minmax(190px, 220px);
-    justify-content: center;
-  }
-}
 
 @media (max-width: 900px) {
   .status-grid { grid-template-columns: repeat(3, 1fr); }
