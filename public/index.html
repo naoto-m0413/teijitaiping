@@ -18,6 +18,39 @@
       </div>
     </div>
 
+    <!-- 設定モーダル -->
+    <div id="settings-modal" class="modal-overlay" hidden>
+      <div class="modal-box panel">
+        <button class="modal-close" id="settings-modal-close-btn" type="button" aria-label="閉じる">✕</button>
+        <p class="badge">SETTINGS</p>
+        <h2 class="modal-title">設定</h2>
+        <div class="settings-list">
+          <div class="settings-row">
+            <div class="settings-label">
+              <span class="settings-name">効果音</span>
+              <span class="settings-desc">キー入力・タスク完了の効果音</span>
+            </div>
+            <button class="settings-toggle" id="sound-toggle" type="button" data-on="true">ON</button>
+          </div>
+          <div class="settings-row">
+            <div class="settings-label">
+              <span class="settings-name">入力方式</span>
+              <span class="settings-desc">ローマ字入力のみ対応</span>
+            </div>
+            <span class="settings-badge">ローマ字</span>
+          </div>
+          <div class="settings-row">
+            <div class="settings-label">
+              <span class="settings-name">バージョン</span>
+              <span class="settings-desc">定時退ピング</span>
+            </div>
+            <span class="settings-badge">v1.0</span>
+          </div>
+        </div>
+        <button class="primary-button modal-ok-btn" id="settings-modal-ok-btn" type="button">閉じる</button>
+      </div>
+    </div>
+
     <!-- 実績モーダル -->
     <div id="records-modal" class="modal-overlay" hidden>
       <div class="modal-box panel">
@@ -114,9 +147,11 @@
 
                 <div class="title-start-block">
                   <button id="start-button" class="primary-button stage-button title-action-button title-action-start" type="button">スタート</button>
-                  <button class="secondary-button stage-sub-button how-to-btn title-action-button title-action-howto" type="button">遊び方</button>
-                  <button class="secondary-button stage-sub-button title-action-button title-action-settings" type="button" onclick="alert('近日公開予定！')">設定</button>
-                  <button class="ghost-button stage-sub-button title-action-button title-action-records records-btn" type="button">実績</button>
+                  <div class="title-sub-buttons">
+                    <button class="secondary-button stage-sub-button how-to-btn title-action-button title-action-howto" type="button">遊び方</button>
+                    <button class="secondary-button stage-sub-button title-action-button title-action-settings settings-btn" type="button">設定</button>
+                    <button class="ghost-button stage-sub-button title-action-button title-action-records records-btn" type="button">実績</button>
+                  </div>
                 </div>
               </div>
 

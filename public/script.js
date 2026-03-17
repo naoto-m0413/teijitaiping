@@ -334,7 +334,8 @@ const state = {
   currentScreen: "title",
   session: null,
   records: loadRecords(),
-  statTimerId: null
+  statTimerId: null,
+  soundEnabled: true
 };
 
 /* ===========================
@@ -391,6 +392,10 @@ const el = {
   recordsModal:         document.getElementById("records-modal"),
   recordsModalCloseBtn: document.getElementById("records-modal-close-btn"),
   recordsModalOkBtn:    document.getElementById("records-modal-ok-btn"),
+  settingsModal:        document.getElementById("settings-modal"),
+  settingsModalCloseBtn:document.getElementById("settings-modal-close-btn"),
+  settingsModalOkBtn:   document.getElementById("settings-modal-ok-btn"),
+  soundToggle:          document.getElementById("sound-toggle"),
   mobileWarning:        document.getElementById("mobile-warning"),
   mobileWarningDismiss: document.getElementById("mobile-warning-dismiss")
 };
@@ -401,6 +406,7 @@ const el = {
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
 function playKeySound(isCorrect) {
+  if (!state.soundEnabled) return;
   const osc  = audioCtx.createOscillator();
   const gain = audioCtx.createGain();
   osc.connect(gain);
@@ -425,6 +431,7 @@ function playKeySound(isCorrect) {
 }
 
 function playTaskCompleteSound() {
+  if (!state.soundEnabled) return;
   [523, 659, 784].forEach((freq, i) => {
     const osc  = audioCtx.createOscillator();
     const gain = audioCtx.createGain();
@@ -549,6 +556,21 @@ function bindEvents() {
     if (e.target === el.modal) closeModal();
   });
 
+  // 設定モーダル
+  document.querySelectorAll(".settings-btn").forEach((btn) => {
+    btn.addEventListener("click", openSettingsModal);
+  });
+  el.settingsModalCloseBtn.addEventListener("click", closeSettingsModal);
+  el.settingsModalOkBtn.addEventListener("click", closeSettingsModal);
+  el.settingsModal.addEventListener("click", (e) => {
+    if (e.target === el.settingsModal) closeSettingsModal();
+  });
+  el.soundToggle.addEventListener("click", () => {
+    state.soundEnabled = !state.soundEnabled;
+    el.soundToggle.textContent = state.soundEnabled ? "ON" : "OFF";
+    el.soundToggle.dataset.on = String(state.soundEnabled);
+  });
+
   // 実績モーダル
   document.querySelectorAll(".records-btn").forEach((btn) => {
     btn.addEventListener("click", openRecordsModal);
@@ -583,6 +605,10 @@ function handleGlobalKeyDown(e) {
     }
     if (!el.recordsModal.hidden) {
       closeRecordsModal();
+      return;
+    }
+    if (!el.settingsModal.hidden) {
+      closeSettingsModal();
       return;
     }
     if (state.currentScreen === "difficulty") {
@@ -648,6 +674,9 @@ function handleGlobalKeyDown(e) {
 
 function openModal()  { el.modal.hidden = false; }
 function closeModal() { el.modal.hidden = true; }
+
+function openSettingsModal()  { el.settingsModal.hidden = false; }
+function closeSettingsModal() { el.settingsModal.hidden = true; }
 
 function openRecordsModal() {
   renderBestRecords();

@@ -340,8 +340,8 @@ h1 {
 
 .title-logo-image {
   display: block;
-  width: min(90%, 900px);
-  max-width: 900px;
+  width: min(80%, 640px);
+  max-width: 640px;
   height: auto;
   margin: 0 auto;
   object-fit: contain;
@@ -1335,13 +1335,27 @@ h1 {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 14px;
+  gap: 0;
   margin-top: 12px;
 }
 
 .title-action-button {
   width: 75%;
   max-width: 420px;
+}
+
+.title-sub-buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-top: 24px;
+  width: 100%;
+}
+
+.title-sub-buttons .title-action-button {
+  width: 56%;
+  max-width: 315px;
 }
 
 .title-action-start {
@@ -1352,24 +1366,24 @@ h1 {
 }
 
 .title-action-howto {
-  border-color: #1f4870;
-  background: linear-gradient(180deg, #61b7ff 0%, #378fe6 100%);
-  color: #f5fbff;
-  box-shadow: 0 4px 0 #193754;
+  border-color: #1e3a52;
+  background: linear-gradient(180deg, #3d6585 0%, #274a64 100%);
+  color: #ddeeff;
+  box-shadow: 0 4px 0 #132436;
 }
 
 .title-action-settings {
-  border-color: #1b5a53;
-  background: linear-gradient(180deg, #5dd8c8 0%, #2ba99d 100%);
-  color: #f4fffd;
-  box-shadow: 0 4px 0 #184b46;
+  border-color: #2a3636;
+  background: linear-gradient(180deg, #485858 0%, #303e3e 100%);
+  color: #d8e8e8;
+  box-shadow: 0 4px 0 #161e1e;
 }
 
 .title-action-records {
-  border-color: #6b2b62;
-  background: linear-gradient(180deg, #f07bc4 0%, #c8549d 100%);
-  color: #fff7fc;
-  box-shadow: 0 4px 0 #59224f;
+  border-color: #3a2448;
+  background: linear-gradient(180deg, #624878 0%, #422e56 100%);
+  color: #e8d8f8;
+  box-shadow: 0 4px 0 #221433;
 }
 
 /* ===========================
@@ -1831,6 +1845,71 @@ h1 {
 
 #records-modal .modal-box {
   width: min(640px, 100%);
+}
+
+/* 設定モーダル */
+.settings-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-bottom: 24px;
+}
+
+.settings-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(88, 60, 28, 0.15);
+}
+
+.settings-row:first-child {
+  border-top: 1px solid rgba(88, 60, 28, 0.15);
+}
+
+.settings-label {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.settings-name {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.settings-desc {
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
+.settings-toggle {
+  min-width: 56px;
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: 2px solid #3a6a3a;
+  background: linear-gradient(180deg, #4a8a4a 0%, #2e6a2e 100%);
+  color: #f0fff0;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 120ms, border-color 120ms;
+}
+
+.settings-toggle[data-on="false"] {
+  border-color: #4a3a3a;
+  background: linear-gradient(180deg, #5a4a4a 0%, #3a3030 100%);
+  color: #e8d8d8;
+}
+
+.settings-badge {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--muted);
+  background: rgba(88, 60, 28, 0.1);
+  padding: 4px 10px;
+  border-radius: 8px;
 }
 
 .records-modal-grid {
