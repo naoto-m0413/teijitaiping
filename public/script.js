@@ -530,9 +530,9 @@ const SCENE_MAP = {
 const RANKS = ["SSS", "SS", "S", "A", "B", "C", "D", "E", "F"];
 
 const RANK_THRESHOLDS = {
-  white:  [9000, 8200, 7400, 6600, 5800, 5000, 4200, 3400],
-  normal: [9500, 8700, 7900, 7100, 6300, 5500, 4700, 3900],
-  black:  [10000, 9200, 8400, 7600, 6800, 6000, 5200, 4400]
+  white:  [9500, 8000, 6500, 5000, 3500, 2500, 1500, 800],
+  normal: [12000, 10000, 8000, 6000, 4000, 2800, 1700, 900],
+  black:  [16000, 13000, 10000, 7500, 5000, 3500, 2100, 1100]
 };
 
 const RANK_TITLES = {
@@ -1882,12 +1882,15 @@ function finishGame() {
   const elapsedSec   = Math.max((performance.now() - session.realStartAt) / 1000, 1);
   const cps          = parseFloat((session.correctChars / elapsedSec).toFixed(1));
   const accuracy     = calcAccuracy(session.correctChars, session.misses);
-  const leaveMinutes = session.gameMinutes;
-  const endMinutes   = session.difficulty.endMinutes;
-  const overtime     = Math.max(leaveMinutes - endMinutes, 0);
-  const baseScore    = session.correctChars * (accuracy / 100);
-  const score        = Math.max(
-    Math.round(baseScore * session.difficulty.multiplier * 100 - overtime * 20),
+  const leaveMinutes   = session.gameMinutes;
+  const endMinutes     = session.difficulty.endMinutes;
+  const overtime       = Math.max(leaveMinutes - endMinutes, 0);
+  const earlyMin       = Math.max(endMinutes - leaveMinutes, 0);
+  const baseScore      = session.correctChars * (accuracy / 100) * cps * session.difficulty.multiplier * 3;
+  const earlyBonus     = earlyMin * 30;
+  const overtimePenalty = overtime * 20;
+  const score          = Math.max(
+    Math.round(baseScore + earlyBonus - overtimePenalty),
     0
   );
   const rank  = resolveRank(score, session.difficulty.id);
