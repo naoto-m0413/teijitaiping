@@ -1081,6 +1081,7 @@ function startGame() {
   };
 
   switchScreen("game");
+  showKisoFlash();
   focusGameInput({ resetValue: true });
 
   if (el.gameTip) {
@@ -1090,6 +1091,20 @@ function startGame() {
   renderCurrentTask();
   updateStats();
   startStatTicker();
+}
+
+function showKisoFlash() {
+  const el = document.getElementById("kiso-flash");
+  if (!el) return;
+  el.style.display = "block";
+  el.classList.remove("is-active");
+  // リフロー強制で再アニメーション
+  void el.offsetWidth;
+  el.classList.add("is-active");
+  setTimeout(() => {
+    el.style.display = "none";
+    el.classList.remove("is-active");
+  }, 750);
 }
 
 /* ===========================

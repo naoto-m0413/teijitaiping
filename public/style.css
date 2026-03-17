@@ -2003,6 +2003,41 @@ h1 {
 }
 
 /* ===========================
+   起床！フラッシュ
+=========================== */
+@keyframes kiso-flash-anim {
+  0%   { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
+  30%  { opacity: 1; transform: translate(-50%, -50%) scale(1.15); }
+  55%  { opacity: 1; transform: translate(-50%, -50%) scale(1.0); }
+  100% { opacity: 0; transform: translate(-50%, -50%) scale(1.3); }
+}
+
+.kiso-flash {
+  position: fixed;
+  inset: 0;
+  z-index: 9000;
+  pointer-events: none;
+  display: none;
+}
+
+.kiso-flash span {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.5);
+  font-size: clamp(3rem, 10vw, 6rem);
+  font-weight: 900;
+  color: #fff;
+  text-shadow: 0 0 40px rgba(255,255,255,0.6), 0 4px 24px rgba(0,0,0,0.6);
+  letter-spacing: 0.08em;
+  opacity: 0;
+}
+
+.kiso-flash.is-active span {
+  animation: kiso-flash-anim 0.75s ease-out forwards;
+}
+
+/* ===========================
    モバイル警告
 =========================== */
 .mobile-warning {
