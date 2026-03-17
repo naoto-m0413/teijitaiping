@@ -625,7 +625,6 @@ const el = {
   resultDifficulty:     document.getElementById("result-difficulty"),
   resultBest:           document.getElementById("result-best"),
   resultHero:           document.getElementById("result-hero"),
-  heroShareBtn:         document.getElementById("hero-share-btn"),
   resultDifficultyChip: document.getElementById("result-difficulty-chip"),
   resultRecordBadge:    document.getElementById("result-record-badge"),
   retryButton:          document.getElementById("retry-button"),
@@ -771,7 +770,6 @@ function bindEvents() {
   });
 
   // 結果画面ボタン
-  el.heroShareBtn.addEventListener("click", shareResult);
   el.retryButton.addEventListener("click", goToReady);
   el.changeDifficultyBtn.addEventListener("click", goToDifficulty);
   el.backButton.addEventListener("click", () => {
@@ -1973,41 +1971,6 @@ function renderResult(result, recordStatus, prevResult) {
 
 }
 
-/* ===========================
-   シェアテキスト構築
-=========================== */
-function buildShareText(result) {
-  const earlyMinShare = (result.endMinutes || END_MINUTES) - result.leaveMinutes;
-  const statusText = result.overtimeMinutes > 0
-    ? `残業 ${fmtDuration(result.overtimeMinutes)}`
-    : earlyMinShare > 0
-      ? `定時より ${fmtDuration(earlyMinShare)}早く退社！`
-      : "ちょうど定時退社！";
-
-  return [
-    "【定時退ピング】",
-    `難易度：${result.difficultyName}`,
-    `退勤時刻：${fmtMin(result.leaveMinutes)}　${statusText}`,
-    `スコア：${result.score.toLocaleString("ja-JP")}　速度：${result.cps}回/秒　正確率：${result.accuracy}%`,
-    `${result.rank ?? ""}　${result.title}`,
-    "#定時退ピング #タイピングゲーム"
-  ].join("\n");
-}
-
-/* ===========================
-   シェア（Web Share API / Twitter フォールバック）
-=========================== */
-function shareResult() {
-  const last = state.records.lastResult;
-  if (!last) return;
-  const text = buildShareText(last);
-  const gameUrl = `${window.location.origin}${window.location.pathname}`;
-  const shareUrl = new URL("https://twitter.com/intent/tweet");
-  shareUrl.searchParams.set("text", text);
-  shareUrl.searchParams.set("url", gameUrl);
-
-  window.open(shareUrl.toString(), "_blank", "noopener,noreferrer");
-}
 
 /* ===========================
    記録保存

@@ -1730,27 +1730,6 @@ h1 {
   padding: 0 20px;
 }
 
-.hero-share-btn {
-  position: absolute;
-  top: 14px;
-  right: 14px;
-  padding: 7px 14px;
-  border: 2px solid #1a1a2e;
-  border-radius: 20px;
-  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-  color: #fff;
-  font: inherit;
-  font-size: 0.82rem;
-  font-weight: 900;
-  cursor: pointer;
-  letter-spacing: 0.04em;
-  transition: transform 100ms, filter 100ms;
-}
-
-.hero-share-btn:hover {
-  transform: translateY(-1px);
-  filter: brightness(1.2);
-}
 
 .result-hero-badges {
   display: flex;
