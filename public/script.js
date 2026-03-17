@@ -2146,8 +2146,11 @@ function switchScreen(name) {
   Object.entries(el.screens).forEach(([key, screen]) => {
     screen.classList.toggle("active", key === name);
   });
+  const isGame = name === "game";
   const footer = document.getElementById("site-footer");
-  if (footer) footer.hidden = name === "game";
+  if (footer) footer.hidden = isGame;
+  const topBar = document.getElementById("top-bar");
+  if (topBar) topBar.hidden = isGame;
 }
 
 function clamp(v, lo, hi) { return Math.min(Math.max(v, lo), hi); }

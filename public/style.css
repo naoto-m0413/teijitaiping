@@ -78,6 +78,44 @@ h1, h2, h3, p { margin-top: 0; }
 
 
 /* ===========================
+   トップバー
+=========================== */
+.top-bar {
+  width: 100%;
+  background: rgba(4, 5, 10, 0.72);
+  border-bottom: 1px solid var(--line);
+}
+
+.top-bar-inner {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 14px;
+  width: min(1360px, calc(100% - 28px));
+  margin: 0 auto;
+  padding: 5px 0;
+  font-size: 0.72rem;
+  color: var(--muted);
+}
+
+.top-bar-label {
+  margin-right: 2px;
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  opacity: 0.6;
+}
+
+.top-bar a {
+  color: var(--muted);
+  text-decoration: none;
+  transition: color 120ms;
+}
+
+.top-bar a:hover {
+  color: var(--text);
+}
+
+/* ===========================
    サイトフッター・広告スロット
 =========================== */
 .site-footer {
@@ -96,10 +134,15 @@ h1, h2, h3, p { margin-top: 0; }
   color: var(--muted);
   text-decoration: underline;
   text-underline-offset: 2px;
+  transition: color 120ms;
 }
 
 .site-footer a:hover {
   color: var(--text);
+}
+
+.footer-sep {
+  opacity: 0.3;
 }
 
 .ad-slot {
