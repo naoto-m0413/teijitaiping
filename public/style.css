@@ -60,6 +60,28 @@ h1, h2, h3, p { margin-top: 0; }
   padding: 14px 0 32px;
 }
 
+.dev-footer {
+  position: fixed;
+  bottom: 12px;
+  right: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.75rem;
+  color: var(--muted);
+  z-index: 10;
+}
+
+.dev-footer a {
+  color: var(--muted);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.dev-footer a:hover {
+  color: var(--text);
+}
+
 .site-header {
   display: flex;
   align-items: flex-end;
@@ -168,11 +190,8 @@ h1 {
    3カラムレイアウト
 =========================== */
 .title-layout {
-  display: grid;
-  grid-template-columns:
-    minmax(0, 1fr)
-    minmax(180px, 220px);
-  gap: clamp(12px, 1.5vw, 18px);
+  display: flex;
+  justify-content: center;
   align-items: start;
 }
 
@@ -1917,7 +1936,6 @@ h1 {
    レスポンシブ
 =========================== */
 @media (max-width: 1100px) {
-  .title-layout,
   .screen-frame {
     grid-template-columns: 1fr;
   }
@@ -1928,12 +1946,6 @@ h1 {
 }
 
 @media (min-width: 1280px) {
-  .title-layout {
-    grid-template-columns:
-      minmax(760px, 920px)
-      minmax(190px, 220px);
-    justify-content: center;
-  }
   .screen-frame {
     grid-template-columns:
       minmax(190px, 220px)
