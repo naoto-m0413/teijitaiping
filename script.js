@@ -147,7 +147,7 @@ const DIFFICULTIES = {
     name: "ホワイト企業",
     multiplier: 1.0,
     eventRate: 0.15,
-    taskCount: 6,
+    taskCount: 8,
     timePressure: 0.90,
     eventPenaltyScale: 0.9,
     startMinutes: 10 * 60,        // 10:00
@@ -158,7 +158,7 @@ const DIFFICULTIES = {
     name: "ふつう企業",
     multiplier: 1.3,
     eventRate: 0.30,
-    taskCount: 7,
+    taskCount: 8,
     timePressure: 1.0,
     eventPenaltyScale: 1.05,
     startMinutes: 9 * 60,         // 09:00
@@ -541,11 +541,11 @@ const MESSAGE_PLANS = {
 
 /* ===========================
    場面マップ（タスクインデックス → early / middle / late）
-   white: 6タスク / normal: 7タスク / black: 8タスク
+   全難易度 8タスク: early 2問 / middle 3問 / late 3問
 =========================== */
 const SCENE_MAP = {
-  white:  ["early","early","middle","middle","late","late"],
-  normal: ["early","early","middle","middle","middle","late","late"],
+  white:  ["early","early","middle","middle","middle","late","late","late"],
+  normal: ["early","early","middle","middle","middle","late","late","late"],
   black:  ["early","early","middle","middle","middle","late","late","late"]
 };
 

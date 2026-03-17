@@ -94,26 +94,26 @@
 
 | 難易度名 | 始業 | 定時 | タスク数 | イベント頻度 | スコア倍率 |
 | --- | --- | --- | --- | --- | --- |
-| ホワイト企業 | 10:00 | 19:00 | 6 | 15% | 1.0 |
-| ふつう企業 | 09:00 | 18:00 | 7 | 30% | 1.3 |
+| ホワイト企業 | 10:00 | 19:00 | 8 | 15% | 1.0 |
+| ふつう企業 | 09:00 | 18:00 | 8 | 30% | 1.3 |
 | ブラック企業 | 07:30 | 22:00 | 8 | 50% | 1.8 |
 
 ### 7.2 難易度差分
 
 - ホワイト企業
   - 始業: 10:00（600分）/ 定時: 19:00（1140分）
-  - タスク数: 6
+  - タスク数: 8
   - 時間プレッシャー係数: 0.90
   - イベントペナルティ倍率: 0.9
   - 割り込みイベント発生率: 15%
-  - 業務メッセージ: short 中心（6問中 short 4 / medium 2 / long 0）・丁寧で前向きな文言
+  - 業務メッセージ: short 中心（8問中 short 5 / medium 3 / long 0）・丁寧で前向きな文言
 - ふつう企業
   - 始業: 09:00（540分）/ 定時: 18:00（1080分）
-  - タスク数: 7
+  - タスク数: 8
   - 時間プレッシャー係数: 1.0（標準）
   - イベントペナルティ倍率: 1.05
   - 割り込みイベント発生率: 30%
-  - 業務メッセージ: medium 中心（7問中 short 2 / medium 4 / long 1）・事務的な業務連絡文言
+  - 業務メッセージ: medium 中心（8問中 short 2 / medium 4 / long 2）・事務的な業務連絡文言
 - ブラック企業
   - 始業: 07:30（450分）/ 定時: 22:00（1320分）
   - タスク数: 8
@@ -259,30 +259,30 @@ minutesPerToken = (baseMinutes × timePressure) / max(tokens.length, 1)
 
 | 難易度 | 出題プラン（MESSAGE_PLANS） |
 | --- | --- |
-| ホワイト企業（6問） | short, short, short, medium, short, medium |
-| ふつう企業（7問） | short, medium, medium, short, medium, medium, long |
+| ホワイト企業（8問） | short, short, short, medium, short, medium, short, medium |
+| ふつう企業（8問） | short, medium, medium, short, medium, medium, long, long |
 | ブラック企業（8問） | medium, medium, long, medium, long, medium, long, long |
 
 長さ構成の集計（実使用分）:
 
 | 難易度 | short | medium | long |
 | --- | :---: | :---: | :---: |
-| ホワイト企業 | 4 | 2 | 0 |
-| ふつう企業 | 2 | 4 | 1 |
+| ホワイト企業 | 5 | 3 | 0 |
+| ふつう企業 | 2 | 4 | 2 |
 | ブラック企業 | 0 | 4 | 4 |
 
 ### 10.6 場面マップ（SCENE_MAP）
 
-| タスクインデックス | ホワイト（6問） | ふつう（7問） | ブラック（8問） |
+| タスクインデックス | ホワイト（8問） | ふつう（8問） | ブラック（8問） |
 | :---: | --- | --- | --- |
 | 0 | early | early | early |
 | 1 | early | early | early |
 | 2 | middle | middle | middle |
 | 3 | middle | middle | middle |
-| 4 | late | middle | middle |
+| 4 | middle | middle | middle |
 | 5 | late | late | late |
-| 6 | — | late | late |
-| 7 | — | — | late |
+| 6 | late | late | late |
+| 7 | late | late | late |
 
 - **early（序盤）**: 出社・共有・確認開始など朝っぽい文言
 - **middle（中盤）**: 通常業務・修正・確認・共有など
