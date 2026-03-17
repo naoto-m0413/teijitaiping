@@ -32,7 +32,9 @@ html {
 
 body {
   margin: 0;
-  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
   overflow-x: hidden;
   font-family: "Hiragino Sans", "Yu Gothic UI", "Meiryo", sans-serif;
   color: var(--text);
@@ -60,11 +62,50 @@ h1, h2, h3, p { margin-top: 0; }
    シェル・ヘッダー
 =========================== */
 .app-shell {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
   width: min(1360px, calc(100% - 28px));
   margin: 0 auto;
-  padding: 14px 0 32px;
+  padding: 14px 0 0;
 }
 
+.app-shell > main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+
+/* ===========================
+   サイトフッター・広告スロット
+=========================== */
+.site-footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 0 18px;
+  border-top: 1px solid var(--line);
+  font-size: 0.75rem;
+  color: var(--muted);
+  margin-top: auto;
+}
+
+.site-footer a {
+  color: var(--muted);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.site-footer a:hover {
+  color: var(--text);
+}
+
+.ad-slot {
+  width: min(960px, calc(100vw - 28px));
+  margin: 16px auto 0;
+}
 
 .site-header {
   display: flex;
@@ -118,6 +159,18 @@ h1 {
 =========================== */
 .screen { display: none; }
 .screen.active { display: block; }
+
+/* ゲーム画面はフレックスチェーンで高さを継承 */
+#game-screen.active {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+#game-screen .screen-frame {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
 
 /* ===========================
    パネル共通
@@ -1386,12 +1439,11 @@ h1 {
    ゲーム画面 グリッド（単一ビューポート）
 =========================== */
 .game-main-grid {
+  flex: 1;
   display: grid;
-  grid-template-rows: auto auto 1fr auto;
+  grid-template-rows: auto auto 1fr auto auto;
   gap: 6px;
-  height: calc(100vh - 120px);
   min-height: 600px;
-  align-content: start;
 }
 
 /* ===========================
