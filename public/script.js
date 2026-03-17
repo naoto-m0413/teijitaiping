@@ -1081,7 +1081,7 @@ function startGame() {
   };
 
   switchScreen("game");
-  showKisoFlash();
+  showKisoFlash(difficulty.id);
   focusGameInput({ resetValue: true });
 
   if (el.gameTip) {
@@ -1093,9 +1093,11 @@ function startGame() {
   startStatTicker();
 }
 
-function showKisoFlash() {
+function showKisoFlash(difficultyId) {
   const el = document.getElementById("kiso-flash");
   if (!el) return;
+  const texts = { white: "業務開始！", normal: "業務開始", black: "業務開始..." };
+  el.querySelector("span").textContent = texts[difficultyId] ?? "業務開始";
   el.style.display = "block";
   el.classList.remove("is-active");
   // リフロー強制で再アニメーション
