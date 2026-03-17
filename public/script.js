@@ -1858,7 +1858,7 @@ function updateStats() {
 
   el.currentTime.textContent   = fmtMin(session.gameMinutes);
   el.timeLeft.textContent      = fmtRemain(session.gameMinutes, session.difficulty.endMinutes);
-  el.progressText.textContent  = `${Math.min(tasksDone + 1, total)} / ${total}`;
+  el.progressText.textContent  = `残り${Math.max(total - tasksDone, 0)}件`;
   el.progressFill.style.width  = `${pct}%`;
   el.cpsValue.textContent      = (Number.isFinite(+cps) ? cps : "0.0") + "回/秒";
   el.accuracyValue.textContent = `${accuracy}%`;
