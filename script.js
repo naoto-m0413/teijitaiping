@@ -388,6 +388,9 @@ const el = {
   modal:                document.getElementById("how-to-play-modal"),
   modalCloseBtn:        document.getElementById("modal-close-btn"),
   modalOkBtn:           document.getElementById("modal-ok-btn"),
+  recordsModal:         document.getElementById("records-modal"),
+  recordsModalCloseBtn: document.getElementById("records-modal-close-btn"),
+  recordsModalOkBtn:    document.getElementById("records-modal-ok-btn"),
   mobileWarning:        document.getElementById("mobile-warning"),
   mobileWarningDismiss: document.getElementById("mobile-warning-dismiss")
 };
@@ -546,6 +549,16 @@ function bindEvents() {
     if (e.target === el.modal) closeModal();
   });
 
+  // 実績モーダル
+  document.querySelectorAll(".records-btn").forEach((btn) => {
+    btn.addEventListener("click", openRecordsModal);
+  });
+  el.recordsModalCloseBtn.addEventListener("click", closeRecordsModal);
+  el.recordsModalOkBtn.addEventListener("click", closeRecordsModal);
+  el.recordsModal.addEventListener("click", (e) => {
+    if (e.target === el.recordsModal) closeRecordsModal();
+  });
+
   // モバイル警告 閉じる
   el.mobileWarningDismiss.addEventListener("click", () => {
     el.mobileWarning.hidden = true;
@@ -566,6 +579,10 @@ function handleGlobalKeyDown(e) {
   if (e.key === "Escape") {
     if (!el.modal.hidden) {
       closeModal();
+      return;
+    }
+    if (!el.recordsModal.hidden) {
+      closeRecordsModal();
       return;
     }
     if (state.currentScreen === "difficulty") {
@@ -631,6 +648,13 @@ function handleGlobalKeyDown(e) {
 
 function openModal()  { el.modal.hidden = false; }
 function closeModal() { el.modal.hidden = true; }
+
+function openRecordsModal() {
+  renderBestRecords();
+  renderLastResultSummary();
+  el.recordsModal.hidden = false;
+}
+function closeRecordsModal() { el.recordsModal.hidden = true; }
 
 /* ===========================
    難易度表示更新
@@ -1441,8 +1465,6 @@ function renderBestRecords() {
 
     el.bestRecords.appendChild(card);
   });
-  const gameEl = document.getElementById("best-records-game");
-  if (gameEl) gameEl.innerHTML = el.bestRecords.innerHTML;
 }
 
 /* ===========================
@@ -1468,8 +1490,6 @@ function renderLastResultSummary() {
     <p>スコア ${last.score.toLocaleString("ja-JP")} / WPM ${last.wpm}</p>
     <p>称号: ${last.title}</p>
   `;
-  const gameEl = document.getElementById("last-result-game");
-  if (gameEl) gameEl.innerHTML = el.lastResultSummary.innerHTML;
 }
 
 /* ===========================
