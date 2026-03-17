@@ -1389,10 +1389,9 @@ function renderJapaneseWithColor() {
     if (reading !== undefined) {
       // 漢字セグメント: <ruby>漢字<rt>色付き読み</rt></ruby>
       const ruby = document.createElement("ruby");
-      if (segEnd <= doneEnd)            ruby.className = "kana-done";
-      else if (segStart > doneEnd)      ruby.className = "kana-pending";
-      else if (segStart === doneEnd)    ruby.className = "kana-current";
-      else                              ruby.className = "kana-pending";
+      if (segEnd <= doneEnd)        ruby.className = "kana-done";
+      else if (segStart > doneEnd)  ruby.className = "kana-pending";
+      else                          ruby.className = "kana-current";
       ruby.appendChild(document.createTextNode(text));
       const rt = document.createElement("rt");
       appendColoredKana(rt, reading, segStart, doneEnd, currentEnd);
