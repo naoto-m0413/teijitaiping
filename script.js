@@ -609,6 +609,7 @@ const el = {
   taskName:             document.getElementById("task-name"),
   promptJapanese:       document.getElementById("prompt-japanese"),
   typingPreview:        document.getElementById("typing-preview"),
+  gameImeInput:         document.getElementById("game-ime-input"),
   wpmValue:             document.getElementById("wpm-value"),
   accuracyValue:        document.getElementById("accuracy-value"),
   missValue:            document.getElementById("miss-value"),
@@ -763,9 +764,9 @@ function bindEvents() {
     goToDifficulty();
   });
 
-  // ゲーム画面クリック時にフォーカスを body に戻す（input要素への誤フォーカス防止）
+  // ゲーム画面クリック時は入力欄へフォーカスを戻す
   document.getElementById("game-screen").addEventListener("click", () => {
-    document.activeElement?.blur();
+    focusGameInput();
   });
 
   // 結果画面ボタン
@@ -782,6 +783,13 @@ function bindEvents() {
 
   // グローバルキーダウン
   document.addEventListener("keydown", handleGlobalKeyDown);
+  el.gameImeInput.addEventListener("keydown", handleGameInputKeyDown);
+  el.gameImeInput.addEventListener("input", handleGameInput);
+  el.gameImeInput.addEventListener("blur", () => {
+    if (state.currentScreen === "game" && state.session) {
+      requestAnimationFrame(() => focusGameInput());
+    }
+  });
 
   // 遊び方モーダル
   document.querySelectorAll(".how-to-btn").forEach((btn) => {
@@ -825,47 +833,18 @@ function bindEvents() {
 }
 
 function handleGlobalKeyDown(e) {
-  // ============================================================
-  // ゲーム画面の入力処理（IME完全ブロック方式）
-  // keydown は IME が文字を受け取る前に発火するため、
-  // ここで preventDefault() を呼ぶことで IME への入力を防ぐ。
-  // ============================================================
   if (state.currentScreen === "game" && state.session) {
-    // 全角モード時: e.key === "Process" になるが e.code から実キーを取得して処理する
-    if (e.isComposing || e.key === "Process") {
-      e.preventDefault();
-      if (e.code && e.code.startsWith("Key") && !e.ctrlKey && !e.metaKey && !e.altKey) {
-        const char = e.code.slice(3).toLowerCase();
-        if (/^[a-z]$/.test(char)) processChar(char);
+    if (e.key === "Escape") {
+      // Escape は下の共通処理へ流す
+    } else {
+      if (e.key === "Tab" || e.code === "Space") {
+        e.preventDefault();
+      }
+      if (!e.ctrlKey && !e.metaKey && !e.altKey) {
+        focusGameInput();
       }
       return;
     }
-
-    // アルファベット入力
-    if (e.key.length === 1 && /^[a-zA-Z]$/.test(e.key) && !e.ctrlKey && !e.metaKey && !e.altKey) {
-      e.preventDefault();
-      processChar(e.key.toLowerCase());
-      return;
-    }
-
-    // Backspace
-    if (e.key === "Backspace") {
-      e.preventDefault();
-      if (state.session.currentTyped.length > 0) {
-        state.session.currentTyped = state.session.currentTyped.slice(0, -1);
-        renderJapaneseWithColor();
-        renderTypingPreview();
-      }
-      return;
-    }
-
-    // Tab / Space はゲーム中ブロック
-    if (e.key === "Tab" || e.code === "Space") {
-      e.preventDefault();
-      return;
-    }
-
-    return;
   }
 
   // Escape キー処理
@@ -935,6 +914,76 @@ function handleGlobalKeyDown(e) {
     goToReady();
     return;
   }
+}
+
+function focusGameInput({ resetValue = false } = {}) {
+  if (!el.gameImeInput) return;
+  if (resetValue) el.gameImeInput.value = "";
+  if (document.activeElement !== el.gameImeInput) {
+    el.gameImeInput.focus({ preventScroll: true });
+  }
+}
+
+function handleGameInputKeyDown(event) {
+  if (state.currentScreen !== "game" || !state.session) return;
+
+  if (event.key === "Backspace") {
+    event.preventDefault();
+    el.gameImeInput.value = "";
+    if (state.session.currentTyped.length > 0) {
+      state.session.currentTyped = state.session.currentTyped.slice(0, -1);
+      renderJapaneseWithColor();
+      renderTypingPreview();
+    }
+    return;
+  }
+
+  if (event.key === "Tab" || event.code === "Space") {
+    event.preventDefault();
+    return;
+  }
+
+}
+
+function handleGameInput(event) {
+  const rawValue = event.target.value;
+  event.target.value = "";
+
+  if (state.currentScreen !== "game" || !state.session || !rawValue) return;
+
+  const normalized = normalizeTypingChars(rawValue);
+  for (const char of normalized) {
+    processChar(char);
+  }
+}
+
+function normalizeTypingChars(text) {
+  const normalized = normalizeFullWidthAscii(text).toLowerCase();
+  const tokens = tokenize(normalized);
+  let result = "";
+
+  for (let i = 0; i < tokens.length; i++) {
+    const token = tokens[i];
+    if (/^[a-z]+$/.test(token)) {
+      result += token;
+      continue;
+    }
+    if (KANA_MAP.has(token)) {
+      result += getDisplayCanonical(tokens, i);
+    }
+  }
+
+  return result;
+}
+
+function normalizeFullWidthAscii(text) {
+  return [...text].map((char) => {
+    const code = char.charCodeAt(0);
+    if ((code >= 0xFF21 && code <= 0xFF3A) || (code >= 0xFF41 && code <= 0xFF5A)) {
+      return String.fromCharCode(code - 0xFEE0);
+    }
+    return char;
+  }).join("");
 }
 
 function openModal()  { el.modal.hidden = false; }
@@ -1028,8 +1077,7 @@ function startGame() {
   };
 
   switchScreen("game");
-  // フォーカスを外して IME が介入できる要素をなくす
-  document.activeElement?.blur();
+  focusGameInput({ resetValue: true });
 
   if (el.gameTip) {
     el.gameTip.textContent = TIPS[Math.floor(Math.random() * TIPS.length)];
