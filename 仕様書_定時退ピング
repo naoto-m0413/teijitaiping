@@ -225,16 +225,17 @@ minutesPerToken = (baseMinutes × timePressure) / max(tokens.length, 1)
 
 ```js
 {
-  jp:    "しゅうせいばんをごかくにんいただけますか",
-  parts: [["修正版をご確認いただけますか", "しゅうせいばんをごかくにんいただけますか"]]
+  jp:    "さいそうします",
+  parts: [["再", "さい"], ["送", "そう"], ["します"]]
 }
 ```
 
 - `parts` の各要素は `[表示テキスト]` または `[表示テキスト, ふりがな]` の形式
 - ふりがなあり → `<ruby>` タグで漢字テキストの上にひらがな読みを表示
+- **漢字は1文字ずつ独立したセグメントとして分割する**（連続する漢字をまとめない）
 - ひらがなのみの文言（text === reading）→ ふりがななしでそのまま表示
 - `jp` フィールドはひらがなのみで記述し、タイピングエンジンのトークン化に使用する
-- `difficultyMessagePools` 経由で生成される prompt は `text !== reading` の場合に `[[text, reading]]` 形式を自動付与する
+- `buildTaskList()` で `MESSAGE_KANJI_READINGS` を参照し、`segmentPartsWithKanjiReadings()` で1文字単位のセグメント配列を生成する
 
 ### 10.3 出題ルール
 
@@ -299,6 +300,23 @@ minutesPerToken = (baseMinutes × timePressure) / max(tokens.length, 1)
 - `text`: 表示テキスト（漢字混じり）
 - `reading`: ひらがな読み（タイピングエンジン入力用・`jp` フィールドに変換して使用）
 - `lengthType`: `"short"` / `"medium"` / `"long"`
+
+### 10.8 漢字読みデータ（MESSAGE_KANJI_READINGS）
+
+全文言の漢字1文字ごとの読みを `MESSAGE_KANJI_READINGS`（Map）で管理する。
+
+```js
+const MESSAGE_KANJI_READINGS = new Map([
+  ["再送します", [["再", "さい"], ["送", "そう"]]],
+  ...
+]);
+```
+
+- キー: 文言の `text`
+- 値: `[漢字1文字, 読み]` の配列（出現順）
+- `buildTaskList()` 内で参照し、`segmentPartsWithKanjiReadings()` に渡す
+- 同じ漢字が複数回登場する場合は出現順に配列に並べる（例: 「先」が異なる読みで2回登場）
+- データに存在しない漢字はひらがなセグメントとして扱い、ふりがな表示なし
 
 ### 10.8 文言の雰囲気方針
 
@@ -583,11 +601,15 @@ minutesPerToken = (baseMinutes × timePressure) / max(tokens.length, 1)
 
 ### 12.6 表示
 
-- 日本語テキストを漢字単位で `<ruby>` タグでふりがな表示（かなのみの場合はふりがななし）
+- 日本語テキストを漢字1文字単位で `<ruby>` タグでふりがな表示（かなのみの場合はふりがななし）
 - かな単位でスパン化し、状態ごとに色分け表示
   - `kana-done`: 打ち終わったかな（グレー）
   - `kana-current`: 現在打つかな（強調ハイライト）
   - `kana-pending`: まだ打っていないかな（通常色）
+- 漢字の `<ruby>` 要素全体のクラス判定:
+  - セグメント内の読みをすべて入力済み → `kana-done`
+  - セグメント開始位置 > 入力済み位置 → `kana-pending`（まだ到達していない漢字）
+  - それ以外（読みの途中を含む） → `kana-current`（**読みを打ち始めてから全て打ち終わるまで黄色を維持**）
 - タイピングプレビュー: 入力済み（緑）/ 現在位置（黄背景）/ 未入力（グレー）で色分け
 
 ### 12.7 取得するプレイ指標
@@ -1189,7 +1211,10 @@ const result = {
 - 準備画面（スペースキー待機テキスト・パルスアニメーション）
 - 遊び方モーダル
 - かなエンジンによる柔軟なローマ字入力
-- 漢字ふりがな（per-kanji ruby表示）
+- 漢字ふりがな（漢字1文字単位の `<ruby>` 表示・`segmentPartsWithKanjiReadings()` による分割）
+- 漢字ハイライトの1文字単位化（`MESSAGE_KANJI_READINGS` + `segmentPartsWithKanjiReadings()`）
+  - 連続する漢字（例:「再送」）を1文字ずつ独立セグメントに分割し、現在打っている漢字だけを黄色ハイライト
+  - 読みの途中（例:「ほ」まで打って「ん」を打ち始める）でも漢字を黄色で維持
 - かな単位のカラーハイライト表示
 - タイピング処理（正誤判定・プレビュー・サウンド・ミス赤フラッシュ）
 - IME対策（`<input>` 廃止・document.keydown のみ・isComposing/Process ブロック）
