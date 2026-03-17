@@ -748,7 +748,21 @@ function hideHeaderClock() {
 /* ===========================
    ゲーム開始
 =========================== */
+function showKisoFlash(callback) {
+  const flash = document.getElementById("kiso-flash");
+  flash.hidden = false;
+  // アニメーション終了後に非表示にしてコールバック実行
+  flash.addEventListener("animationend", () => {
+    flash.hidden = true;
+    callback();
+  }, { once: true });
+}
+
 function startGame() {
+  showKisoFlash(_startGame);
+}
+
+function _startGame() {
   stopStatTicker();
 
   const difficulty = DIFFICULTIES[state.selectedDifficulty];

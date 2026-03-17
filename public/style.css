@@ -1209,6 +1209,32 @@ h1 {
 }
 
 /* ===========================
+   起床！フラッシュオーバーレイ
+=========================== */
+.kiso-flash {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.55);
+  font-size: clamp(5rem, 18vw, 12rem);
+  font-weight: 900;
+  color: #fff;
+  letter-spacing: 0.05em;
+  pointer-events: none;
+  animation: kiso-pop 0.75s ease-out forwards;
+}
+
+@keyframes kiso-pop {
+  0%   { opacity: 0;   transform: scale(0.5); }
+  30%  { opacity: 1;   transform: scale(1.15); }
+  55%  { opacity: 1;   transform: scale(1.0); }
+  100% { opacity: 0;   transform: scale(1.3); }
+}
+
+/* ===========================
    難易度選択画面（ready screen）
 =========================== */
 .ready-diff-grid {
