@@ -1243,29 +1243,29 @@ h1 {
   box-shadow: 0 6px 20px rgba(0,0,0,0.2);
 }
 
-/* ホワイト企業：緑系 */
+/* ホワイト企業：淡緑・クリーム系（ゲーム画面accent-panelに合わせた） */
 .ready-diff-white {
-  background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
-  border-color: #66bb6a;
-  color: #1b5e20;
+  background: linear-gradient(135deg, #edf7e4 0%, #d8ecb8 100%);
+  border-color: rgba(78, 124, 54, 0.5);
+  color: #1e3a14;
 }
-.ready-diff-white.selected { border-color: #2e7d32; box-shadow: 0 6px 20px rgba(46,125,50,0.3); }
+.ready-diff-white.selected { border-color: rgba(78,124,54,0.85); box-shadow: 0 6px 20px rgba(78,124,54,0.3); }
 
-/* ふつう企業：黄色系 */
+/* ふつう企業：クリーム・黄土系（ゲーム画面panelと同トーン） */
 .ready-diff-normal {
-  background: linear-gradient(135deg, #fffde7 0%, #fff176 100%);
-  border-color: #f9a825;
-  color: #4e342e;
+  background: linear-gradient(135deg, #fdf7e6 0%, #ede0b0 100%);
+  border-color: rgba(140, 100, 40, 0.55);
+  color: #231509;
 }
-.ready-diff-normal.selected { border-color: #e65100; box-shadow: 0 6px 20px rgba(230,81,0,0.3); }
+.ready-diff-normal.selected { border-color: rgba(139,53,32,0.7); box-shadow: 0 6px 20px rgba(139,53,32,0.25); }
 
-/* ブラック企業：赤/暗色系 */
+/* ブラック企業：暗い茶・セピア系（重い雰囲気・ゲーム画面の暗背景テイスト） */
 .ready-diff-black {
-  background: linear-gradient(135deg, #3e1010 0%, #6b1a1a 100%);
-  border-color: #c62828;
-  color: #ffcdd2;
+  background: linear-gradient(135deg, #2c1a0c 0%, #3e2414 100%);
+  border-color: rgba(180, 80, 40, 0.5);
+  color: #f0d8c0;
 }
-.ready-diff-black.selected { border-color: #ef5350; box-shadow: 0 6px 20px rgba(239,83,80,0.4); }
+.ready-diff-black.selected { border-color: rgba(180,80,40,0.9); box-shadow: 0 6px 20px rgba(180,80,40,0.4); }
 
 .ready-diff-icon {
   font-size: 2rem;
@@ -1354,31 +1354,31 @@ h1 {
 }
 
 .title-action-start {
-  border-color: #7a3f12;
-  background: linear-gradient(180deg, #ffb347 0%, #ff8a3d 55%, #f36b2c 100%);
-  color: #fffdf6;
-  box-shadow: 0 4px 0 #7a3f12;
+  border-color: #5a2a10;
+  background: linear-gradient(180deg, #a04020 0%, #7a2c14 100%);
+  color: #fff8e8;
+  box-shadow: 0 4px 0 #381608;
 }
 
 .title-action-howto {
   border-color: #1e3a52;
-  background: linear-gradient(180deg, #3d6585 0%, #274a64 100%);
+  background: linear-gradient(180deg, #3d5f7a 0%, #284560 100%);
   color: #ddeeff;
-  box-shadow: 0 4px 0 #132436;
+  box-shadow: 0 4px 0 #122030;
 }
 
 .title-action-settings {
-  border-color: #2a3636;
-  background: linear-gradient(180deg, #485858 0%, #303e3e 100%);
-  color: #d8e8e8;
-  box-shadow: 0 4px 0 #161e1e;
+  border-color: #2e2014;
+  background: linear-gradient(180deg, #6a5030 0%, #4a3820 100%);
+  color: #fff5d8;
+  box-shadow: 0 4px 0 #1a1008;
 }
 
 .title-action-records {
-  border-color: #3a2448;
-  background: linear-gradient(180deg, #624878 0%, #422e56 100%);
-  color: #e8d8f8;
-  box-shadow: 0 4px 0 #221433;
+  border-color: #2a2010;
+  background: linear-gradient(180deg, #584430 0%, #3e2e1c 100%);
+  color: #f0dcc0;
+  box-shadow: 0 4px 0 #18100a;
 }
 
 /* ===========================
@@ -1672,7 +1672,7 @@ h1 {
   margin-bottom: 16px;
   padding: 24px;
   text-align: center;
-  background: linear-gradient(180deg, #c8e8a8 0%, #e8e0a8 100%);
+  background: linear-gradient(180deg, #e8f0c8 0%, #dde0a0 100%);
 }
 
 .result-hero-back-btn {
@@ -1793,11 +1793,11 @@ h1 {
 }
 
 .result-hero.is-success {
-  background: linear-gradient(180deg, #a8e088 0%, #d8e888 100%);
+  background: linear-gradient(180deg, #d8ecb8 0%, #e8e4a8 100%);
 }
 
 .result-hero.is-overtime {
-  background: linear-gradient(180deg, #e88870 0%, #e8c870 100%);
+  background: linear-gradient(180deg, #f0d4a0 0%, #e8c880 100%);
 }
 
 .result-hero.is-overtime .result-status {
