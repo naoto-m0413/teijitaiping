@@ -82,34 +82,34 @@ h1, h2, h3, p { margin-top: 0; }
 =========================== */
 .top-bar {
   width: 100%;
-  background: rgba(4, 5, 10, 0.88);
-  border-bottom: 1px solid rgba(0, 180, 255, 0.18);
+  background: rgba(8, 14, 28, 0.95);
+  border-bottom: 1px solid rgba(0, 180, 255, 0.25);
 }
 
 .top-bar-inner {
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: 18px;
+  gap: 20px;
   width: min(1360px, calc(100% - 28px));
   margin: 0 auto;
-  padding: 9px 0;
-  font-size: 0.88rem;
+  padding: 11px 0;
+  font-size: 1rem;
   color: #8aaac8;
 }
 
 .top-bar-label {
   margin-right: 4px;
-  font-size: 0.72rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--muted);
-  opacity: 0.7;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: #00c8e8;
 }
 
 .top-bar a {
-  color: #a8c8e8;
-  font-weight: 600;
+  color: #c8e0ff;
+  font-size: 1rem;
+  font-weight: 700;
   text-decoration: none;
   transition: color 120ms;
 }
