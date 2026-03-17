@@ -764,8 +764,9 @@ function bindEvents() {
     goToDifficulty();
   });
 
-  // ゲーム画面クリック時は入力欄へフォーカスを戻す
-  document.getElementById("game-screen").addEventListener("click", () => {
+  // ゲーム画面クリック時は入力欄へフォーカスを戻す（ボタン・リンクへのクリックは除く）
+  document.getElementById("game-screen").addEventListener("click", (e) => {
+    if (e.target.closest("button, a, input")) return;
     focusGameInput();
   });
 
