@@ -1675,18 +1675,10 @@ h1 {
 /* ===========================
    下部グリッド（メトリクス＋イベント）
 =========================== */
-.bottom-grid {
-  display: grid;
-  grid-template-columns: 220px 1fr;
-  gap: 8px;
-}
-
-.metrics-panel,
 .event-panel {
   padding: 8px 12px;
 }
 
-.metric-row,
 .result-row {
   display: flex;
   align-items: center;
@@ -1697,10 +1689,8 @@ h1 {
   font-size: 0.9rem;
 }
 
-.metric-row:last-child,
 .result-row:last-child { border-bottom: 0; }
 
-.metric-row strong,
 .result-row strong {
   font-size: 1rem;
   font-weight: 900;
@@ -2138,7 +2128,6 @@ h1 {
   }
 
   .status-grid      { grid-template-columns: 1fr 1fr 1fr; }
-  .bottom-grid      { grid-template-columns: 1fr; }
   .result-grid      { grid-template-columns: 1fr; }
 
   .office-title-stage {

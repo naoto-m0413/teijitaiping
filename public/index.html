@@ -311,24 +311,11 @@
                 <button id="game-retry-btn" class="ghost-button game-nav-btn" type="button">⬅ やり直す</button>
               </div>
 
-              <!-- メトリクスバー（コンパクト） -->
-              <div class="bottom-grid">
-                <section class="panel metrics-panel">
-                  <div class="metric-row">
-                    <span>タイプ速度</span>
-                    <strong id="cps-value">0回/秒</strong>
-                  </div>
-                  <div class="metric-row">
-                    <span>正確率</span>
-                    <strong id="accuracy-value">100%</strong>
-                  </div>
-                  <div class="metric-row">
-                    <span>ミス数</span>
-                    <strong id="miss-value">0</strong>
-                  </div>
-                </section>
-
-
+              <!-- メトリクス（非表示・JS参照用） -->
+              <div hidden>
+                <strong id="cps-value"></strong>
+                <strong id="accuracy-value"></strong>
+                <strong id="miss-value"></strong>
               </div>
             </div>
 
