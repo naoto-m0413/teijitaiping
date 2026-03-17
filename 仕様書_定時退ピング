@@ -504,9 +504,11 @@ const MESSAGE_KANJI_READINGS = new Map([
 ### 12.2 IME対策
 
 - 入力欄（`<input>` 要素）は使用しない。`document` の `keydown` イベントのみで処理する
-- `e.isComposing === true` または `e.key === "Process"` の場合は入力をスキップしてIME変換をブロックする
 - `keydown` イベントでゲーム画面中の `[a-z]` キー入力を直接 `processChar()` に渡し `preventDefault()`
 - 旧実装（hidden input + compositionstart キャンセル）は廃止済み
+- **全角モード対応**: `e.key === "Process"` または `e.isComposing === true` の場合（全角モード時にIMEが介入するケース）、`preventDefault()` でIMEへの入力を防いだうえで `e.code` から物理キーを取得して `processChar()` に渡す
+  - 例: `e.code === "KeyA"` → `"a"` として処理
+  - これにより半角・全角どちらのモードでも入力可能
 
 ### 12.3 かなエンジンの仕組み
 
