@@ -610,7 +610,7 @@ const el = {
   promptJapanese:       document.getElementById("prompt-japanese"),
   typingPreview:        document.getElementById("typing-preview"),
   gameImeInput:         document.getElementById("game-ime-input"),
-  wpmValue:             document.getElementById("wpm-value"),
+  cpsValue:             document.getElementById("cps-value"),
   accuracyValue:        document.getElementById("accuracy-value"),
   missValue:            document.getElementById("miss-value"),
   gameTip:              document.getElementById("game-tip"),
@@ -619,7 +619,7 @@ const el = {
   resultRank:           document.getElementById("result-rank"),
   resultTitle:          document.getElementById("result-title"),
   resultScore:          document.getElementById("result-score"),
-  resultWpm:            document.getElementById("result-wpm"),
+  resultCps:            document.getElementById("result-cps"),
   resultAccuracy:       document.getElementById("result-accuracy"),
   resultMisses:         document.getElementById("result-misses"),
   resultDifficulty:     document.getElementById("result-difficulty"),
@@ -1792,10 +1792,11 @@ function completeTask() {
 
   // タスクの文字数（かなトークン数をベースに計算）
   const charCount     = session.tokens.length;
-  const taskWpm       = (charCount / 5) / (elapsedSec / 60);
+  const taskCps       = charCount / elapsedSec;
   const taskAccuracy  = calcAccuracy(session.taskCorrectChars, session.taskMisses);
 
-  const speedBonus    = clamp(Math.round((taskWpm - 40) * 0.12), 0, 18);
+  // 基準速度 3.3回/秒（= 40WPM相当）を超えた分にボーナス
+  const speedBonus    = clamp(Math.round((taskCps - 40 / 12) * 1.44), 0, 18);
   const accBonus      = taskAccuracy >= 97 ? 7 : taskAccuracy >= 93 ? 4 : 0;
   const missPenalty   = Math.round(Math.max(session.taskMisses * 0.75, 0));
 
@@ -1828,8 +1829,8 @@ function updateStats() {
   const session = state.session;
   if (!session) return;
 
-  const elapsedMin = Math.max((performance.now() - session.realStartAt) / 60000, 1 / 60);
-  const wpm        = Math.round((session.correctChars / 5) / elapsedMin);
+  const elapsedSec = Math.max((performance.now() - session.realStartAt) / 1000, 1);
+  const cps        = (session.correctChars / elapsedSec).toFixed(1);
   const accuracy   = calcAccuracy(session.correctChars, session.misses);
 
   const tasksDone   = session.currentTaskIndex;
@@ -1844,7 +1845,7 @@ function updateStats() {
   el.timeLeft.textContent      = fmtRemain(session.gameMinutes, session.difficulty.endMinutes);
   el.progressText.textContent  = `${Math.min(tasksDone + 1, total)} / ${total}`;
   el.progressFill.style.width  = `${pct}%`;
-  el.wpmValue.textContent      = String(Number.isFinite(wpm) ? wpm : 0);
+  el.cpsValue.textContent      = (Number.isFinite(+cps) ? cps : "0.0") + "回/秒";
   el.accuracyValue.textContent = `${accuracy}%`;
   el.missValue.textContent     = String(session.misses);
 
@@ -1860,8 +1861,8 @@ function updateStats() {
 =========================== */
 function finishGame() {
   const session      = state.session;
-  const elapsedMin   = Math.max((performance.now() - session.realStartAt) / 60000, 1 / 60);
-  const wpm          = Math.round((session.correctChars / 5) / elapsedMin);
+  const elapsedSec   = Math.max((performance.now() - session.realStartAt) / 1000, 1);
+  const cps          = parseFloat((session.correctChars / elapsedSec).toFixed(1));
   const accuracy     = calcAccuracy(session.correctChars, session.misses);
   const leaveMinutes = session.gameMinutes;
   const endMinutes   = session.difficulty.endMinutes;
@@ -1881,7 +1882,7 @@ function finishGame() {
     overtimeMinutes: overtime,
     endMinutes,
     score,
-    wpm:      Number.isFinite(wpm) ? wpm : 0,
+    cps:      Number.isFinite(cps) ? cps : 0,
     accuracy,
     misses:   session.misses,
     rank,
@@ -1916,7 +1917,7 @@ function renderResult(result, recordStatus, prevResult) {
   if (el.resultRank)  el.resultRank.textContent = result.rank ?? "";
   el.resultTitle.textContent      = result.title;
   el.resultScore.textContent      = result.score.toLocaleString("ja-JP");
-  el.resultWpm.textContent        = String(result.wpm);
+  el.resultCps.textContent        = result.cps + "回/秒";
   el.resultAccuracy.textContent   = `${result.accuracy}%`;
   el.resultMisses.textContent     = String(result.misses);
   el.resultDifficulty.textContent = result.difficultyName;
@@ -1960,7 +1961,7 @@ function buildShareText(result) {
     "【定時退ピング】",
     `難易度：${result.difficultyName}`,
     `退勤時刻：${fmtMin(result.leaveMinutes)}　${statusText}`,
-    `スコア：${result.score.toLocaleString("ja-JP")}　WPM：${result.wpm}　正確率：${result.accuracy}%`,
+    `スコア：${result.score.toLocaleString("ja-JP")}　速度：${result.cps}回/秒　正確率：${result.accuracy}%`,
     `${result.rank ?? ""}　${result.title}`,
     "#定時退ピング #タイピングゲーム"
   ].join("\n");
@@ -2006,7 +2007,7 @@ async function shareResult() {
 function storeResult(result) {
   const records = state.records;
   const dr      = records.byDifficulty[result.difficultyId] || {
-    bestScore: 0, bestLeaveMinutes: null, bestWpm: 0, bestAccuracy: 0
+    bestScore: 0, bestLeaveMinutes: null, bestCps: 0, bestAccuracy: 0
   };
 
   const isBestScore = result.score > dr.bestScore;
@@ -2015,7 +2016,7 @@ function storeResult(result) {
   records.byDifficulty[result.difficultyId] = {
     bestScore:        Math.max(dr.bestScore,    result.score),
     bestLeaveMinutes: isBestLeave ? result.leaveMinutes : dr.bestLeaveMinutes,
-    bestWpm:          Math.max(dr.bestWpm,      result.wpm),
+    bestCps:          Math.max(dr.bestCps,      result.cps),
     bestAccuracy:     Math.max(dr.bestAccuracy, result.accuracy)
   };
   records.lastResult = result;
@@ -2073,7 +2074,7 @@ function renderLastResultSummary() {
   el.lastResultSummary.innerHTML = `
     <p class="summary-emphasis">${fmtMin(last.leaveMinutes)} 退勤</p>
     <p>${statusText} / ${last.difficultyName}</p>
-    <p>スコア ${last.score.toLocaleString("ja-JP")} / WPM ${last.wpm}</p>
+    <p>スコア ${last.score.toLocaleString("ja-JP")} / ${last.cps}回/秒</p>
     <p>称号: ${last.title}</p>
   `;
 }
