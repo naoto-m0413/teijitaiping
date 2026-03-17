@@ -1916,6 +1916,16 @@ function renderResult(result, recordStatus, prevResult) {
       : "ちょうど定時退社！";
   if (el.resultRank)  el.resultRank.textContent = result.rank ?? "";
   el.resultTitle.textContent      = result.title;
+
+  // ランク別カラーを rank・title に適用
+  const rankColorClasses = ["rank-color-sss","rank-color-ss","rank-color-s","rank-color-a","rank-color-b","rank-color-c","rank-color-d","rank-color-e","rank-color-f"];
+  const rankColorMap = { SSS:"rank-color-sss", SS:"rank-color-ss", S:"rank-color-s", A:"rank-color-a", B:"rank-color-b", C:"rank-color-c", D:"rank-color-d", E:"rank-color-e", F:"rank-color-f" };
+  const rankClass = rankColorMap[result.rank] ?? "";
+  [el.resultRank, el.resultTitle].forEach(el => {
+    if (!el) return;
+    el.classList.remove(...rankColorClasses);
+    if (rankClass) el.classList.add(rankClass);
+  });
   el.resultScore.textContent      = result.score.toLocaleString("ja-JP");
   el.resultCps.textContent        = result.cps + "回/秒";
   el.resultAccuracy.textContent   = `${result.accuracy}%`;

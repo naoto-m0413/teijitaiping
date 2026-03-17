@@ -1695,7 +1695,9 @@ h1 {
   margin-bottom: 16px;
   padding: 24px;
   text-align: center;
-  background: linear-gradient(180deg, #1a2030 0%, #141824 100%);
+  background:
+    radial-gradient(ellipse at 50% 40%, rgba(0, 80, 160, 0.12) 0%, transparent 70%),
+    linear-gradient(180deg, #0c1c34 0%, #081426 100%);
 }
 
 .result-hero-back-btn {
@@ -1775,14 +1777,12 @@ h1 {
   margin: 4px 0 2px;
   font-size: 2rem;
   font-weight: 900;
-  color: var(--accent);
   letter-spacing: 0.05em;
 }
 
 .result-title {
   margin: 0;
   font-size: 2rem;
-  color: var(--muted);
   font-weight: 700;
 }
 
@@ -1830,17 +1830,21 @@ h1 {
   overflow-y: auto;
 }
 
-.result-hero.is-success {
-  background: linear-gradient(180deg, #0a2018 0%, #102814 100%);
-}
-
-.result-hero.is-overtime {
-  background: linear-gradient(180deg, #2a1206 0%, #200e04 100%);
-}
 
 .result-hero.is-overtime .result-status {
   color: var(--accent-strong);
 }
+
+/* ランク別カラー（ランク・称号名に共通適用） */
+.rank-color-sss { color: #F6C344; }
+.rank-color-ss  { color: #FF8A3D; }
+.rank-color-s   { color: #FFD84D; }
+.rank-color-a   { color: #7CFF6B; }
+.rank-color-b   { color: #4DE3FF; }
+.rank-color-c   { color: #5FA8FF; }
+.rank-color-d   { color: #9B7BFF; }
+.rank-color-e   { color: #9AA3B2; }
+.rank-color-f   { color: #FF5C5C; }
 
 /* ===========================
    モーダル
