@@ -149,7 +149,7 @@ const DIFFICULTIES = {
     taskCount: 8,
     timePressure: 0.90,
     startMinutes: 10 * 60,        // 10:00
-    endMinutes:   19 * 60         // 19:00
+    endMinutes:   18 * 60         // 18:00
   },
   normal: {
     id: "normal",
@@ -158,7 +158,7 @@ const DIFFICULTIES = {
     taskCount: 8,
     timePressure: 1.0,
     startMinutes: 9 * 60,         // 09:00
-    endMinutes:   18 * 60         // 18:00
+    endMinutes:   19 * 60         // 19:00
   },
   black: {
     id: "black",
