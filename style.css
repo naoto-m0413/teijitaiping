@@ -1530,20 +1530,20 @@ h1 {
 }
 
 /* かなカラーコーディング（ルビ内で使用） */
-.kana-done    { color: #3a4e68; }
+.kana-done    { color: #4a6080; }
 .kana-current {
   color: #fff8e0;
   background: rgba(255, 180, 40, 0.75);
   border-radius: 2px;
   padding: 0 1px;
 }
-.kana-pending { color: #8090a8; }
+.kana-pending { color: #c0d4e8; }
 
 .prompt-romaji {
   margin: 0;
   font-family: "Menlo", "Consolas", "Courier New", monospace;
   font-size: 0.85rem;
-  color: var(--muted);
+  color: #b0c4d8;
   word-break: break-all;
   letter-spacing: 0.04em;
 }
@@ -1580,7 +1580,7 @@ h1 {
   font-weight: 700;
   box-shadow: 0 0 0 1.5px rgba(255, 180, 30, 0.5);
 }
-.char-pending { color: #3a4e62; }
+.char-pending { color: #7090b0; }
 
 .input-wrap {
   display: grid;

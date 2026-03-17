@@ -960,7 +960,11 @@ function handleGlobalKeyDown(e) {
 function openModal()  { el.modal.hidden = false; }
 function closeModal() { el.modal.hidden = true; }
 
-function openSettingsModal()  { el.settingsModal.hidden = false; }
+function openSettingsModal() {
+  el.soundToggle.textContent  = state.soundEnabled ? "ON" : "OFF";
+  el.soundToggle.dataset.on   = String(state.soundEnabled);
+  el.settingsModal.hidden = false;
+}
 function closeSettingsModal() { el.settingsModal.hidden = true; }
 
 function openRecordsModal() {
@@ -1120,7 +1124,11 @@ function buildTaskList(difficulty) {
   return chosen.map((task, idx) => {
     const msg    = pickMessage(difficulty.id, idx, chosen.length, usedTexts);
     usedTexts.add(msg.text);
-    const prompt = { jp: msg.reading, parts: [[msg.text]] };
+    const hasKanji = msg.text !== msg.reading;
+    const prompt = {
+      jp:    msg.reading,
+      parts: hasKanji ? [[msg.text, msg.reading]] : [[msg.text]]
+    };
     return { ...task, prompt };
   });
 }
@@ -1660,7 +1668,7 @@ function renderResult(result, recordStatus, prevResult) {
       ? `定時より ${fmtDuration(earlyMin)}早く退社！`
       : "ちょうど定時退社！";
   if (el.resultRank)  el.resultRank.textContent = result.rank ?? "";
-  el.resultTitle.textContent      = `称号：${result.title}`;
+  el.resultTitle.textContent      = result.title;
   el.resultScore.textContent      = result.score.toLocaleString("ja-JP");
   el.resultWpm.textContent        = String(result.wpm);
   el.resultAccuracy.textContent   = `${result.accuracy}%`;
@@ -1707,7 +1715,7 @@ function buildShareText(result) {
     `難易度：${result.difficultyName}`,
     `退勤時刻：${fmtMin(result.leaveMinutes)}　${statusText}`,
     `スコア：${result.score.toLocaleString("ja-JP")}　WPM：${result.wpm}　正確率：${result.accuracy}%`,
-    `ランク：${result.rank ?? ""}　称号：${result.title}`,
+    `${result.rank ?? ""}　${result.title}`,
     "#定時退ピング #タイピングゲーム"
   ].join("\n");
 }
