@@ -476,7 +476,7 @@ const difficultyMessagePools = {
         { text: "まだ共有されてないんですか",         reading: "まだきょうゆうされてないんですか",         lengthType: "medium" }
       ],
       long: [
-        { text: "先ほど送った資料に厳しい指摘が入りました",         reading: "さきほどそうしんしたしりょうにきびしいしてきがはいりました",     lengthType: "long" },
+        { text: "先ほど送った資料に厳しい指摘が入りました",         reading: "さきほどおくったしりょうにきびしいしてきがはいりました",     lengthType: "long" },
         { text: "お客様が怒ってるので今すぐ電話してください",       reading: "おきゃくさまがおこってるのでいますぐでんわしてください",         lengthType: "long" },
         { text: "上司が怒ってるので早急に対応してください",         reading: "じょうしがおこってるのでさっきゅうにたいおうしてください",       lengthType: "long" },
         { text: "この件まだ終わっていない理由を先に説明してください", reading: "このけんまだおわっていないりゆうをさきにせつめいしてください",   lengthType: "long" }
