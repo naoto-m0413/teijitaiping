@@ -758,7 +758,7 @@ function showKisoFlash(callback) {
 }
 
 function startGame() {
-  showKisoFlash(_startGame);
+  _startGame();
 }
 
 function _startGame() {
@@ -790,6 +790,7 @@ function _startGame() {
   };
 
   switchScreen("game");
+  showKisoFlash(() => {});
   // フォーカスを外して IME が介入できる要素をなくす
   document.activeElement?.blur();
   el.eventMessage.textContent = "静かな一日が始まりました。";
