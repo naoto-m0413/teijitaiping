@@ -603,7 +603,6 @@ const el = {
   lastResultSummary:    document.getElementById("last-result-summary"),
   currentTime:          document.getElementById("current-time"),
   timeLeft:             document.getElementById("time-left"),
-  progressText:         document.getElementById("progress-text"),
   progressFill:         document.getElementById("progress-fill"),
   taskName:             document.getElementById("task-name"),
   promptJapanese:       document.getElementById("prompt-japanese"),
@@ -1977,7 +1976,6 @@ function updateStats() {
 
   el.currentTime.textContent   = fmtMin(session.gameMinutes);
   el.timeLeft.textContent      = fmtRemain(session.gameMinutes, session.difficulty.endMinutes);
-  el.progressText.textContent  = `残り${Math.max(total - tasksDone, 0)}件`;
   el.progressFill.style.width  = `${pct}%`;
 
 
