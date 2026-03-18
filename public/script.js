@@ -2018,9 +2018,6 @@ function updateStats() {
   el.progressText.textContent  = `残り${Math.max(total - tasksDone, 0)}件`;
   el.progressFill.style.width  = `${pct}%`;
 
-  // プログレスバーの色をマイルストーンで切り替え
-  el.progressFill.classList.toggle("progress-fill--near", pct >= 80);
-  el.progressFill.classList.toggle("progress-fill--half", pct >= 50 && pct < 80);
 
   // マイルストーン演出
   if (!session.milestone50 && pct >= 50) {
