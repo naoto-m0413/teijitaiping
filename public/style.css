@@ -956,18 +956,16 @@ h1 {
 }
 
 .penalty-float {
-  position: fixed;
-  right: 24px;
-  top: 50%;
-  transform: translateY(0);
-  font-size: 1.4rem;
+  position: relative;
+  font-size: 0.85rem;
   font-weight: 900;
   color: #ffd700;
-  text-shadow: 0 0 8px rgba(255, 215, 0, 0.8);
+  text-shadow: 0 0 6px rgba(255, 215, 0, 0.8);
   pointer-events: none;
   opacity: 0;
   white-space: nowrap;
-  z-index: 500;
+  margin-left: 8px;
+  align-self: center;
 }
 
 .penalty-float.is-active {
@@ -976,8 +974,8 @@ h1 {
 
 @keyframes penalty-float-up {
   0%   { opacity: 1; transform: translateY(0); }
-  60%  { opacity: 1; transform: translateY(-60px); }
-  100% { opacity: 0; transform: translateY(-100px); }
+  60%  { opacity: 1; transform: translateY(-12px); }
+  100% { opacity: 0; transform: translateY(-20px); }
 }
 
 .sub-time-row {
