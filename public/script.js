@@ -2084,8 +2084,8 @@ function renderResult(result, recordStatus, prevResult) {
       const colorClass = rankColorMap2[rank] ?? "";
       const isCurrent = rank === result.rank;
       const scoreText = i < thresholds.length
-        ? thresholds[i].toLocaleString("ja-JP") + "〜"
-        : "〜" + (thresholds[thresholds.length - 1] - 1).toLocaleString("ja-JP");
+        ? thresholds[i].toLocaleString("ja-JP") + "以上"
+        : (thresholds[thresholds.length - 1] - 1).toLocaleString("ja-JP") + "以下";
       const title = titles[rank] ?? "";
       html += `<div class="rank-table-row${isCurrent ? " is-current" : ""}">` +
         `<span class="rank-table-rank-cell ${colorClass}">${rank}</span>` +

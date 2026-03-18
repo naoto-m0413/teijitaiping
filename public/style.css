@@ -1221,23 +1221,21 @@ h1 {
 
 .result-hero-label {
   position: absolute;
-  top: 14px;
-  left: 14px;
+  top: 16px;
+  left: 18px;
   margin: 0;
-  padding: 4px 12px;
-  border-radius: 6px;
-  border: 1px solid rgba(0, 160, 220, 0.3);
-  background: rgba(8, 20, 38, 0.85);
-  font-size: 0.82rem;
+  padding: 0;
+  font-size: 0.72rem;
   font-weight: 600;
-  letter-spacing: 0.06em;
-  color: #c8dff0;
+  letter-spacing: 0.14em;
+  color: var(--muted);
+  text-transform: uppercase;
 }
 
 .result-hero-actions {
   display: flex;
   gap: 8px;
-  margin-top: 14px;
+  margin-top: 16px;
   width: 100%;
 }
 
@@ -1258,9 +1256,9 @@ h1 {
 
 .result-hero-action-primary {
   color: #ffffff;
-  background: linear-gradient(180deg, #f07030 0%, #c04818 100%);
-  border: 2px solid #a03810;
-  box-shadow: 0 3px 0 #702008;
+  background: linear-gradient(180deg, #2272cc 0%, #1450a0 100%);
+  border: 2px solid #1050a8;
+  box-shadow: 0 3px 0 #0a2e60;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
 }
 
@@ -1330,7 +1328,7 @@ h1 {
 }
 
 .result-hero h2 {
-  margin: 10px 0;
+  margin: 6px 0 4px;
   font-size: clamp(3rem, 7vw, 5rem);
   line-height: 0.92;
   font-weight: 900;
@@ -1338,10 +1336,10 @@ h1 {
 }
 
 .result-status {
-  margin-bottom: 8px;
-  font-size: 1.18rem;
-  font-weight: 900;
-  color: var(--text);
+  margin: 0 0 4px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--muted);
 }
 
 .result-rank-row {
@@ -1349,18 +1347,21 @@ h1 {
   align-items: baseline;
   gap: 10px;
   justify-content: center;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
 }
 
 .result-rank {
-  margin: 4px 0 2px;
-  font-size: 2rem;
+  margin: 0;
+  font-size: 2.4rem;
   font-weight: 900;
   letter-spacing: 0.05em;
 }
 
 .result-title {
   margin: 0;
-  font-size: 2rem;
+  font-size: 1.6rem;
   font-weight: 700;
 }
 
@@ -1512,11 +1513,13 @@ h1 {
 }
 
 .rank-table-row.is-current > span {
-  background: rgba(255, 255, 255, 0.09);
+  background: rgba(255, 195, 60, 0.1);
   font-weight: 700;
 }
 
 .rank-table-row.is-current > span:first-child {
+  border-left: 3px solid var(--accent);
+  padding-left: 5px;
   border-radius: 6px 0 0 6px;
 }
 
