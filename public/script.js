@@ -165,7 +165,7 @@ const DIFFICULTIES = {
     id: "black",
     name: "ブラック企業",
     taskCount: 8,
-    gameSpeed: 15.0,
+    gameSpeed: 14.0,
     penaltyMinutes: 60,
     startMinutes: 7 * 60,         // 07:00
     endMinutes:   23 * 60         // 23:00
