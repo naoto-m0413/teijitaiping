@@ -699,72 +699,131 @@ function playTaskCompleteSound() {
 
 /* ===========================
    BGM（Web Audio API合成）
-   進行: C - Am - F - G × 2 (16拍ループ, 130BPM)
+   企業タイプ別に3種類のBGM
 =========================== */
 let bgmGain = audioCtx.createGain();
 bgmGain.gain.setValueAtTime(0.5, audioCtx.currentTime);
 bgmGain.connect(audioCtx.destination);
 let bgmTimerId = null;
 
-const BGM_BPM        = 130;
-const BGM_BEAT       = 60 / BGM_BPM;
-const BGM_LOOP_BEATS = 16;
+// 企業タイプ別BGM設定 [周波数(Hz), 開始拍, 長さ(拍)]
+const BGM_CONFIGS = {
+  // ホワイト企業: ポップ・明るい (C-G-Am-F, 148BPM, square)
+  white: {
+    bpm: 148, loopBeats: 16,
+    melodyType: "square", bassType: "triangle",
+    melodyGain: 0.05, bassGain: 0.05,
+    melody: [
+      // C major (拍 0-3): 明るく弾む
+      [523.25, 0,    0.3], [659.25, 0.5,  0.3], [783.99, 1,    0.3], [1046.5, 1.5,  0.6],
+      [880.00, 2.5,  0.3], [783.99, 3,    0.3], [659.25, 3.5,  0.3],
+      // G major (拍 4-7)
+      [783.99, 4,    0.3], [987.77, 4.5,  0.3], [1046.5, 5,    0.3], [987.77, 5.5,  0.6],
+      [880.00, 6.5,  0.3], [783.99, 7,    0.3], [987.77, 7.5,  0.3],
+      // A minor (拍 8-11)
+      [880.00, 8,    0.3], [1046.5, 8.5,  0.3], [880.00, 9,    0.3], [783.99, 9.5,  0.6],
+      [659.25, 10.5, 0.3], [783.99, 11,   0.3], [880.00, 11.5, 0.3],
+      // F major (拍 12-15)
+      [698.46, 12,   0.3], [880.00, 12.5, 0.3], [1046.5, 13,   0.3], [880.00, 13.5, 0.6],
+      [783.99, 14.5, 0.3], [698.46, 15,   0.3], [659.25, 15.5, 0.3],
+    ],
+    bass: [
+      [261.63, 0,  0.7], [261.63, 1,  0.7], [261.63, 2,  0.7], [261.63, 3,  0.7], // C3
+      [196.00, 4,  0.7], [196.00, 5,  0.7], [196.00, 6,  0.7], [196.00, 7,  0.7], // G3
+      [220.00, 8,  0.7], [220.00, 9,  0.7], [220.00, 10, 0.7], [220.00, 11, 0.7], // A3
+      [174.61, 12, 0.7], [174.61, 13, 0.7], [174.61, 14, 0.7], [174.61, 15, 0.7], // F3
+    ],
+  },
+  // 普通の企業: 標準 (C-Am-F-G, 130BPM, triangle)
+  normal: {
+    bpm: 130, loopBeats: 16,
+    melodyType: "triangle", bassType: "sine",
+    melodyGain: 0.08, bassGain: 0.06,
+    melody: [
+      // C major (拍 0-3)
+      [659.25, 0,    0.4], [783.99, 0.5,  0.4], [880.00, 1,    0.4],
+      [783.99, 1.5,  0.9], [659.25, 2.5,  0.4], [523.25, 3,    0.4], [587.33, 3.5,  0.4],
+      // A minor (拍 4-7)
+      [659.25, 4,    0.4], [880.00, 4.5,  0.4], [783.99, 5,    0.4],
+      [659.25, 5.5,  0.9], [523.25, 6.5,  0.4], [440.00, 7,    0.4], [493.88, 7.5,  0.4],
+      // F major (拍 8-11)
+      [523.25, 8,    0.4], [698.46, 8.5,  0.4], [783.99, 9,    0.4],
+      [698.46, 9.5,  0.9], [659.25, 10.5, 0.4], [587.33, 11,   0.4], [523.25, 11.5, 0.4],
+      // G major (拍 12-15)
+      [587.33, 12,   0.4], [783.99, 12.5, 0.4], [880.00, 13,   0.4],
+      [783.99, 13.5, 0.9], [659.25, 14.5, 0.4], [587.33, 15,   0.4], [493.88, 15.5, 0.4],
+    ],
+    bass: [
+      [130.81, 0,  1.8], [130.81, 2,  1.8], // C3
+      [220.00, 4,  1.8], [220.00, 6,  1.8], // A3
+      [174.61, 8,  1.8], [174.61, 10, 1.8], // F3
+      [196.00, 12, 1.8], [196.00, 14, 1.8], // G3
+    ],
+  },
+  // ブラック企業: 重い・暗い (Am-Dm-Am-E, 92BPM, sawtooth)
+  black: {
+    bpm: 92, loopBeats: 16,
+    melodyType: "sawtooth", bassType: "sawtooth",
+    melodyGain: 0.04, bassGain: 0.08,
+    melody: [
+      // A minor (拍 0-3): 重く引きずる
+      [440.00, 0,    0.8], [392.00, 1,    0.8],
+      [440.00, 2,    0.4], [466.16, 2.5,  0.4], [440.00, 3,    0.7],
+      // D minor (拍 4-7)
+      [440.00, 4,    0.5], [349.23, 4.5,  0.5],
+      [440.00, 5,    0.8], [415.30, 6,    0.8], [392.00, 7,    0.7],
+      // A minor (拍 8-11)
+      [440.00, 8,    0.8], [392.00, 9,    0.8],
+      [440.00, 10,   0.4], [466.16, 10.5, 0.4], [392.00, 11,   0.7],
+      // E (拍 12-15): 緊張感
+      [329.63, 12,   0.8], [369.99, 13,   0.8],
+      [415.30, 14,   0.5], [440.00, 14.5, 0.5], [415.30, 15,   0.9],
+    ],
+    bass: [
+      [110.00, 0,  1.8], [110.00, 2,  1.8], // A2 (重低音)
+      [146.83, 4,  1.8], [146.83, 6,  1.8], // D3
+      [110.00, 8,  1.8], [110.00, 10, 1.8], // A2
+      [164.81, 12, 1.8], [164.81, 14, 1.8], // E3
+    ],
+  },
+};
 
-// [周波数(Hz), 開始拍, 長さ(拍)]
-const BGM_MELODY = [
-  // C major (拍 0-3)
-  [659.25, 0,    0.4], [783.99, 0.5,  0.4], [880.00, 1,    0.4],
-  [783.99, 1.5,  0.9], [659.25, 2.5,  0.4], [523.25, 3,    0.4], [587.33, 3.5,  0.4],
-  // A minor (拍 4-7)
-  [659.25, 4,    0.4], [880.00, 4.5,  0.4], [783.99, 5,    0.4],
-  [659.25, 5.5,  0.9], [523.25, 6.5,  0.4], [440.00, 7,    0.4], [493.88, 7.5,  0.4],
-  // F major (拍 8-11)
-  [523.25, 8,    0.4], [698.46, 8.5,  0.4], [783.99, 9,    0.4],
-  [698.46, 9.5,  0.9], [659.25, 10.5, 0.4], [587.33, 11,   0.4], [523.25, 11.5, 0.4],
-  // G major (拍 12-15)
-  [587.33, 12,   0.4], [783.99, 12.5, 0.4], [880.00, 13,   0.4],
-  [783.99, 13.5, 0.9], [659.25, 14.5, 0.4], [587.33, 15,   0.4], [493.88, 15.5, 0.4],
-];
-
-const BGM_BASS = [
-  [130.81, 0,  1.8], [130.81, 2,  1.8],  // C3
-  [220.00, 4,  1.8], [220.00, 6,  1.8],  // A3
-  [174.61, 8,  1.8], [174.61, 10, 1.8],  // F3
-  [196.00, 12, 1.8], [196.00, 14, 1.8],  // G3
-];
+let currentBGMConfig = BGM_CONFIGS.normal;
 
 function playBGMBar(startTime) {
-  const b = BGM_BEAT;
-  BGM_MELODY.forEach(([freq, beatOff, durBeats]) => {
+  const cfg = currentBGMConfig;
+  const b = 60 / cfg.bpm;
+  cfg.melody.forEach(([freq, beatOff, durBeats]) => {
     const t = startTime + beatOff * b;
     const d = durBeats * b;
     const osc = audioCtx.createOscillator();
     const g   = audioCtx.createGain();
-    osc.type = "triangle";
+    osc.type = cfg.melodyType;
     osc.frequency.setValueAtTime(freq, t);
     g.gain.setValueAtTime(0, t);
-    g.gain.linearRampToValueAtTime(0.08, t + 0.01);
+    g.gain.linearRampToValueAtTime(cfg.melodyGain, t + 0.01);
     g.gain.exponentialRampToValueAtTime(0.001, t + d);
     osc.connect(g); g.connect(bgmGain);
     osc.start(t); osc.stop(t + d + 0.01);
   });
-  BGM_BASS.forEach(([freq, beatOff, durBeats]) => {
+  cfg.bass.forEach(([freq, beatOff, durBeats]) => {
     const t = startTime + beatOff * b;
     const d = durBeats * b;
     const osc = audioCtx.createOscillator();
     const g   = audioCtx.createGain();
-    osc.type = "sine";
+    osc.type = cfg.bassType;
     osc.frequency.setValueAtTime(freq, t);
     g.gain.setValueAtTime(0, t);
-    g.gain.linearRampToValueAtTime(0.06, t + 0.02);
+    g.gain.linearRampToValueAtTime(cfg.bassGain, t + 0.02);
     g.gain.exponentialRampToValueAtTime(0.001, t + d);
     osc.connect(g); g.connect(bgmGain);
     osc.start(t); osc.stop(t + d + 0.01);
   });
 }
 
-function startBGM() {
+function startBGM(difficultyId) {
   if (!state.soundEnabled) return;
+  currentBGMConfig = BGM_CONFIGS[difficultyId] ?? BGM_CONFIGS.normal;
   stopBGM();
   // 旧オシレーターが旧gainノードに残っているため、切断して新規ノードを作成する
   bgmGain.disconnect();
@@ -772,7 +831,7 @@ function startBGM() {
   bgmGain.gain.setValueAtTime(0.5, audioCtx.currentTime);
   bgmGain.connect(audioCtx.destination);
   audioCtx.resume();
-  const loopMs = BGM_LOOP_BEATS * BGM_BEAT * 1000;
+  const loopMs = currentBGMConfig.loopBeats * (60 / currentBGMConfig.bpm) * 1000;
   function loop() {
     playBGMBar(audioCtx.currentTime);
     bgmTimerId = setTimeout(loop, loopMs - 80);
@@ -1176,7 +1235,7 @@ function startGame() {
   };
 
   switchScreen("game");
-  startBGM();
+  startBGM(state.selectedDifficulty);
   showKisoFlash(difficulty.id);
   focusGameInput({ resetValue: true });
 
