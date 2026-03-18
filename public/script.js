@@ -657,22 +657,26 @@ function playKeySound(isCorrect) {
   const gain = audioCtx.createGain();
   osc.connect(gain);
   gain.connect(audioCtx.destination);
+  const t = audioCtx.currentTime;
 
   if (isCorrect) {
-    osc.type      = "square";
-    osc.frequency.setValueAtTime(880, audioCtx.currentTime);
-    osc.frequency.exponentialRampToValueAtTime(660, audioCtx.currentTime + 0.06);
-    gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.08);
-    osc.start();
-    osc.stop(audioCtx.currentTime + 0.08);
+    // 明るくポップなtick音
+    osc.type = "triangle";
+    osc.frequency.setValueAtTime(1100, t);
+    osc.frequency.exponentialRampToValueAtTime(780, t + 0.05);
+    gain.gain.setValueAtTime(0.07, t);
+    gain.gain.exponentialRampToValueAtTime(0.001, t + 0.07);
+    osc.start(t);
+    osc.stop(t + 0.07);
   } else {
-    osc.type      = "sawtooth";
-    osc.frequency.setValueAtTime(180, audioCtx.currentTime);
-    gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.1);
-    osc.start();
-    osc.stop(audioCtx.currentTime + 0.1);
+    // 小さく短い低音のbop
+    osc.type = "sine";
+    osc.frequency.setValueAtTime(220, t);
+    osc.frequency.exponentialRampToValueAtTime(150, t + 0.06);
+    gain.gain.setValueAtTime(0.04, t);
+    gain.gain.exponentialRampToValueAtTime(0.001, t + 0.06);
+    osc.start(t);
+    osc.stop(t + 0.06);
   }
 }
 
@@ -691,6 +695,91 @@ function playTaskCompleteSound() {
     osc.start(t);
     osc.stop(t + 0.18);
   });
+}
+
+/* ===========================
+   BGM（Web Audio API合成）
+   進行: C - Am - F - G × 2 (16拍ループ, 130BPM)
+=========================== */
+const bgmGain = audioCtx.createGain();
+bgmGain.gain.setValueAtTime(0.5, audioCtx.currentTime);
+bgmGain.connect(audioCtx.destination);
+let bgmTimerId = null;
+
+const BGM_BPM        = 130;
+const BGM_BEAT       = 60 / BGM_BPM;
+const BGM_LOOP_BEATS = 16;
+
+// [周波数(Hz), 開始拍, 長さ(拍)]
+const BGM_MELODY = [
+  // C major (拍 0-3)
+  [659.25, 0,    0.4], [783.99, 0.5,  0.4], [880.00, 1,    0.4],
+  [783.99, 1.5,  0.9], [659.25, 2.5,  0.4], [523.25, 3,    0.4], [587.33, 3.5,  0.4],
+  // A minor (拍 4-7)
+  [659.25, 4,    0.4], [880.00, 4.5,  0.4], [783.99, 5,    0.4],
+  [659.25, 5.5,  0.9], [523.25, 6.5,  0.4], [440.00, 7,    0.4], [493.88, 7.5,  0.4],
+  // F major (拍 8-11)
+  [523.25, 8,    0.4], [698.46, 8.5,  0.4], [783.99, 9,    0.4],
+  [698.46, 9.5,  0.9], [659.25, 10.5, 0.4], [587.33, 11,   0.4], [523.25, 11.5, 0.4],
+  // G major (拍 12-15)
+  [587.33, 12,   0.4], [783.99, 12.5, 0.4], [880.00, 13,   0.4],
+  [783.99, 13.5, 0.9], [659.25, 14.5, 0.4], [587.33, 15,   0.4], [493.88, 15.5, 0.4],
+];
+
+const BGM_BASS = [
+  [130.81, 0,  1.8], [130.81, 2,  1.8],  // C3
+  [220.00, 4,  1.8], [220.00, 6,  1.8],  // A3
+  [174.61, 8,  1.8], [174.61, 10, 1.8],  // F3
+  [196.00, 12, 1.8], [196.00, 14, 1.8],  // G3
+];
+
+function playBGMBar(startTime) {
+  const b = BGM_BEAT;
+  BGM_MELODY.forEach(([freq, beatOff, durBeats]) => {
+    const t = startTime + beatOff * b;
+    const d = durBeats * b;
+    const osc = audioCtx.createOscillator();
+    const g   = audioCtx.createGain();
+    osc.type = "triangle";
+    osc.frequency.setValueAtTime(freq, t);
+    g.gain.setValueAtTime(0, t);
+    g.gain.linearRampToValueAtTime(0.08, t + 0.01);
+    g.gain.exponentialRampToValueAtTime(0.001, t + d);
+    osc.connect(g); g.connect(bgmGain);
+    osc.start(t); osc.stop(t + d + 0.01);
+  });
+  BGM_BASS.forEach(([freq, beatOff, durBeats]) => {
+    const t = startTime + beatOff * b;
+    const d = durBeats * b;
+    const osc = audioCtx.createOscillator();
+    const g   = audioCtx.createGain();
+    osc.type = "sine";
+    osc.frequency.setValueAtTime(freq, t);
+    g.gain.setValueAtTime(0, t);
+    g.gain.linearRampToValueAtTime(0.06, t + 0.02);
+    g.gain.exponentialRampToValueAtTime(0.001, t + d);
+    osc.connect(g); g.connect(bgmGain);
+    osc.start(t); osc.stop(t + d + 0.01);
+  });
+}
+
+function startBGM() {
+  if (!state.soundEnabled) return;
+  stopBGM();
+  audioCtx.resume();
+  bgmGain.gain.cancelScheduledValues(audioCtx.currentTime);
+  bgmGain.gain.setValueAtTime(0.5, audioCtx.currentTime);
+  const loopMs = BGM_LOOP_BEATS * BGM_BEAT * 1000;
+  function loop() {
+    playBGMBar(audioCtx.currentTime);
+    bgmTimerId = setTimeout(loop, loopMs - 80);
+  }
+  loop();
+}
+
+function stopBGM() {
+  if (bgmTimerId !== null) { clearTimeout(bgmTimerId); bgmTimerId = null; }
+  bgmGain.gain.setTargetAtTime(0, audioCtx.currentTime, 0.12);
 }
 
 /* ===========================
@@ -755,6 +844,7 @@ function bindEvents() {
   // ゲーム画面 メイン画面へ戻る／やり直す
   document.getElementById("game-back-btn").addEventListener("click", () => {
     stopStatTicker();
+    stopBGM();
     hideHeaderClock();
     switchScreen("title");
     renderBestRecords();
@@ -762,6 +852,7 @@ function bindEvents() {
   });
   document.getElementById("game-retry-btn").addEventListener("click", () => {
     stopStatTicker();
+    stopBGM();
     goToDifficulty();
   });
 
@@ -1082,6 +1173,7 @@ function startGame() {
   };
 
   switchScreen("game");
+  startBGM();
   showKisoFlash(difficulty.id);
   focusGameInput({ resetValue: true });
 
@@ -2179,6 +2271,7 @@ function fmtRemain(currentMin, endMin) {
    集計演出オーバーレイ
 =========================== */
 function showTallyScreen(onDone) {
+  stopBGM();
   const overlay = document.getElementById("tally-overlay");
 
   overlay.offsetHeight; // reflow
