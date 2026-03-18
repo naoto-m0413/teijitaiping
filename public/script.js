@@ -606,6 +606,7 @@ const el = {
   lastResultSummary:    document.getElementById("last-result-summary"),
   currentTime:          document.getElementById("current-time"),
   timeLeft:             document.getElementById("time-left"),
+  penaltyFloat:         document.getElementById("penalty-float"),
   progressFill:         document.getElementById("progress-fill"),
   taskName:             document.getElementById("task-name"),
   promptJapanese:       document.getElementById("prompt-japanese"),
@@ -1926,12 +1927,22 @@ function processChar(char) {
   updateStats();
 }
 
+function showPenaltyFloat(minutes) {
+  const el_ = el.penaltyFloat;
+  if (!el_) return;
+  el_.textContent = `+${minutes}分`;
+  el_.classList.remove("is-active");
+  void el_.offsetWidth; // reflow で animation リセット
+  el_.classList.add("is-active");
+}
+
 function flashInputError() {
   // ミスのたびに時間を直接加算 + 2秒間赤表示
   if (state.session) {
     const prev = state.session.gameMinutes;
     state.session.gameMinutes += state.session.difficulty.penaltyMinutes;
     state.session.speedPenaltyUntil = performance.now() + 100;
+    showPenaltyFloat(state.session.difficulty.penaltyMinutes);
     if (prev <= state.session.difficulty.endMinutes &&
         state.session.gameMinutes > state.session.difficulty.endMinutes) {
       showMilestoneFlash("残業開始...", "overtime");
