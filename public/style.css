@@ -1332,7 +1332,7 @@ h1 {
 .result-hero {
   position: relative;
   margin-bottom: 16px;
-  padding: 52px 24px 24px;
+  padding: 28px 24px 24px;
   text-align: center;
   background:
     radial-gradient(ellipse at 50% 40%, rgba(0, 80, 160, 0.12) 0%, transparent 70%),
@@ -1433,7 +1433,7 @@ h1 {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  margin: 8px 0;
+  margin: 0 0 4px;
   flex-wrap: wrap;
 }
 
