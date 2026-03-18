@@ -701,7 +701,7 @@ function playTaskCompleteSound() {
    BGM（Web Audio API合成）
    進行: C - Am - F - G × 2 (16拍ループ, 130BPM)
 =========================== */
-const bgmGain = audioCtx.createGain();
+let bgmGain = audioCtx.createGain();
 bgmGain.gain.setValueAtTime(0.5, audioCtx.currentTime);
 bgmGain.connect(audioCtx.destination);
 let bgmTimerId = null;
@@ -766,9 +766,12 @@ function playBGMBar(startTime) {
 function startBGM() {
   if (!state.soundEnabled) return;
   stopBGM();
-  audioCtx.resume();
-  bgmGain.gain.cancelScheduledValues(audioCtx.currentTime);
+  // 旧オシレーターが旧gainノードに残っているため、切断して新規ノードを作成する
+  bgmGain.disconnect();
+  bgmGain = audioCtx.createGain();
   bgmGain.gain.setValueAtTime(0.5, audioCtx.currentTime);
+  bgmGain.connect(audioCtx.destination);
+  audioCtx.resume();
   const loopMs = BGM_LOOP_BEATS * BGM_BEAT * 1000;
   function loop() {
     playBGMBar(audioCtx.currentTime);
