@@ -1077,10 +1077,7 @@ h1 {
 
 /* かなカラーコーディング（ルビ内で使用） */
 .kana-done    { color: #4a6080; }
-.kana-current {
-  color: #ffe566;
-  text-shadow: 0 0 10px rgba(255, 220, 80, 0.7), 0 0 3px rgba(255, 255, 200, 0.5);
-}
+.kana-current { color: #ffd234; }
 .kana-pending { color: #7a9ab8; }
 
 .prompt-romaji {
