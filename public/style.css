@@ -1664,6 +1664,14 @@ h1 {
   letter-spacing: 0.1em;
 }
 
+.milestone-flash--midnight {
+  background: rgba(10, 10, 40, 0.97);
+  box-shadow: 0 4px 28px rgba(80, 80, 200, 0.6);
+  font-size: 1.4rem;
+  letter-spacing: 0.1em;
+  color: #aaaaff;
+}
+
 /* ===========================
    集計演出オーバーレイ
 =========================== */

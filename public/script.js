@@ -1937,6 +1937,9 @@ function flashInputError() {
       showMilestoneFlash("残業開始...", "overtime");
       playMilestoneSound("overtime");
     }
+    if (Math.floor(prev / (24 * 60)) < Math.floor(state.session.gameMinutes / (24 * 60))) {
+      showMilestoneFlash("日付が変わった...", "midnight");
+    }
   }
   el.typingPreview.classList.add("input-error");
   setTimeout(() => el.typingPreview.classList.remove("input-error"), 200);
@@ -2292,7 +2295,7 @@ function calcAccuracy(correct, misses) {
 }
 
 function fmtMin(totalMin) {
-  const t = Math.floor(totalMin);
+  const t = Math.floor(totalMin) % (24 * 60);
   const h = Math.floor(t / 60);
   const m = t % 60;
   return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}`;
@@ -2397,6 +2400,10 @@ function startStatTicker() {
         session.gameMinutes > session.difficulty.endMinutes) {
       showMilestoneFlash("残業開始...", "overtime");
       playMilestoneSound("overtime");
+    }
+    // 24時を超えた瞬間に「日付が変わった...」
+    if (Math.floor(prevMinutes / (24 * 60)) < Math.floor(session.gameMinutes / (24 * 60))) {
+      showMilestoneFlash("日付が変わった...", "midnight");
     }
     updateStats();
   }, TICK_MS);
