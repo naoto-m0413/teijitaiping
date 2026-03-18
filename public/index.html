@@ -360,7 +360,11 @@
                   <p id="result-rank" class="result-rank">SSS</p>
                   <p id="result-title" class="result-title">定時の守護神</p>
                 </div>
-                <button id="back-button" class="ghost-button result-hero-back-btn" type="button">タイトルへ戻る</button>
+                <div class="result-hero-actions">
+                  <button id="retry-button" class="result-hero-action-btn result-hero-action-primary" type="button">今の会社で再挑戦</button>
+                  <button id="change-difficulty-btn" class="result-hero-action-btn result-hero-action-secondary" type="button">転職する</button>
+                  <button id="back-button" class="result-hero-action-btn result-hero-action-ghost" type="button">タイトルへ戻る</button>
+                </div>
               </div>
 
               <div class="result-grid">
@@ -394,15 +398,9 @@
 
                 <section class="panel result-actions">
                   <p class="result-section-title">次の仕事へ</p>
-                  <button id="retry-button" class="result-primary-btn" type="button">もう一度挑戦</button>
-                  <button id="change-difficulty-btn" class="result-secondary-btn" type="button">難易度を変更する</button>
+                  <div class="rank-table-inner" id="rank-table-inner"></div>
                 </section>
               </div>
-
-              <section class="panel result-rank-table">
-                <p class="result-section-title">ランク一覧</p>
-                <div class="rank-table-inner" id="rank-table-inner"></div>
-              </section>
             </div>
           </div>
 

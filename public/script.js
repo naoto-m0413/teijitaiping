@@ -1987,7 +1987,7 @@ function renderResult(result, recordStatus, prevResult) {
       A: "rank-color-a", B: "rank-color-b", C: "rank-color-c",
       D: "rank-color-d", E: "rank-color-e", F: "rank-color-f"
     };
-    let html = `<div class="rank-table-header"><span>ランク</span><span>スコア</span><span>称号</span></div>`;
+    let html = `<div class="rank-table-header"><span>ランク</span><span>称号</span><span>スコア</span></div>`;
     RANKS.forEach((rank, i) => {
       const colorClass = rankColorMap2[rank] ?? "";
       const isCurrent = rank === result.rank;
@@ -1997,8 +1997,8 @@ function renderResult(result, recordStatus, prevResult) {
       const title = titles[rank] ?? "";
       html += `<div class="rank-table-row${isCurrent ? " is-current" : ""}">` +
         `<span class="rank-table-rank-cell ${colorClass}">${rank}</span>` +
-        `<span class="rank-table-score-cell">${scoreText}</span>` +
         `<span>${title}</span>` +
+        `<span class="rank-table-score-cell">${scoreText}</span>` +
         `</div>`;
     });
     el.rankTableInner.innerHTML = html;
