@@ -2111,9 +2111,11 @@ function renderResult(result, recordStatus, prevResult) {
     el.classList.remove(...rankColorClasses);
     if (rankClass) el.classList.add(rankClass);
   });
-  el.resultScore.textContent      = earlyMin >= 0
-    ? `+${earlyMin}分`
-    : `${earlyMin}分`;
+  el.resultScore.textContent      = earlyMin > 0
+    ? `${earlyMin}分早退`
+    : earlyMin < 0
+      ? `${Math.abs(earlyMin)}分残業`
+      : "ちょうど定時";
   el.resultCps.textContent        = result.cps + "回/秒";
   el.resultAccuracy.textContent   = `${result.accuracy}%`;
   el.resultMisses.textContent     = String(result.misses);
@@ -2146,17 +2148,17 @@ function renderResult(result, recordStatus, prevResult) {
       A: "rank-color-a", B: "rank-color-b", C: "rank-color-c",
       D: "rank-color-d", E: "rank-color-e", F: "rank-color-f"
     };
-    let html = `<div class="rank-table-header"><span>ランク</span><span>称号</span><span>定時比</span></div>`;
+    const endMin = result.endMinutes;
+    let html = `<div class="rank-table-header"><span>ランク</span><span>称号</span><span>退勤目標</span></div>`;
     RANKS.forEach((rank, i) => {
       const colorClass = rankColorMap2[rank] ?? "";
       const isCurrent = rank === result.rank;
       let timeText;
       if (i < thresholds.length) {
-        const t = thresholds[i];
-        timeText = t >= 0 ? `${t}分以上早退` : `${Math.abs(t)}分以内残業`;
+        timeText = fmtMin(endMin - thresholds[i]) + "以前";
       } else {
-        const last = thresholds[thresholds.length - 1];
-        timeText = `${Math.abs(last) + 1}分超残業`;
+        const lastThreshold = thresholds[thresholds.length - 1];
+        timeText = fmtMin(endMin - lastThreshold + 1) + "以降";
       }
       const title = titles[rank] ?? "";
       html += `<div class="rank-table-row${isCurrent ? " is-current" : ""}">` +
