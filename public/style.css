@@ -1014,7 +1014,7 @@ h1 {
 =========================== */
 .task-panel {
   position: relative;
-  padding: 10px 12px;
+  padding: 6px 12px 10px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -1023,15 +1023,16 @@ h1 {
 
 .task-header {
   display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 8px;
+  align-items: baseline;
+  gap: 7px;
+  margin-bottom: 6px;
 }
 
-.task-header h2 {
+.task-name {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text);
   margin: 0;
-  font-size: 1.2rem;
 }
 
 .difficulty-chip {
@@ -1047,16 +1048,16 @@ h1 {
 }
 
 .sentence-panel {
-  padding: 10px 14px;
+  padding: 8px 14px;
   border: 2px solid rgba(80, 160, 220, 0.28);
   border-radius: 14px;
   background: linear-gradient(180deg, rgba(14, 26, 52, 0.97) 0%, rgba(10, 20, 40, 0.97) 100%);
-  margin-bottom: 8px;
+  margin-bottom: 6px;
   flex-shrink: 0;
 }
 
 .prompt-japanese {
-  margin: 4px 0 8px;
+  margin: 2px 0 4px;
   font-size: clamp(1.3rem, 3.2vw, 2rem);
   font-weight: 900;
   line-height: 3.2;
