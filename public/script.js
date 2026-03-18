@@ -1953,7 +1953,7 @@ function flashInputError() {
     }
   }
   el.typingPreview.classList.add("input-error");
-  setTimeout(() => el.typingPreview.classList.remove("input-error"), 200);
+  setTimeout(() => el.typingPreview.classList.remove("input-error"), 400);
   el.typingPreview.animate(
     [
       { transform: "translateX(0)"   },

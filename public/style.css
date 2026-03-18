@@ -970,7 +970,7 @@ h1 {
 }
 
 .penalty-float.is-active {
-  animation: penalty-flash 0.6s ease-out forwards;
+  animation: penalty-flash 0.4s ease-out forwards;
 }
 
 @keyframes penalty-flash {
