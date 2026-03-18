@@ -2193,7 +2193,6 @@ function showTallyScreen(onDone) {
   mainText.textContent = messages[0].main;
   subText.textContent  = messages[0].sub;
 
-  overlay.hidden = false;
   overlay.offsetHeight; // reflow
   overlay.classList.add("is-visible");
 
@@ -2207,7 +2206,6 @@ function showTallyScreen(onDone) {
     clearInterval(interval);
     overlay.classList.remove("is-visible");
     setTimeout(() => {
-      overlay.hidden = true;
       onDone();
     }, 260);
   }, 1800);
