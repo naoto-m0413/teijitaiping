@@ -2,7 +2,7 @@
    定時退ピング - ゲームスクリプト
 =========================== */
 
-const STORAGE_KEY = "teijitaiping_records_v1";
+const STORAGE_KEY = "teijitaiping_records_v2";
 const START_MINUTES = 8 * 60 + 30;   // 08:30
 const END_MINUTES   = 17 * 60 + 30;  // 17:30
 
@@ -530,10 +530,11 @@ const SCENE_MAP = {
 =========================== */
 const RANKS = ["SSS", "SS", "S", "A", "B", "C", "D", "E", "F"];
 
+// 定時より何分早く退勤できたか（正=早退、負=残業）で判定
 const RANK_THRESHOLDS = {
-  white:  [6000, 5000, 4000, 3000, 2000, 1400, 900, 500],
-  normal: [12000, 10000, 8000, 6000, 4000, 2800, 1700, 900],
-  black:  [24000, 19500, 15000, 11000, 7500, 5000, 3200, 1600]
+  white:  [90, 70, 50, 35, 20,  5, -10, -25],
+  normal: [60, 45, 30, 20, 10,  0, -15, -30],
+  black:  [30, 20, 10,  5,  0, -15, -30, -60],
 };
 
 const RANK_TITLES = {
@@ -2055,15 +2056,8 @@ function finishGame() {
   const leaveMinutes   = session.gameMinutes;
   const endMinutes     = session.difficulty.endMinutes;
   const overtime       = Math.max(leaveMinutes - endMinutes, 0);
-  const earlyMin       = Math.max(endMinutes - leaveMinutes, 0);
-  const baseScore      = session.correctChars * (accuracy / 100) * cps * session.difficulty.multiplier * 3;
-  const earlyBonus     = earlyMin * 30;
-  const overtimePenalty = overtime * 20;
-  const score          = Math.max(
-    Math.round(baseScore + earlyBonus - overtimePenalty),
-    0
-  );
-  const rank  = resolveRank(score, session.difficulty.id);
+  const earlyMinutes   = endMinutes - leaveMinutes; // 正=早退、負=残業
+  const rank  = resolveRank(earlyMinutes, session.difficulty.id);
   const title = resolveTitle(rank, session.difficulty.id);
 
   const result = {
@@ -2071,8 +2065,8 @@ function finishGame() {
     difficultyName:  session.difficulty.name,
     leaveMinutes,
     overtimeMinutes: overtime,
+    earlyMinutes,
     endMinutes,
-    score,
     cps:      Number.isFinite(cps) ? cps : 0,
     accuracy,
     misses:   session.misses,
@@ -2117,7 +2111,10 @@ function renderResult(result, recordStatus, prevResult) {
     el.classList.remove(...rankColorClasses);
     if (rankClass) el.classList.add(rankClass);
   });
-  el.resultScore.textContent      = result.score.toLocaleString("ja-JP");
+  const earlyMin = result.earlyMinutes;
+  el.resultScore.textContent      = earlyMin >= 0
+    ? `+${earlyMin}分`
+    : `${earlyMin}分`;
   el.resultCps.textContent        = result.cps + "回/秒";
   el.resultAccuracy.textContent   = `${result.accuracy}%`;
   el.resultMisses.textContent     = String(result.misses);
@@ -2129,21 +2126,16 @@ function renderResult(result, recordStatus, prevResult) {
   }
 
   // 記録バッジ
-  if (recordStatus.isBestScore) {
-    el.resultRecordBadge.textContent = "NEW RECORD!";
-    el.resultRecordBadge.hidden = false;
-  } else if (recordStatus.isBestLeave) {
+  if (recordStatus.isBestLeave) {
     el.resultRecordBadge.textContent = "最速退勤更新!";
     el.resultRecordBadge.hidden = false;
   } else {
     el.resultRecordBadge.hidden = true;
   }
 
-  el.resultBest.textContent = recordStatus.isBestScore
-    ? "スコア更新！"
-    : recordStatus.isBestLeave
-      ? "最速退勤更新！"
-      : "変化なし";
+  el.resultBest.textContent = recordStatus.isBestLeave
+    ? "最速退勤更新！"
+    : "変化なし";
 
   // ランク一覧テーブルの描画
   if (el.rankTableInner) {
@@ -2155,18 +2147,23 @@ function renderResult(result, recordStatus, prevResult) {
       A: "rank-color-a", B: "rank-color-b", C: "rank-color-c",
       D: "rank-color-d", E: "rank-color-e", F: "rank-color-f"
     };
-    let html = `<div class="rank-table-header"><span>ランク</span><span>称号</span><span>スコア</span></div>`;
+    let html = `<div class="rank-table-header"><span>ランク</span><span>称号</span><span>定時比</span></div>`;
     RANKS.forEach((rank, i) => {
       const colorClass = rankColorMap2[rank] ?? "";
       const isCurrent = rank === result.rank;
-      const scoreText = i < thresholds.length
-        ? thresholds[i].toLocaleString("ja-JP") + "以上"
-        : (thresholds[thresholds.length - 1] - 1).toLocaleString("ja-JP") + "以下";
+      let timeText;
+      if (i < thresholds.length) {
+        const t = thresholds[i];
+        timeText = t >= 0 ? `${t}分以上早退` : `${Math.abs(t)}分以内残業`;
+      } else {
+        const last = thresholds[thresholds.length - 1];
+        timeText = `${Math.abs(last) + 1}分超残業`;
+      }
       const title = titles[rank] ?? "";
       html += `<div class="rank-table-row${isCurrent ? " is-current" : ""}">` +
         `<span class="rank-table-rank-cell ${colorClass}">${rank}</span>` +
         `<span>${title}</span>` +
-        `<span class="rank-table-score-cell">${scoreText}</span>` +
+        `<span class="rank-table-score-cell">${timeText}</span>` +
         `</div>`;
     });
     el.rankTableInner.innerHTML = html;
@@ -2193,7 +2190,7 @@ function shareResult() {
     "【定時退ピング】",
     `難易度：${last.difficultyName}`,
     `退勤時刻：${fmtMin(last.leaveMinutes)}　${statusText}`,
-    `スコア：${last.score.toLocaleString("ja-JP")}　速度：${last.cps}回/秒　正確率：${last.accuracy}%`,
+    `速度：${last.cps}回/秒　正確率：${last.accuracy}%`,
     `${last.rank ?? ""}　${last.title}`,
     "#定時退ピング #タイピングゲーム"
   ].join("\n");
@@ -2209,14 +2206,12 @@ function shareResult() {
 function storeResult(result) {
   const records = state.records;
   const dr      = records.byDifficulty[result.difficultyId] || {
-    bestScore: 0, bestLeaveMinutes: null, bestCps: 0, bestAccuracy: 0
+    bestLeaveMinutes: null, bestCps: 0, bestAccuracy: 0
   };
 
-  const isBestScore = result.score > dr.bestScore;
   const isBestLeave = dr.bestLeaveMinutes === null || result.leaveMinutes < dr.bestLeaveMinutes;
 
   records.byDifficulty[result.difficultyId] = {
-    bestScore:        Math.max(dr.bestScore,    result.score),
     bestLeaveMinutes: isBestLeave ? result.leaveMinutes : dr.bestLeaveMinutes,
     bestCps:          Math.max(dr.bestCps,      result.cps),
     bestAccuracy:     Math.max(dr.bestAccuracy, result.accuracy)
@@ -2228,7 +2223,7 @@ function storeResult(result) {
   } catch (_) { /* storage full など無視 */ }
 
   state.records = records;
-  return { isBestScore, isBestLeave };
+  return { isBestLeave };
 }
 
 /* ===========================
@@ -2245,10 +2240,14 @@ function renderBestRecords() {
     if (!rec) {
       card.innerHTML = `<p>${diff.name}</p><strong>未プレイ</strong>`;
     } else {
+      const earlyMin = diff.endMinutes - rec.bestLeaveMinutes;
+      const timeText = earlyMin >= 0
+        ? `定時より${earlyMin}分早退`
+        : `${Math.abs(earlyMin)}分残業`;
       card.innerHTML = `
         <p>${diff.name}</p>
-        <strong>${rec.bestScore.toLocaleString("ja-JP")} 点</strong>
-        <p>最速 ${fmtMin(rec.bestLeaveMinutes)}</p>
+        <strong>${fmtMin(rec.bestLeaveMinutes)} 退勤</strong>
+        <p>${timeText}</p>
       `;
     }
 
@@ -2276,8 +2275,7 @@ function renderLastResultSummary() {
   el.lastResultSummary.innerHTML = `
     <p class="summary-emphasis">${fmtMin(last.leaveMinutes)} 退勤</p>
     <p>${statusText} / ${last.difficultyName}</p>
-    <p>スコア ${last.score.toLocaleString("ja-JP")} / ${last.cps}回/秒</p>
-    <p>称号: ${last.title}</p>
+    <p>${last.cps}回/秒 / 称号: ${last.title}</p>
   `;
 }
 
