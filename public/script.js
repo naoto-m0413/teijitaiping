@@ -617,7 +617,6 @@ const el = {
   resultStatus:         document.getElementById("result-status"),
   resultRank:           document.getElementById("result-rank"),
   resultTitle:          document.getElementById("result-title"),
-  resultScore:          document.getElementById("result-score"),
   resultCps:            document.getElementById("result-cps"),
   resultAccuracy:       document.getElementById("result-accuracy"),
   resultMisses:         document.getElementById("result-misses"),
@@ -2073,11 +2072,6 @@ function renderResult(result, recordStatus, prevResult) {
     el.classList.remove(...rankColorClasses);
     if (rankClass) el.classList.add(rankClass);
   });
-  el.resultScore.textContent      = earlyMin > 0
-    ? `${earlyMin}分早退`
-    : earlyMin < 0
-      ? `${Math.abs(earlyMin)}分残業`
-      : "ちょうど定時";
   el.resultCps.textContent        = result.cps + "回/秒";
   el.resultAccuracy.textContent   = `${result.accuracy}%`;
   el.resultMisses.textContent     = String(result.misses);
