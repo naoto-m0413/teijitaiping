@@ -920,9 +920,7 @@ h1 {
    ステータスグリッド
 =========================== */
 .status-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 6px;
+  display: block;
 }
 
 .stat-panel {
@@ -930,7 +928,7 @@ h1 {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 5px 8px;
+  padding: 8px 12px;
   text-align: center;
 }
 
@@ -942,10 +940,38 @@ h1 {
   font-weight: 700;
 }
 
-.stat-value {
-  font-size: clamp(0.95rem, 2vw, 1.3rem);
+.main-time-value {
+  font-size: clamp(2rem, 7vw, 3.2rem);
   font-weight: 900;
   color: var(--text);
+  line-height: 1;
+  letter-spacing: 0.03em;
+  transition: color 1s ease, text-shadow 1s ease;
+}
+
+.sub-time-row {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 5px;
+  opacity: 0.75;
+}
+
+.sub-time-label {
+  font-size: 0.6rem;
+  color: #8ec8e8;
+  font-weight: 700;
+}
+
+.sub-time-value {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text);
+  transition: color 1s ease;
+}
+
+.sub-time-value.is-overtime {
+  color: #ff4040;
 }
 
 .accent-panel {
@@ -954,6 +980,44 @@ h1 {
 
 .warn-panel {
   background: linear-gradient(180deg, #201800 0%, #281e00 100%);
+}
+
+/* ===========================
+   残業突入演出
+=========================== */
+#game-screen.game-overtime .screen-frame {
+  transition: background 2s ease;
+}
+
+#game-screen.game-overtime .panel {
+  border-color: rgba(140, 20, 20, 0.45);
+  transition: border-color 2s ease, background 2s ease;
+}
+
+#game-screen.game-overtime .task-panel {
+  background: linear-gradient(180deg, #1c0d0d 0%, #130808 100%);
+}
+
+#game-screen.game-overtime #main-time-panel {
+  background: linear-gradient(180deg, #220a0a 0%, #1a0606 100%);
+}
+
+#game-screen.game-overtime .main-time-value {
+  color: #ff6060;
+  text-shadow: 0 0 16px rgba(200, 0, 0, 0.5);
+}
+
+#game-screen.game-overtime .stat-label {
+  color: #cc7070;
+}
+
+@keyframes overtime-breathe {
+  from { box-shadow: inset 0 0 30px rgba(150, 0, 0, 0.08); }
+  to   { box-shadow: inset 0 0 60px rgba(150, 0, 0, 0.22); }
+}
+
+#game-screen.game-overtime .screen-frame {
+  animation: overtime-breathe 4s ease-in-out infinite alternate;
 }
 
 .penalty-panel {
@@ -1892,7 +1956,7 @@ h1 {
 =========================== */
 
 @media (max-width: 900px) {
-  .status-grid { grid-template-columns: repeat(3, 1fr); }
+  .status-grid { display: block; }
 
   .task-header,
   .panel-head {

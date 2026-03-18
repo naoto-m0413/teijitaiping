@@ -1206,6 +1206,8 @@ function hideHeaderClock() {
 =========================== */
 function startGame() {
   stopStatTicker();
+  el.screens.game.classList.remove("game-overtime");
+  el.timeLeft.classList.remove("is-overtime");
 
   const difficulty = DIFFICULTIES[state.selectedDifficulty];
   const tasks = buildTaskList(difficulty);
@@ -1997,11 +1999,9 @@ function updateStats() {
   el.accuracyValue.textContent = `${accuracy}%`;
   el.missValue.textContent     = String(session.misses);
 
-  const timePanel = el.timeLeft.closest(".stat-panel");
-  if (timePanel) {
-    timePanel.classList.toggle("warn-panel",     session.gameMinutes <= session.difficulty.endMinutes);
-    timePanel.classList.toggle("overtime-panel", session.gameMinutes > session.difficulty.endMinutes);
-  }
+  const isOvertime = session.gameMinutes > session.difficulty.endMinutes;
+  el.timeLeft.classList.toggle("is-overtime", isOvertime);
+  el.screens.game.classList.toggle("game-overtime", isOvertime);
 
   const inPenalty = performance.now() < session.speedPenaltyUntil;
   const currentTimePanel = el.currentTime.closest(".stat-panel");
