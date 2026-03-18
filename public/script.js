@@ -1229,7 +1229,8 @@ function startGame() {
     totalInputs:    0,
     taskStartedAt:  now,
     taskCorrectChars: 0,
-    taskMisses:       0
+    taskMisses:       0,
+    speedPenaltyUntil: 0   // ミス時の時計加速ペナルティ終了時刻
   };
 
   switchScreen("game");
@@ -1923,6 +1924,10 @@ function processChar(char) {
 }
 
 function flashInputError() {
+  // ミスのたびにペナルティ期間を延長（2秒間、時計が2倍速になる）
+  if (state.session) {
+    state.session.speedPenaltyUntil = performance.now() + 2000;
+  }
   el.typingPreview.classList.add("input-error");
   setTimeout(() => el.typingPreview.classList.remove("input-error"), 200);
   el.typingPreview.animate(
@@ -2378,7 +2383,9 @@ function startStatTicker() {
     if (state.currentScreen !== "game" || !state.session) return;
     const session = state.session;
     const prevMinutes = session.gameMinutes;
-    session.gameMinutes += session.difficulty.gameSpeed * (TICK_MS / 1000);
+    const inPenalty = performance.now() < session.speedPenaltyUntil;
+    const speed = session.difficulty.gameSpeed * (inPenalty ? 2.0 : 1.0);
+    session.gameMinutes += speed * (TICK_MS / 1000);
     // 定時を超えた瞬間に「残業開始！」
     if (prevMinutes <= session.difficulty.endMinutes &&
         session.gameMinutes > session.difficulty.endMinutes) {
