@@ -279,6 +279,17 @@ h1 {
   display: flex;
   justify-content: center;
   align-items: start;
+  gap: 16px;
+}
+
+.title-side-ad {
+  width: 160px;
+  flex-shrink: 0;
+  padding-top: 24px;
+}
+
+@media (max-width: 1100px) {
+  .title-side-ad { display: none; }
 }
 
 .screen-frame {
