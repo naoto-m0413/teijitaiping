@@ -146,27 +146,24 @@ const DIFFICULTIES = {
   white: {
     id: "white",
     name: "ホワイト企業",
-    multiplier: 1.0,
     taskCount: 8,
-    timePressure: 0.90,
+    gameSpeed: 3.0,               // ゲーム分/秒（リアルタイム時計速度）
     startMinutes: 10 * 60,        // 10:00
     endMinutes:   18 * 60         // 18:00
   },
   normal: {
     id: "normal",
     name: "ふつうの企業",
-    multiplier: 1.3,
     taskCount: 8,
-    timePressure: 1.0,
+    gameSpeed: 4.0,
     startMinutes: 9 * 60,         // 09:00
     endMinutes:   19 * 60         // 19:00
   },
   black: {
     id: "black",
     name: "ブラック企業",
-    multiplier: 1.8,
     taskCount: 8,
-    timePressure: 1.12,
+    gameSpeed: 5.5,
     startMinutes: 7 * 60 + 30,    // 07:30
     endMinutes:   22 * 60         // 22:00
   }
@@ -1550,8 +1547,6 @@ function renderCurrentTask() {
   session.tokens       = tokenize(task.prompt.jp);
   session.tokenIndex   = 0;
   session.currentTyped = "";
-  session.minutesPerToken = (task.baseMinutes * session.difficulty.timePressure) / Math.max(session.tokens.length, 1);
-  session.tokenMinutesUsed = 0;
 
   el.taskName.textContent       = task.name;
 
@@ -1722,8 +1717,6 @@ function processChar(char) {
       session.taskCorrectChars++;
       session.tokenIndex++;
       session.currentTyped = "";
-      session.gameMinutes += session.minutesPerToken;
-      session.tokenMinutesUsed += session.minutesPerToken;
       playKeySound(true);
       if (session.tokenIndex >= tokens.length) {
         playTaskCompleteSound();
@@ -1753,8 +1746,6 @@ function processChar(char) {
       session.taskCorrectChars++;
       session.tokenIndex++;
       session.currentTyped = "";
-      session.gameMinutes += session.minutesPerToken;
-      session.tokenMinutesUsed += session.minutesPerToken;
       playKeySound(true);
       if (session.tokenIndex >= tokens.length) {
         playTaskCompleteSound();
@@ -1772,8 +1763,6 @@ function processChar(char) {
       session.taskCorrectChars++;
       session.tokenIndex++;
       session.currentTyped = "";
-      session.gameMinutes += session.minutesPerToken;
-      session.tokenMinutesUsed += session.minutesPerToken;
       playKeySound(true);
       if (session.tokenIndex >= tokens.length) {
         playTaskCompleteSound();
@@ -1834,8 +1823,6 @@ function processChar(char) {
       session.taskCorrectChars++;
       session.tokenIndex++;
       session.currentTyped = "";
-      session.gameMinutes += session.minutesPerToken;
-      session.tokenMinutesUsed += session.minutesPerToken;
       playKeySound(true);
       if (session.tokenIndex >= tokens.length) {
         playTaskCompleteSound();
@@ -1959,31 +1946,7 @@ function flashInputError() {
    タスク完了処理
 =========================== */
 function completeTask() {
-  const session       = state.session;
-  const task          = session.tasks[session.currentTaskIndex];
-  const elapsedSec    = Math.max((performance.now() - session.taskStartedAt) / 1000, 1);
-
-  // タスクの文字数（かなトークン数をベースに計算）
-  const charCount     = session.tokens.length;
-  const taskCps       = charCount / elapsedSec;
-  const taskAccuracy  = calcAccuracy(session.taskCorrectChars, session.taskMisses);
-
-  // 基準速度 3.3回/秒（= 40WPM相当）を超えた分にボーナス
-  const speedBonus    = clamp(Math.round((taskCps - 40 / 12) * 1.44), 0, 18);
-  const accBonus      = taskAccuracy >= 97 ? 7 : taskAccuracy >= 93 ? 4 : 0;
-  const missPenalty   = Math.round(Math.max(session.taskMisses * 0.75, 0));
-
-  let spent =
-    Math.round(task.baseMinutes * session.difficulty.timePressure) +
-    missPenalty -
-    speedBonus -
-    accBonus;
-
-  const minSpent = Math.max(Math.round(task.baseMinutes * 0.45), 6);
-  spent = Math.max(spent, minSpent);
-
-  session.gameMinutes -= session.tokenMinutesUsed;
-  session.gameMinutes      += spent;
+  const session = state.session;
   session.currentTaskIndex += 1;
 
   if (session.currentTaskIndex >= session.tasks.length) {
@@ -2364,7 +2327,9 @@ function playMilestoneSound(type) {
   if (!state.soundEnabled) return;
   const notes = type === "half"
     ? [[523.25, 0], [659.25, 0.13]]
-    : [[523.25, 0], [659.25, 0.1], [783.99, 0.2]];
+    : type === "overtime"
+      ? [[293.66, 0], [261.63, 0.18], [246.94, 0.36]]  // 重い下降音
+      : [[523.25, 0], [659.25, 0.1], [783.99, 0.2]];
   notes.forEach(([freq, offset]) => {
     const t = audioCtx.currentTime + offset;
     const osc = audioCtx.createOscillator();
@@ -2414,9 +2379,20 @@ function shuffleArray(arr) {
 }
 
 function startStatTicker() {
+  const TICK_MS = 100;
   state.statTimerId = window.setInterval(() => {
-    if (state.currentScreen === "game" && state.session) updateStats();
-  }, 250);
+    if (state.currentScreen !== "game" || !state.session) return;
+    const session = state.session;
+    const prevMinutes = session.gameMinutes;
+    session.gameMinutes += session.difficulty.gameSpeed * (TICK_MS / 1000);
+    // 定時を超えた瞬間に「残業開始！」
+    if (prevMinutes <= session.difficulty.endMinutes &&
+        session.gameMinutes > session.difficulty.endMinutes) {
+      showMilestoneFlash("残業開始！", "overtime");
+      playMilestoneSound("overtime");
+    }
+    updateStats();
+  }, TICK_MS);
 }
 
 function stopStatTicker() {

@@ -1574,6 +1574,13 @@ h1 {
   box-shadow: 0 4px 20px rgba(240, 180, 0, 0.3);
 }
 
+.milestone-flash--overtime {
+  background: rgba(180, 20, 20, 0.95);
+  box-shadow: 0 4px 24px rgba(255, 40, 40, 0.5);
+  font-size: 1.4rem;
+  letter-spacing: 0.1em;
+}
+
 /* ===========================
    集計演出オーバーレイ
 =========================== */
