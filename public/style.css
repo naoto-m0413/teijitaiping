@@ -1477,7 +1477,7 @@ h1 {
 
 .rank-table-inner {
   display: grid;
-  grid-template-columns: 44px 1fr auto;
+  grid-template-columns: 58px 1fr auto;
   font-size: 0.82rem;
 }
 
@@ -1490,7 +1490,14 @@ h1 {
   color: var(--muted);
   font-size: 0.72rem;
   letter-spacing: 0.05em;
+  white-space: nowrap;
   border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.rank-table-header > span:nth-child(2),
+.rank-table-row > span:nth-child(2) {
+  justify-content: center;
+  text-align: center;
 }
 
 .rank-table-row {
