@@ -156,7 +156,7 @@ const DIFFICULTIES = {
     id: "normal",
     name: "ふつうの企業",
     taskCount: 8,
-    gameSpeed: 4.0,
+    gameSpeed: 6.0,
     penaltyMinutes: 30,
     startMinutes: 9 * 60,         // 09:00
     endMinutes:   19 * 60         // 19:00
@@ -165,7 +165,7 @@ const DIFFICULTIES = {
     id: "black",
     name: "ブラック企業",
     taskCount: 8,
-    gameSpeed: 5.5,
+    gameSpeed: 11.0,
     penaltyMinutes: 60,
     startMinutes: 7 * 60 + 30,    // 07:30
     endMinutes:   22 * 60         // 22:00
