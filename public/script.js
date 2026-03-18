@@ -2282,7 +2282,7 @@ function showTallyScreen(onDone) {
     setTimeout(() => {
       onDone();
     }, 260);
-  }, 900);
+  }, 340);
 }
 
 function switchScreen(name) {
