@@ -1955,6 +1955,23 @@ function updateStats() {
   el.timeLeft.textContent      = fmtRemain(session.gameMinutes, session.difficulty.endMinutes);
   el.progressText.textContent  = `残り${Math.max(total - tasksDone, 0)}件`;
   el.progressFill.style.width  = `${pct}%`;
+
+  // プログレスバーの色をマイルストーンで切り替え
+  el.progressFill.classList.toggle("progress-fill--near", pct >= 80);
+  el.progressFill.classList.toggle("progress-fill--half", pct >= 50 && pct < 80);
+
+  // マイルストーン演出
+  if (!session.milestone50 && pct >= 50) {
+    session.milestone50 = true;
+    showMilestoneFlash("折り返し！", "half");
+    playMilestoneSound("half");
+  }
+  if (!session.milestone80 && pct >= 80) {
+    session.milestone80 = true;
+    showMilestoneFlash("もうすぐ退勤！", "near");
+    playMilestoneSound("near");
+  }
+
   const pctEl = document.getElementById("progress-pct");
   if (pctEl) pctEl.textContent = pct >= 1 ? `${Math.round(pct)}%` : "";
   el.cpsValue.textContent      = (Number.isFinite(+cps) ? cps : "0.0") + "回/秒";
@@ -2270,6 +2287,39 @@ function fmtRemain(currentMin, endMin) {
 /* ===========================
    集計演出オーバーレイ
 =========================== */
+/* ===========================
+   マイルストーン演出
+=========================== */
+function showMilestoneFlash(text, type) {
+  const flash = document.getElementById("milestone-flash");
+  if (!flash) return;
+  flash.textContent = text;
+  flash.className = `milestone-flash milestone-flash--${type}`;
+  flash.offsetHeight;
+  flash.classList.add("is-show");
+  setTimeout(() => {
+    flash.classList.remove("is-show");
+  }, 1100);
+}
+
+function playMilestoneSound(type) {
+  if (!state.soundEnabled) return;
+  const notes = type === "half"
+    ? [[523.25, 0], [659.25, 0.13]]
+    : [[523.25, 0], [659.25, 0.1], [783.99, 0.2]];
+  notes.forEach(([freq, offset]) => {
+    const t = audioCtx.currentTime + offset;
+    const osc = audioCtx.createOscillator();
+    const g   = audioCtx.createGain();
+    osc.type = "triangle";
+    osc.frequency.setValueAtTime(freq, t);
+    g.gain.setValueAtTime(0.07, t);
+    g.gain.exponentialRampToValueAtTime(0.001, t + 0.28);
+    osc.connect(g); g.connect(audioCtx.destination);
+    osc.start(t); osc.stop(t + 0.3);
+  });
+}
+
 function showTallyScreen(onDone) {
   stopBGM();
   const overlay = document.getElementById("tally-overlay");

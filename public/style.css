@@ -813,18 +813,23 @@ h1 {
 /* ゲーム画面 ナビゲーションボタン行 */
 .game-nav-row {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 8px;
-  margin-bottom: 6px;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  margin-bottom: 4px;
 }
 
 .game-nav-btn {
   width: 100%;
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: #a8c8e8;
-  padding: 8px 10px;
-  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #3a5468;
+  padding: 5px 10px;
+  border-radius: 7px;
+  border-color: rgba(255,255,255,0.06);
+}
+
+.game-nav-btn:hover {
+  color: #7aA8c8;
 }
 
 /* タイトル画面スタートブロック */
@@ -907,8 +912,8 @@ h1 {
   flex: 1;
   display: grid;
   grid-template-rows: auto auto auto auto auto;
-  gap: 6px;
-  min-height: 600px;
+  gap: 4px;
+  min-height: 560px;
 }
 
 /* ===========================
@@ -917,7 +922,7 @@ h1 {
 .status-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 8px;
+  gap: 6px;
 }
 
 .stat-panel {
@@ -925,20 +930,20 @@ h1 {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 8px;
+  padding: 5px 8px;
   text-align: center;
 }
 
 .stat-label {
   display: block;
-  margin-bottom: 3px;
-  font-size: 0.78rem;
+  margin-bottom: 2px;
+  font-size: 0.7rem;
   color: #8ec8e8;
   font-weight: 700;
 }
 
 .stat-value {
-  font-size: clamp(1.1rem, 2.35vw, 1.56rem);
+  font-size: clamp(0.95rem, 2vw, 1.3rem);
   font-weight: 900;
   color: var(--text);
 }
@@ -957,14 +962,14 @@ h1 {
 .progress-bar-wrap {
   display: flex;
   align-items: center;
-  padding: 10px 12px;
+  padding: 5px 12px;
 }
 
 .progress-bar {
   position: relative;
   overflow: visible;
   flex: 1;
-  height: 14px;
+  height: 10px;
   border: 1px solid rgba(0, 180, 255, 0.3);
   border-radius: 999px;
   background: rgba(0, 15, 40, 0.6);
@@ -978,7 +983,17 @@ h1 {
   border-radius: inherit;
   background: linear-gradient(90deg, #0070d0 0%, #00c8e8 50%, #00e870 100%);
   box-shadow: 0 0 10px rgba(0, 200, 232, 0.5);
-  transition: width 220ms ease;
+  transition: width 220ms ease, background 600ms ease;
+}
+
+.progress-fill--half {
+  background: linear-gradient(90deg, #00a850 0%, #60d840 100%);
+  box-shadow: 0 0 10px rgba(80, 220, 80, 0.5);
+}
+
+.progress-fill--near {
+  background: linear-gradient(90deg, #d08000 0%, #f0d000 100%);
+  box-shadow: 0 0 10px rgba(240, 200, 0, 0.5);
 }
 
 .progress-pct {
@@ -1032,10 +1047,10 @@ h1 {
 }
 
 .sentence-panel {
-  padding: 10px 12px;
-  border: 2px solid rgba(80, 160, 220, 0.12);
+  padding: 10px 14px;
+  border: 2px solid rgba(80, 160, 220, 0.28);
   border-radius: 14px;
-  background: linear-gradient(180deg, rgba(10, 16, 32, 0.95) 0%, rgba(12, 16, 26, 0.95) 100%);
+  background: linear-gradient(180deg, rgba(14, 26, 52, 0.97) 0%, rgba(10, 20, 40, 0.97) 100%);
   margin-bottom: 8px;
   flex-shrink: 0;
 }
@@ -1082,10 +1097,10 @@ h1 {
 .typing-preview {
   min-height: 48px;
   margin-bottom: 8px;
-  padding: 8px 12px;
-  border: 2px solid rgba(80, 160, 220, 0.12);
+  padding: 8px 14px;
+  border: 2px solid rgba(60, 130, 220, 0.35);
   border-radius: 14px;
-  background: rgba(8, 12, 22, 0.92);
+  background: rgba(3, 6, 14, 0.98);
   font-family: "Menlo", "Consolas", "Courier New", monospace;
   font-size: 1.2rem;
   line-height: 1.8;
@@ -1108,7 +1123,7 @@ h1 {
   font-weight: 700;
   box-shadow: 0 0 0 1.5px rgba(255, 180, 30, 0.5);
 }
-.char-pending { color: #7090b0; }
+.char-pending { color: #364a5e; }
 
 .input-wrap {
   display: grid;
@@ -1535,6 +1550,41 @@ h1 {
 .rank-table-score-cell {
   color: var(--muted);
   font-size: 0.78rem;
+}
+
+/* ===========================
+   マイルストーンフラッシュ
+=========================== */
+.milestone-flash {
+  position: fixed;
+  top: 38%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.88);
+  padding: 9px 26px;
+  border-radius: 10px;
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: #fff;
+  pointer-events: none;
+  opacity: 0;
+  z-index: 800;
+  transition: opacity 0.16s ease, transform 0.16s ease;
+}
+
+.milestone-flash.is-show {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.milestone-flash--half {
+  background: rgba(0, 160, 80, 0.92);
+  box-shadow: 0 4px 20px rgba(0, 200, 100, 0.3);
+}
+
+.milestone-flash--near {
+  background: rgba(180, 120, 0, 0.92);
+  box-shadow: 0 4px 20px rgba(240, 180, 0, 0.3);
 }
 
 /* ===========================
