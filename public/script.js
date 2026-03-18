@@ -1931,7 +1931,7 @@ function flashInputError() {
   if (state.session) {
     const prev = state.session.gameMinutes;
     state.session.gameMinutes += state.session.difficulty.penaltyMinutes;
-    state.session.speedPenaltyUntil = performance.now() + 2000;
+    state.session.speedPenaltyUntil = performance.now() + 500;
     if (prev <= state.session.difficulty.endMinutes &&
         state.session.gameMinutes > state.session.difficulty.endMinutes) {
       showMilestoneFlash("残業開始...", "overtime");
