@@ -1077,8 +1077,11 @@ h1 {
 
 /* かなカラーコーディング（ルビ内で使用） */
 .kana-done    { color: #4a6080; }
-.kana-current { color: #ffffff; }
-.kana-pending { color: #c0d4e8; }
+.kana-current {
+  color: #ffe566;
+  text-shadow: 0 0 10px rgba(255, 220, 80, 0.7), 0 0 3px rgba(255, 255, 200, 0.5);
+}
+.kana-pending { color: #7a9ab8; }
 
 .prompt-romaji {
   margin: 0;
@@ -1108,20 +1111,18 @@ h1 {
 }
 
 .char-correct {
-  color: #40d060;
+  color: #2a7840;
   font-weight: 700;
-  background: rgba(0, 200, 80, 0.12);
-  border-radius: 2px;
 }
 .char-current {
-  color: #fff0c0;
-  background: rgba(255, 200, 40, 0.85);
-  border-radius: 3px;
-  padding: 0 2px;
+  color: #ffe566;
+  background: rgba(255, 200, 40, 0.18);
+  border-bottom: 2px solid rgba(255, 200, 40, 0.9);
+  border-radius: 2px 2px 0 0;
+  padding: 0 1px;
   font-weight: 700;
-  box-shadow: 0 0 0 1.5px rgba(255, 180, 30, 0.5);
 }
-.char-pending { color: #364a5e; }
+.char-pending { color: #6888a0; }
 
 .input-wrap {
   display: grid;
