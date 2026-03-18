@@ -1060,7 +1060,7 @@ h1 {
   margin: 2px 0 4px;
   font-size: clamp(1.1rem, 2.4vw, 1.7rem);
   font-weight: 900;
-  line-height: 3.5;
+  line-height: 3.2;
   color: var(--text);
   word-break: break-all;
   overflow-wrap: break-word;
@@ -1069,9 +1069,9 @@ h1 {
 }
 
 .prompt-japanese rt {
-  font-size: 0.65em;
-  font-weight: 700;
-  letter-spacing: 0.03em;
+  font-size: 0.55em;
+  font-weight: 600;
+  letter-spacing: 0.02em;
   line-height: 1;
 }
 
