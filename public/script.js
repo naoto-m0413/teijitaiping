@@ -2087,7 +2087,7 @@ function renderResult(result, recordStatus, prevResult) {
   el.resultStatus.textContent     = result.overtimeMinutes > 0
     ? `残業 ${fmtDuration(result.overtimeMinutes)}`
     : earlyMin > 0
-      ? `定時より ${fmtDuration(earlyMin)}早く退社！`
+      ? `${fmtDuration(earlyMin)}早退！`
       : "ちょうど定時退社！";
   if (el.resultRank)  el.resultRank.textContent = result.rank ?? "";
   el.resultTitle.textContent      = result.title;
@@ -2169,7 +2169,7 @@ function shareResult() {
   const statusText = last.overtimeMinutes > 0
     ? `残業 ${fmtDuration(last.overtimeMinutes)}`
     : earlyMin > 0
-      ? `定時より ${fmtDuration(earlyMin)}早く退社！`
+      ? `${fmtDuration(earlyMin)}早退！`
       : "ちょうど定時退社！";
 
   const text = [
@@ -2228,8 +2228,8 @@ function renderBestRecords() {
     } else {
       const earlyMin = diff.endMinutes - rec.bestLeaveMinutes;
       const timeText = earlyMin >= 0
-        ? `定時より${earlyMin}分早退`
-        : `${Math.abs(earlyMin)}分残業`;
+        ? `定時より${fmtDuration(earlyMin)}早退`
+        : `残業 ${fmtDuration(Math.abs(earlyMin))}`;
       card.innerHTML = `
         <p>${diff.name}</p>
         <strong>${fmtMin(rec.bestLeaveMinutes)} 退勤</strong>
@@ -2255,7 +2255,7 @@ function renderLastResultSummary() {
   const statusText = last.overtimeMinutes > 0
     ? `残業 ${fmtDuration(last.overtimeMinutes)}`
     : earlyMinLast > 0
-      ? `定時より ${fmtDuration(earlyMinLast)}早退`
+      ? `${fmtDuration(earlyMinLast)}早退`
       : "ちょうど定時退社";
 
   el.lastResultSummary.innerHTML = `
