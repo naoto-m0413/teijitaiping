@@ -1782,8 +1782,6 @@ function processChar(char) {
         session.taskCorrectChars++;
         session.tokenIndex++;
         session.currentTyped = "";
-        session.gameMinutes += session.minutesPerToken;
-        session.tokenMinutesUsed += session.minutesPerToken;
         playKeySound(true);
         if (session.tokenIndex >= tokens.length) {
           playTaskCompleteSound();
@@ -1859,8 +1857,6 @@ function processChar(char) {
             session.taskCorrectChars++;
             session.tokenIndex++; // っ完了
             session.currentTyped = char; // 次のトークンの1文字目として設定
-            session.gameMinutes += session.minutesPerToken;
-            session.tokenMinutesUsed += session.minutesPerToken;
             playKeySound(true);
             if (session.tokenIndex >= tokens.length) {
               playTaskCompleteSound();
@@ -1894,8 +1890,6 @@ function processChar(char) {
     session.taskCorrectChars++;
     session.tokenIndex++;
     session.currentTyped = "";
-    session.gameMinutes += session.minutesPerToken;
-    session.tokenMinutesUsed += session.minutesPerToken;
     playKeySound(true);
     if (session.tokenIndex >= tokens.length) {
       playTaskCompleteSound();
