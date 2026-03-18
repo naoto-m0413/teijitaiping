@@ -2093,7 +2093,7 @@ function renderResult(result, recordStatus, prevResult) {
   el.resultHero.classList.add(result.overtimeMinutes > 0 ? "is-overtime" : "is-success");
 
   el.resultLeaveTime.textContent  = fmtMin(result.leaveMinutes);
-  const earlyMin = (result.endMinutes || END_MINUTES) - result.leaveMinutes;
+  const earlyMin = result.earlyMinutes;
   el.resultStatus.textContent     = result.overtimeMinutes > 0
     ? `残業 ${fmtDuration(result.overtimeMinutes)}`
     : earlyMin > 0
@@ -2111,7 +2111,6 @@ function renderResult(result, recordStatus, prevResult) {
     el.classList.remove(...rankColorClasses);
     if (rankClass) el.classList.add(rankClass);
   });
-  const earlyMin = result.earlyMinutes;
   el.resultScore.textContent      = earlyMin >= 0
     ? `+${earlyMin}分`
     : `${earlyMin}分`;
