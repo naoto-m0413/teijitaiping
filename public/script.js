@@ -1929,8 +1929,14 @@ function processChar(char) {
 function flashInputError() {
   // ミスのたびに時間を直接加算 + 2秒間赤表示
   if (state.session) {
+    const prev = state.session.gameMinutes;
     state.session.gameMinutes += state.session.difficulty.penaltyMinutes;
     state.session.speedPenaltyUntil = performance.now() + 2000;
+    if (prev <= state.session.difficulty.endMinutes &&
+        state.session.gameMinutes > state.session.difficulty.endMinutes) {
+      showMilestoneFlash("残業開始...", "overtime");
+      playMilestoneSound("overtime");
+    }
   }
   el.typingPreview.classList.add("input-error");
   setTimeout(() => el.typingPreview.classList.remove("input-error"), 200);
