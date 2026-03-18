@@ -1060,7 +1060,7 @@ h1 {
   margin: 2px 0 4px;
   font-size: clamp(1.1rem, 2.4vw, 1.7rem);
   font-weight: 900;
-  line-height: 3.2;
+  line-height: 3.5;
   color: var(--text);
   word-break: break-all;
   overflow-wrap: break-word;
@@ -1069,20 +1069,15 @@ h1 {
 }
 
 .prompt-japanese rt {
-  font-size: 0.5em;
-  font-weight: 600;
-  letter-spacing: 0.02em;
+  font-size: 0.65em;
+  font-weight: 700;
+  letter-spacing: 0.03em;
   line-height: 1;
 }
 
 /* かなカラーコーディング（ルビ内で使用） */
 .kana-done    { color: #4a6080; }
-.kana-current {
-  color: #fff8e0;
-  background: rgba(255, 180, 40, 0.75);
-  border-radius: 2px;
-  padding: 0 1px;
-}
+.kana-current { color: #ffffff; }
 .kana-pending { color: #c0d4e8; }
 
 .prompt-romaji {
