@@ -1117,7 +1117,6 @@ h1 {
 .char-current {
   color: #ffd234;
   font-weight: 700;
-  text-shadow: 0 0 8px rgba(255, 210, 60, 0.6), 0 0 2px rgba(255, 230, 120, 0.4);
 }
 .char-pending { color: #6888a0; }
 
