@@ -147,7 +147,7 @@ const DIFFICULTIES = {
     id: "white",
     name: "ホワイト企業",
     taskCount: 8,
-    gameSpeed: 3.0,               // ゲーム分/秒（リアルタイム時計速度）
+    gameSpeed: 5.0,               // ゲーム分/秒（リアルタイム時計速度）
     penaltyMinutes: 10,           // ミス1回あたりの加算分
     startMinutes: 10 * 60,        // 10:00
     endMinutes:   18 * 60         // 18:00
@@ -156,7 +156,7 @@ const DIFFICULTIES = {
     id: "normal",
     name: "ふつうの企業",
     taskCount: 8,
-    gameSpeed: 6.0,
+    gameSpeed: 8.0,
     penaltyMinutes: 30,
     startMinutes: 9 * 60,         // 09:00
     endMinutes:   19 * 60         // 19:00
