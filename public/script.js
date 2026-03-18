@@ -148,6 +148,7 @@ const DIFFICULTIES = {
     name: "ホワイト企業",
     taskCount: 8,
     gameSpeed: 3.0,               // ゲーム分/秒（リアルタイム時計速度）
+    penaltyMinutes: 10,           // ミス1回あたりの加算分
     startMinutes: 10 * 60,        // 10:00
     endMinutes:   18 * 60         // 18:00
   },
@@ -156,6 +157,7 @@ const DIFFICULTIES = {
     name: "ふつうの企業",
     taskCount: 8,
     gameSpeed: 4.0,
+    penaltyMinutes: 30,
     startMinutes: 9 * 60,         // 09:00
     endMinutes:   19 * 60         // 19:00
   },
@@ -164,6 +166,7 @@ const DIFFICULTIES = {
     name: "ブラック企業",
     taskCount: 8,
     gameSpeed: 5.5,
+    penaltyMinutes: 60,
     startMinutes: 7 * 60 + 30,    // 07:30
     endMinutes:   22 * 60         // 22:00
   }
@@ -1924,8 +1927,9 @@ function processChar(char) {
 }
 
 function flashInputError() {
-  // ミスのたびにペナルティ期間を延長（2秒間、時計が2倍速になる）
+  // ミスのたびに時間を直接加算 + 2秒間赤表示
   if (state.session) {
+    state.session.gameMinutes += state.session.difficulty.penaltyMinutes;
     state.session.speedPenaltyUntil = performance.now() + 2000;
   }
   el.typingPreview.classList.add("input-error");
@@ -2381,9 +2385,7 @@ function startStatTicker() {
     if (state.currentScreen !== "game" || !state.session) return;
     const session = state.session;
     const prevMinutes = session.gameMinutes;
-    const inPenalty = performance.now() < session.speedPenaltyUntil;
-    const speed = session.difficulty.gameSpeed * (inPenalty ? 2.0 : 1.0);
-    session.gameMinutes += speed * (TICK_MS / 1000);
+    session.gameMinutes += session.difficulty.gameSpeed * (TICK_MS / 1000);
     // 定時を超えた瞬間に「残業開始！」
     if (prevMinutes <= session.difficulty.endMinutes &&
         session.gameMinutes > session.difficulty.endMinutes) {
