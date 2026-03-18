@@ -2056,7 +2056,7 @@ function finishGame() {
   const leaveMinutes   = session.gameMinutes;
   const endMinutes     = session.difficulty.endMinutes;
   const overtime       = Math.max(leaveMinutes - endMinutes, 0);
-  const earlyMinutes   = endMinutes - leaveMinutes; // 正=早退、負=残業
+  const earlyMinutes   = Math.round(endMinutes - leaveMinutes); // 正=早退、負=残業
   const rank  = resolveRank(earlyMinutes, session.difficulty.id);
   const title = resolveTitle(rank, session.difficulty.id);
 
