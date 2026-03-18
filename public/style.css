@@ -1076,7 +1076,7 @@ h1 {
 }
 
 /* かなカラーコーディング（ルビ内で使用） */
-.kana-done    { color: #4a6080; }
+.kana-done    { color: #2a7840; }
 .kana-current { color: #ffd234; }
 .kana-pending { color: #7a9ab8; }
 
