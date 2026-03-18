@@ -1942,7 +1942,7 @@ function flashInputError() {
   if (state.session) {
     const prev = state.session.gameMinutes;
     state.session.gameMinutes += state.session.difficulty.penaltyMinutes;
-    state.session.speedPenaltyUntil = performance.now() + 100;
+    state.session.speedPenaltyUntil = performance.now() + 800;
     showPenaltyFloat(state.session.difficulty.penaltyMinutes);
     if (prev <= state.session.difficulty.endMinutes &&
         state.session.gameMinutes > state.session.difficulty.endMinutes) {

@@ -970,7 +970,7 @@ h1 {
 }
 
 .penalty-float.is-active {
-  animation: penalty-flash 0.4s ease-out forwards;
+  animation: penalty-flash 0.8s ease-out forwards;
 }
 
 @keyframes penalty-flash {
@@ -1056,7 +1056,7 @@ h1 {
 
 .penalty-panel {
   background: linear-gradient(180deg, #2a2000 0%, #3d3000 100%);
-  animation: penalty-pulse 0.4s ease-in-out infinite alternate;
+  animation: penalty-pulse 0.8s ease-in-out infinite alternate;
 }
 
 .penalty-panel .stat-label {
