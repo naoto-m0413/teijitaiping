@@ -512,7 +512,7 @@ const difficultyMessagePools = {
 const MESSAGE_PLANS = {
   white:  ["short","short","short","medium","short","medium","short","medium"],
   normal: ["short","medium","medium","short","medium","medium","long","long"],
-  black:  ["medium","medium","long","medium","long","medium","long","long"]
+  black:  ["medium","medium","long","medium","long","medium","long","long","long"]
 };
 
 /* ===========================
@@ -522,7 +522,7 @@ const MESSAGE_PLANS = {
 const SCENE_MAP = {
   white:  ["early","early","middle","middle","middle","late","late","late"],
   normal: ["early","early","middle","middle","middle","late","late","late"],
-  black:  ["early","early","middle","middle","middle","late","late","late"]
+  black:  ["early","early","middle","middle","middle","late","late","late","late"]
 };
 
 /* ===========================
