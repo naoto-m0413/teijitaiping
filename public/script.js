@@ -526,7 +526,7 @@ const SCENE_MAP = {
 
 /* ===========================
    ランク・称号定義
-   ※ RANK_THRESHOLDS は仮設定。今後プレイ結果に応じて閾値調整予定
+   RANK_THRESHOLDS: 定時より何分早く退勤できたか（正=早退、負=残業）
 =========================== */
 const RANKS = ["SSS", "SS", "S", "A", "B", "C", "D", "E", "F"];
 
@@ -2299,10 +2299,10 @@ function loadRecords() {
 /* ===========================
    ランク・称号判定
 =========================== */
-function resolveRank(score, difficultyId) {
+function resolveRank(earlyMinutes, difficultyId) {
   const thresholds = RANK_THRESHOLDS[difficultyId] ?? RANK_THRESHOLDS.normal;
   for (let i = 0; i < thresholds.length; i++) {
-    if (score >= thresholds[i]) return RANKS[i];
+    if (earlyMinutes >= thresholds[i]) return RANKS[i];
   }
   return "F";
 }
