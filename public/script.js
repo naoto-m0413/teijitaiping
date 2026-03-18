@@ -628,6 +628,7 @@ const el = {
   resultHero:           document.getElementById("result-hero"),
   resultDifficultyChip: document.getElementById("result-difficulty-chip"),
   resultRecordBadge:    document.getElementById("result-record-badge"),
+  rankTableInner:       document.getElementById("rank-table-inner"),
   retryButton:          document.getElementById("retry-button"),
   changeDifficultyBtn:  document.getElementById("change-difficulty-btn"),
   backButton:           document.getElementById("back-button"),
@@ -1975,6 +1976,33 @@ function renderResult(result, recordStatus, prevResult) {
     : recordStatus.isBestLeave
       ? "最速退勤更新！"
       : "変化なし";
+
+  // ランク一覧テーブルの描画
+  if (el.rankTableInner) {
+    const diffId = result.difficultyId;
+    const thresholds = RANK_THRESHOLDS[diffId] ?? RANK_THRESHOLDS.normal;
+    const titles = RANK_TITLES[diffId] ?? RANK_TITLES.normal;
+    const rankColorMap2 = {
+      SSS: "rank-color-sss", SS: "rank-color-ss", S: "rank-color-s",
+      A: "rank-color-a", B: "rank-color-b", C: "rank-color-c",
+      D: "rank-color-d", E: "rank-color-e", F: "rank-color-f"
+    };
+    let html = `<div class="rank-table-header"><span>ランク</span><span>スコア</span><span>称号</span></div>`;
+    RANKS.forEach((rank, i) => {
+      const colorClass = rankColorMap2[rank] ?? "";
+      const isCurrent = rank === result.rank;
+      const scoreText = i < thresholds.length
+        ? thresholds[i].toLocaleString("ja-JP") + "〜"
+        : "〜" + (thresholds[thresholds.length - 1] - 1).toLocaleString("ja-JP");
+      const title = titles[rank] ?? "";
+      html += `<div class="rank-table-row${isCurrent ? " is-current" : ""}">` +
+        `<span class="rank-table-rank-cell ${colorClass}">${rank}</span>` +
+        `<span class="rank-table-score-cell">${scoreText}</span>` +
+        `<span>${title}</span>` +
+        `</div>`;
+    });
+    el.rankTableInner.innerHTML = html;
+  }
 
 }
 

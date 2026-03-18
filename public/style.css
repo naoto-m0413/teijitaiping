@@ -1431,6 +1431,64 @@ h1 {
 .rank-color-e   { color: #9AA3B2; }
 .rank-color-f   { color: #FF5C5C; }
 
+/* ランク一覧テーブル */
+.result-rank-table {
+  margin-top: 16px;
+  padding: 12px 14px;
+}
+
+.rank-table-inner {
+  display: grid;
+  grid-template-columns: 52px 1fr 1fr;
+  font-size: 0.82rem;
+}
+
+.rank-table-header {
+  display: contents;
+}
+
+.rank-table-header > span {
+  padding: 4px 8px 6px;
+  color: var(--muted);
+  font-size: 0.72rem;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.rank-table-row {
+  display: contents;
+}
+
+.rank-table-row > span {
+  padding: 5px 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  display: flex;
+  align-items: center;
+}
+
+.rank-table-row.is-current > span {
+  background: rgba(255, 255, 255, 0.09);
+  font-weight: 700;
+}
+
+.rank-table-row.is-current > span:first-child {
+  border-radius: 6px 0 0 6px;
+}
+
+.rank-table-row.is-current > span:last-child {
+  border-radius: 0 6px 6px 0;
+}
+
+.rank-table-rank-cell {
+  font-weight: 900;
+  letter-spacing: 0.04em;
+}
+
+.rank-table-score-cell {
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+
 /* ===========================
    モーダル
 =========================== */
