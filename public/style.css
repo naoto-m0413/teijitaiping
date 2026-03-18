@@ -1257,14 +1257,14 @@ h1 {
 }
 
 .input-wrap input.input-error {
-  border-color: #cc3030;
-  background: rgba(220, 60, 60, 0.08);
+  border-color: #ccaa00;
+  background: rgba(220, 180, 0, 0.08);
 }
 
 
 .typing-preview.input-error {
-  border-color: #cc3030 !important;
-  background: rgba(220, 60, 60, 0.08) !important;
+  border-color: #ccaa00 !important;
+  background: rgba(220, 180, 0, 0.08) !important;
 }
 
 .game-ime-input {
