@@ -2388,7 +2388,7 @@ function startStatTicker() {
     // 定時を超えた瞬間に「残業開始！」
     if (prevMinutes <= session.difficulty.endMinutes &&
         session.gameMinutes > session.difficulty.endMinutes) {
-      showMilestoneFlash("残業開始！", "overtime");
+      showMilestoneFlash("残業開始...", "overtime");
       playMilestoneSound("overtime");
     }
     updateStats();
