@@ -1920,7 +1920,7 @@ function finishGame() {
   renderResult(result, recordStatus, prevResult);
   renderBestRecords();
   renderLastResultSummary();
-  switchScreen("result");
+  showTallyScreen(() => switchScreen("result"));
 }
 
 /* ===========================
@@ -2173,6 +2173,44 @@ function fmtRemain(currentMin, endMin) {
   const remain = (endMin || END_MINUTES) - currentMin;
   if (remain >= 0) return fmtDuration(remain);
   return `残業 ${fmtDuration(Math.abs(remain))}`;
+}
+
+/* ===========================
+   集計演出オーバーレイ
+=========================== */
+function showTallyScreen(onDone) {
+  const overlay  = document.getElementById("tally-overlay");
+  const mainText = document.getElementById("tally-main-text");
+  const subText  = document.getElementById("tally-sub-text");
+
+  const messages = [
+    { main: "退勤処理中...",     sub: "タイムカードを打刻しています" },
+    { main: "業績を集計中...",   sub: "本日のパフォーマンスを評価しています" },
+    { main: "退勤処理中...",     sub: "もうすぐ結果が出ます" },
+  ];
+
+  let idx = 0;
+  mainText.textContent = messages[0].main;
+  subText.textContent  = messages[0].sub;
+
+  overlay.hidden = false;
+  overlay.offsetHeight; // reflow
+  overlay.classList.add("is-visible");
+
+  const interval = setInterval(() => {
+    idx = (idx + 1) % messages.length;
+    mainText.textContent = messages[idx].main;
+    subText.textContent  = messages[idx].sub;
+  }, 600);
+
+  setTimeout(() => {
+    clearInterval(interval);
+    overlay.classList.remove("is-visible");
+    setTimeout(() => {
+      overlay.hidden = true;
+      onDone();
+    }, 260);
+  }, 1800);
 }
 
 function switchScreen(name) {
