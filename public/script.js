@@ -2004,6 +2004,12 @@ function updateStats() {
     timePanel.classList.toggle("warn-panel",     session.gameMinutes <= session.difficulty.endMinutes);
     timePanel.classList.toggle("overtime-panel", session.gameMinutes > session.difficulty.endMinutes);
   }
+
+  const inPenalty = performance.now() < session.speedPenaltyUntil;
+  const currentTimePanel = el.currentTime.closest(".stat-panel");
+  if (currentTimePanel) {
+    currentTimePanel.classList.toggle("penalty-panel", inPenalty);
+  }
 }
 
 /* ===========================
