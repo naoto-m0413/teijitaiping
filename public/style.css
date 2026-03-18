@@ -1590,12 +1590,6 @@ h1 {
   letter-spacing: 0.04em;
 }
 
-.tally-sub-text {
-  margin: 0;
-  font-size: 0.88rem;
-  color: var(--muted);
-  letter-spacing: 0.02em;
-}
 
 /* ===========================
    モーダル
