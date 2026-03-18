@@ -1188,7 +1188,7 @@ h1 {
 }
 
 /* かなカラーコーディング（ルビ内で使用） */
-.kana-done    { color: #3d6650; }
+.kana-done    { color: #5db882; }
 .kana-current { color: #ffd234; }
 .kana-pending { color: #7a9ab8; }
 
@@ -1220,7 +1220,7 @@ h1 {
 }
 
 .char-correct {
-  color: #2a7840;
+  color: #5db882;
   font-weight: 700;
 }
 .char-current {
