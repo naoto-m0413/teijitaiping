@@ -2198,7 +2198,7 @@ function storeResult(result) {
   const isBestLeave = dr.bestLeaveMinutes === null || result.leaveMinutes < dr.bestLeaveMinutes;
 
   records.byDifficulty[result.difficultyId] = {
-    bestLeaveMinutes: isBestLeave ? result.leaveMinutes : dr.bestLeaveMinutes,
+    bestLeaveMinutes: isBestLeave ? Math.floor(result.leaveMinutes) : dr.bestLeaveMinutes,
     bestCps:          Math.max(dr.bestCps,      result.cps),
     bestAccuracy:     Math.max(dr.bestAccuracy, result.accuracy)
   };
@@ -2226,7 +2226,7 @@ function renderBestRecords() {
     if (!rec) {
       card.innerHTML = `<p>${diff.name}</p><strong>未プレイ</strong>`;
     } else {
-      const earlyMin = diff.endMinutes - rec.bestLeaveMinutes;
+      const earlyMin = Math.floor(diff.endMinutes - rec.bestLeaveMinutes);
       const timeText = earlyMin >= 0
         ? `定時より${fmtDuration(earlyMin)}早退`
         : `残業 ${fmtDuration(Math.abs(earlyMin))}`;
