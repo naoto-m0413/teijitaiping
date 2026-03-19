@@ -282,14 +282,114 @@ h1 {
   gap: 16px;
 }
 
-.title-side-ad {
-  width: 160px;
+/* ===========================
+   タイトルサイドバー
+=========================== */
+.title-sidebar {
+  width: 180px;
   flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
   padding-top: 24px;
 }
 
-@media (max-width: 1100px) {
-  .title-side-ad { display: none; }
+.sidebar-nav-btn {
+  width: 100%;
+  padding: 10px 14px;
+  border-radius: 10px;
+  font: inherit;
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  text-align: center;
+  background: linear-gradient(180deg, #1e3a58 0%, #142840 100%);
+  border: 2px solid #1e4068;
+  color: #d0e8ff;
+  box-shadow: 0 3px 0 #0a1828;
+  transition: filter 100ms, transform 100ms;
+}
+
+.sidebar-nav-btn:hover { filter: brightness(1.15); }
+.sidebar-nav-btn:active { transform: translateY(1px); }
+
+.sidebar-ad {
+  margin-top: 8px;
+}
+
+/* ===========================
+   説明文カード
+=========================== */
+.title-description {
+  margin-top: 24px;
+  text-align: left;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(100, 160, 220, 0.15);
+  border-radius: 12px;
+  padding: 20px 24px;
+  width: 75%;
+  max-width: 420px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.desc-heading {
+  font-size: 0.95rem;
+  font-weight: 900;
+  color: #8ec8e8;
+  letter-spacing: 0.05em;
+  margin: 0 0 10px;
+}
+
+.desc-body {
+  font-size: 0.83rem;
+  line-height: 1.75;
+  color: #b8cfe0;
+  margin: 0 0 16px;
+}
+
+.desc-subheading {
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: #8ec8e8;
+  margin: 0 0 8px;
+}
+
+.desc-list {
+  margin: 0;
+  padding-left: 1.2em;
+  font-size: 0.82rem;
+  line-height: 1.8;
+  color: #9ab8cc;
+}
+
+/* モバイル用ナビはデスクトップで非表示 */
+.title-mobile-nav {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  .title-sidebar { display: none; }
+
+  .title-mobile-nav {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    margin-top: 16px;
+    flex-wrap: wrap;
+  }
+
+  .title-mobile-nav .sidebar-nav-btn {
+    width: auto;
+    flex: 1;
+    min-width: 80px;
+    max-width: 140px;
+    font-size: 0.82rem;
+  }
+
+  .title-description {
+    width: 90%;
+  }
 }
 
 .screen-frame {
@@ -847,17 +947,7 @@ h1 {
 }
 
 .title-sub-buttons {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-  margin-top: 24px;
-  width: 100%;
-}
-
-.title-sub-buttons .title-action-button {
-  width: 56%;
-  max-width: 315px;
+  display: none;
 }
 
 .title-action-start {

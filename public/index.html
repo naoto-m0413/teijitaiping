@@ -156,21 +156,24 @@
         <!-- ======= タイトル画面 ======= -->
         <section id="title-screen" class="screen active">
           <div class="title-layout">
-            <!-- 左広告 -->
-            <div class="title-side-ad title-side-ad-left">
-              <ins class="adsbygoogle"
-                   style="display:block"
-                   data-ad-client="ca-pub-5699383223772072"
-                   data-ad-slot="5457829168"
-                   data-ad-format="auto"
-                   data-full-width-responsive="true"></ins>
-              <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-            </div>
+
+            <!-- 左サイドバー -->
+            <aside class="title-sidebar title-sidebar-left">
+              <button class="sidebar-nav-btn how-to-btn" type="button">遊び方</button>
+              <button class="sidebar-nav-btn settings-btn" type="button">設定</button>
+              <div class="sidebar-ad">
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-5699383223772072"
+                     data-ad-slot="5457829168"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+                <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+              </div>
+            </aside>
 
             <!-- 中央ステージ -->
             <div class="hero-card panel office-title-stage">
-
-              <!-- タイトルボード -->
               <div class="title-board">
                 <div class="title-plaque">
                   <img
@@ -182,26 +185,46 @@
 
                 <div class="title-start-block">
                   <button id="start-button" class="primary-button stage-button title-action-button title-action-start" type="button">スタート</button>
-                  <div class="title-sub-buttons">
-                    <button class="secondary-button stage-sub-button how-to-btn title-action-button title-action-howto" type="button">遊び方</button>
-                    <button class="secondary-button stage-sub-button title-action-button title-action-settings settings-btn" type="button">設定</button>
-                    <button class="ghost-button stage-sub-button title-action-button title-action-records records-btn" type="button">実績</button>
+
+                  <!-- モバイル用ナビボタン -->
+                  <div class="title-mobile-nav">
+                    <button class="sidebar-nav-btn how-to-btn" type="button">遊び方</button>
+                    <button class="sidebar-nav-btn settings-btn" type="button">設定</button>
+                    <button class="sidebar-nav-btn records-btn" type="button">実績</button>
+                  </div>
+
+                  <!-- 説明文 -->
+                  <div class="title-description">
+                    <section class="desc-section">
+                      <h2 class="desc-heading">定時退ピングとは？</h2>
+                      <p class="desc-body">山積みの仕事をタイピングでさばき、誰よりも早い退勤を目指すブラウザゲームです。<br>迫る締切、鳴りやまない通知、終わらないタスク。<br>すべてを打ち返し、最速退勤をつかみ取りましょう。</p>
+                    </section>
+                    <section class="desc-section">
+                      <h3 class="desc-subheading">こんな人におすすめ</h3>
+                      <ul class="desc-list">
+                        <li>仕事を片づけるような爽快感を味わいたい人</li>
+                        <li>スキマ時間にテンポよく遊びたい人</li>
+                        <li>ゲーム感覚でタイピングを鍛えたい人</li>
+                      </ul>
+                    </section>
                   </div>
                 </div>
               </div>
-
             </div>
 
-            <!-- 右広告 -->
-            <div class="title-side-ad title-side-ad-right">
-              <ins class="adsbygoogle"
-                   style="display:block"
-                   data-ad-client="ca-pub-5699383223772072"
-                   data-ad-slot="5457829168"
-                   data-ad-format="auto"
-                   data-full-width-responsive="true"></ins>
-              <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-            </div>
+            <!-- 右サイドバー -->
+            <aside class="title-sidebar title-sidebar-right">
+              <button class="sidebar-nav-btn records-btn" type="button">実績</button>
+              <div class="sidebar-ad">
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-5699383223772072"
+                     data-ad-slot="5457829168"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+                <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+              </div>
+            </aside>
 
           </div>
         </section>
