@@ -156,7 +156,7 @@ const DIFFICULTIES = {
     id: "normal",
     name: "ふつうの企業",
     taskCount: 8,
-    gameSpeed: 8.0,
+    gameSpeed: 7.0,
     penaltyMinutes: 20,
     startMinutes: 9 * 60,         // 09:00
     endMinutes:   19 * 60         // 19:00
