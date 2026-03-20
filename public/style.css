@@ -1223,8 +1223,7 @@ h1 {
 }
 
 #game-screen.game-overtime .panel {
-  border-color: rgba(140, 20, 20, 0.45);
-  transition: border-color 2s ease, background 2s ease;
+  transition: background 2s ease;
 }
 
 #game-screen.game-overtime .task-panel {
