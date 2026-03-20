@@ -645,7 +645,7 @@ const el = {
   settingsModalCloseBtn:document.getElementById("settings-modal-close-btn"),
   settingsModalOkBtn:   document.getElementById("settings-modal-ok-btn"),
   masterMuteBtn:        document.getElementById("master-mute-btn"),
-  globalMuteBtn:        document.getElementById("global-mute-btn"),
+  screenMuteBtns:       document.querySelectorAll(".screen-mute-btn"),
   bgmVolumeSlider:      document.getElementById("bgm-volume"),
   bgmVolumeVal:         document.getElementById("bgm-volume-val"),
   seVolumeSlider:       document.getElementById("se-volume"),
@@ -977,7 +977,7 @@ function bindEvents() {
     if (e.target === el.settingsModal) closeSettingsModal();
   });
   el.masterMuteBtn.addEventListener("click", toggleMasterMute);
-  el.globalMuteBtn.addEventListener("click", toggleMasterMute);
+  el.screenMuteBtns.forEach((btn) => btn.addEventListener("click", toggleMasterMute));
   el.bgmVolumeSlider.addEventListener("input", () => {
     state.bgmVolume = el.bgmVolumeSlider.value / 100;
     el.bgmVolumeVal.textContent = el.bgmVolumeSlider.value;
@@ -1164,8 +1164,7 @@ function openModal()  { el.modal.hidden = false; }
 function closeModal() { el.modal.hidden = true; }
 
 function openSettingsModal() {
-  el.masterMuteBtn.textContent    = state.masterMuted ? "🔇" : "🔊";
-  el.masterMuteBtn.dataset.muted  = String(state.masterMuted);
+  syncMuteButtons();
   el.bgmVolumeSlider.value        = Math.round(state.bgmVolume * 100);
   el.bgmVolumeVal.textContent     = Math.round(state.bgmVolume * 100);
   el.seVolumeSlider.value         = Math.round(state.seVolume * 100);
@@ -1176,12 +1175,19 @@ function closeSettingsModal() { el.settingsModal.hidden = true; }
 
 function toggleMasterMute() {
   state.masterMuted = !state.masterMuted;
-  const icon = state.masterMuted ? "🔇" : "🔊";
-  [el.masterMuteBtn, el.globalMuteBtn].forEach((btn) => {
-    btn.textContent = icon;
-    btn.dataset.muted = String(state.masterMuted);
-  });
+  syncMuteButtons();
   bgmGain.gain.setTargetAtTime(state.masterMuted ? 0 : state.bgmVolume, audioCtx.currentTime, 0.05);
+}
+
+function syncMuteButtons() {
+  const icon = state.masterMuted ? "🔇" : "🔊";
+  const muted = String(state.masterMuted);
+  el.masterMuteBtn.textContent = icon;
+  el.masterMuteBtn.dataset.muted = muted;
+  el.screenMuteBtns.forEach((btn) => {
+    btn.textContent = icon;
+    btn.dataset.muted = muted;
+  });
 }
 
 function openRecordsModal() {
