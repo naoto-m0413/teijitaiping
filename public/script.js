@@ -645,6 +645,7 @@ const el = {
   settingsModalCloseBtn:document.getElementById("settings-modal-close-btn"),
   settingsModalOkBtn:   document.getElementById("settings-modal-ok-btn"),
   masterMuteBtn:        document.getElementById("master-mute-btn"),
+  globalMuteBtn:        document.getElementById("global-mute-btn"),
   bgmVolumeSlider:      document.getElementById("bgm-volume"),
   bgmVolumeVal:         document.getElementById("bgm-volume-val"),
   seVolumeSlider:       document.getElementById("se-volume"),
@@ -975,12 +976,8 @@ function bindEvents() {
   el.settingsModal.addEventListener("click", (e) => {
     if (e.target === el.settingsModal) closeSettingsModal();
   });
-  el.masterMuteBtn.addEventListener("click", () => {
-    state.masterMuted = !state.masterMuted;
-    el.masterMuteBtn.textContent = state.masterMuted ? "🔇" : "🔊";
-    el.masterMuteBtn.dataset.muted = String(state.masterMuted);
-    bgmGain.gain.setTargetAtTime(state.masterMuted ? 0 : state.bgmVolume, audioCtx.currentTime, 0.05);
-  });
+  el.masterMuteBtn.addEventListener("click", toggleMasterMute);
+  el.globalMuteBtn.addEventListener("click", toggleMasterMute);
   el.bgmVolumeSlider.addEventListener("input", () => {
     state.bgmVolume = el.bgmVolumeSlider.value / 100;
     el.bgmVolumeVal.textContent = el.bgmVolumeSlider.value;
@@ -1176,6 +1173,16 @@ function openSettingsModal() {
   el.settingsModal.hidden = false;
 }
 function closeSettingsModal() { el.settingsModal.hidden = true; }
+
+function toggleMasterMute() {
+  state.masterMuted = !state.masterMuted;
+  const icon = state.masterMuted ? "🔇" : "🔊";
+  [el.masterMuteBtn, el.globalMuteBtn].forEach((btn) => {
+    btn.textContent = icon;
+    btn.dataset.muted = String(state.masterMuted);
+  });
+  bgmGain.gain.setTargetAtTime(state.masterMuted ? 0 : state.bgmVolume, audioCtx.currentTime, 0.05);
+}
 
 function openRecordsModal() {
   renderBestRecords();
