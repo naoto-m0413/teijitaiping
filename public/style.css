@@ -1195,10 +1195,38 @@ h1 {
 /* ===========================
    プログレスバー（コンパクト）
 =========================== */
+.progress-section {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.progress-label-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 0 2px;
+}
+
+.progress-label-left {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #8ec8e8;
+  text-transform: uppercase;
+}
+
+.progress-label-right {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: 0.03em;
+}
+
 .progress-bar-wrap {
   display: flex;
   align-items: center;
-  padding: 4px 12px;
+  padding: 0;
   background: transparent;
   border: none;
   box-shadow: none;

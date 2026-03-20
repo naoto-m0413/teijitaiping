@@ -611,6 +611,7 @@ const el = {
   timeLeft:             document.getElementById("time-left"),
   penaltyFloat:         document.getElementById("penalty-float"),
   progressFill:         document.getElementById("progress-fill"),
+  progressInfo:         document.getElementById("progress-info"),
   taskName:             document.getElementById("task-name"),
   promptJapanese:       document.getElementById("prompt-japanese"),
   typingPreview:        document.getElementById("typing-preview"),
@@ -1565,7 +1566,7 @@ function buildTaskList(difficulty) {
         ? (kr !== undefined ? segmentPartsWithKanjiReadings(msg.text, kr) : autoSegmentParts(msg.text, msg.reading))
         : [[msg.text]]
     };
-    return { ...task, prompt };
+    return { ...task, prompt, lengthType: msg.lengthType };
   });
 }
 
@@ -2032,15 +2033,20 @@ function updateStats() {
   const tasksDone   = session.currentTaskIndex;
   const total       = session.tasks.length;
   const currentTask = session.tasks[tasksDone];
-  const inTaskProg  = currentTask && session.tokens.length > 0
-    ? (session.tokenIndex / session.tokens.length) / total
+
+  // 加重進捗計算（short=1, medium=1.5, long=2）
+  const WEIGHT = { short: 1, medium: 1.5, long: 2 };
+  const taskWeights  = session.tasks.map(t => WEIGHT[t.lengthType] ?? 1);
+  const totalWeight  = taskWeights.reduce((s, w) => s + w, 0);
+  const doneWeight   = taskWeights.slice(0, tasksDone).reduce((s, w) => s + w, 0);
+  const inTaskWeight = currentTask && session.tokens.length > 0
+    ? (session.tokenIndex / session.tokens.length) * (taskWeights[tasksDone] ?? 1)
     : 0;
-  const pct = Math.min((tasksDone / total + inTaskProg) * 100, 100);
+  const pct = Math.min((doneWeight + inTaskWeight) / totalWeight * 100, 100);
 
   el.currentTime.textContent   = fmtMin(session.gameMinutes);
   el.timeLeft.textContent      = fmtRemain(session.gameMinutes, session.difficulty.endMinutes);
   el.progressFill.style.width  = `${pct}%`;
-
 
   // マイルストーン演出
   if (!session.milestone80 && pct >= 80) {
@@ -2049,8 +2055,10 @@ function updateStats() {
     playMilestoneSound("near");
   }
 
-  const pctEl = document.getElementById("progress-pct");
-  if (pctEl) pctEl.textContent = pct >= 1 ? `${Math.round(pct)}%` : "";
+  if (el.progressInfo) {
+    const pctDisplay = pct >= 1 ? `${Math.round(pct)}%` : "0%";
+    el.progressInfo.textContent = `${tasksDone} / ${total} TASKS ・ ${pctDisplay}`;
+  }
   el.cpsValue.textContent      = (Number.isFinite(+cps) ? cps : "0.0") + "回/秒";
   el.accuracyValue.textContent = `${accuracy}%`;
   el.missValue.textContent     = String(session.misses);
