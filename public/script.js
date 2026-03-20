@@ -1177,7 +1177,16 @@ function closeSettingsModal() { el.settingsModal.hidden = true; }
 function toggleMasterMute() {
   state.masterMuted = !state.masterMuted;
   syncMuteButtons();
-  bgmGain.gain.setTargetAtTime(state.masterMuted ? 0 : state.bgmVolume, audioCtx.currentTime, 0.05);
+  if (state.masterMuted) {
+    bgmGain.gain.setTargetAtTime(0, audioCtx.currentTime, 0.05);
+  } else {
+    // ミュート解除時、準備画面またはゲーム画面ならBGMを再起動
+    if (state.currentScreen === "ready" || state.currentScreen === "game") {
+      startBGM(state.selectedDifficulty);
+    } else {
+      bgmGain.gain.setTargetAtTime(state.bgmVolume, audioCtx.currentTime, 0.05);
+    }
+  }
 }
 
 function syncMuteButtons() {
