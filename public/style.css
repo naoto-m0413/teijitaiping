@@ -1029,7 +1029,7 @@ h1 {
   flex: 1;
   display: grid;
   grid-template-rows: auto auto auto auto auto;
-  gap: 4px;
+  gap: 6px;
   min-height: 560px;
 }
 
@@ -1038,6 +1038,9 @@ h1 {
 =========================== */
 .status-grid {
   display: block;
+  max-width: 620px;
+  width: 100%;
+  margin: 0 auto;
 }
 
 .stat-panel {
@@ -1201,6 +1204,9 @@ h1 {
   border: none;
   box-shadow: none;
   border-radius: 0;
+  max-width: 620px;
+  width: 100%;
+  margin: 0 auto;
 }
 
 .progress-bar {
