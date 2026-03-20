@@ -1293,6 +1293,7 @@ function startGame() {
     speedPenaltyUntil: 0   // ミス時の時計加速ペナルティ終了時刻
   };
 
+  el.penaltyFloat.classList.remove("is-active");
   switchScreen("game");
   showKisoFlash(difficulty.id);
   focusGameInput({ resetValue: true });
