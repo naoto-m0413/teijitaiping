@@ -1290,8 +1290,7 @@ function startGame() {
     taskStartedAt:  now,
     taskCorrectChars: 0,
     taskMisses:       0,
-    speedPenaltyUntil: 0,  // ミス時の時計加速ペナルティ終了時刻
-    overtimeStarted: false // 残業演出発火済みフラグ
+    speedPenaltyUntil: 0   // ミス時の時計加速ペナルティ終了時刻
   };
 
   switchScreen("game");
@@ -2007,6 +2006,11 @@ function flashInputError() {
     state.session.gameMinutes += state.session.difficulty.penaltyMinutes;
     state.session.speedPenaltyUntil = performance.now() + 800;
     showPenaltyFloat(state.session.difficulty.penaltyMinutes);
+    if (prev <= state.session.difficulty.endMinutes &&
+        state.session.gameMinutes > state.session.difficulty.endMinutes) {
+      showMilestoneFlash("残業開始...", "overtime");
+      playMilestoneSound("overtime");
+    }
     if (Math.floor(prev / (24 * 60)) < Math.floor(state.session.gameMinutes / (24 * 60))) {
       showMilestoneFlash("日付が変わった...", "midnight");
     }
@@ -2100,16 +2104,7 @@ function updateStats() {
   el.accuracyValue.textContent = `${accuracy}%`;
   el.missValue.textContent     = String(session.misses);
 
-  const { startMinutes: sMin, endMinutes: eMin } = session.difficulty;
-  const gaugeRatio = Math.min(1, (session.gameMinutes - sMin) / (eMin - sMin));
-  const isOvertime = gaugeRatio >= 0.95 || session.gameMinutes > eMin;
-
-  if (isOvertime && !session.overtimeStarted) {
-    session.overtimeStarted = true;
-    showMilestoneFlash("残業開始...", "overtime");
-    playMilestoneSound("overtime");
-  }
-
+  const isOvertime = session.gameMinutes > session.difficulty.endMinutes;
   el.timeLeft.classList.toggle("is-overtime", isOvertime);
   el.screens.game.classList.toggle("game-overtime", isOvertime);
 
@@ -2492,6 +2487,12 @@ function startStatTicker() {
     const session = state.session;
     const prevMinutes = session.gameMinutes;
     session.gameMinutes += session.difficulty.gameSpeed * (TICK_MS / 1000);
+    // 定時を超えた瞬間に「残業開始！」
+    if (prevMinutes <= session.difficulty.endMinutes &&
+        session.gameMinutes > session.difficulty.endMinutes) {
+      showMilestoneFlash("残業開始...", "overtime");
+      playMilestoneSound("overtime");
+    }
     // 24時を超えた瞬間に「日付が変わった...」
     if (Math.floor(prevMinutes / (24 * 60)) < Math.floor(session.gameMinutes / (24 * 60))) {
       showMilestoneFlash("日付が変わった...", "midnight");
