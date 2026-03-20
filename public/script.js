@@ -1194,6 +1194,7 @@ function updateDifficultySelection() {
 =========================== */
 function goToDifficulty() {
   stopStatTicker();
+  stopBGM();
   closeModal();
   updateDifficultySelection();
   hideHeaderClock();
@@ -1210,6 +1211,7 @@ function goToReady() {
   el.readyDifficultyName.textContent = difficulty.name;
   updateHeaderClock(difficulty);
   switchScreen("ready");
+  startBGM(state.selectedDifficulty);
 }
 
 function updateHeaderClock(difficulty) {
@@ -1257,7 +1259,6 @@ function startGame() {
   };
 
   switchScreen("game");
-  startBGM(state.selectedDifficulty);
   showKisoFlash(difficulty.id);
   focusGameInput({ resetValue: true });
 
