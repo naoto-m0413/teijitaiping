@@ -1145,6 +1145,67 @@ h1 {
   background: linear-gradient(180deg, #0a2040 0%, #0e2848 100%);
 }
 
+#main-time-panel {
+  position: relative;
+  overflow: hidden;
+}
+
+/* ===========================
+   円形タイマーゲージ
+=========================== */
+.timer-gauge-svg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+  max-width: 140px;
+  aspect-ratio: 1;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.timer-gauge-track {
+  fill: none;
+  stroke: rgba(0, 180, 255, 0.1);
+  stroke-width: 5;
+}
+
+.timer-gauge-arc {
+  fill: none;
+  stroke: rgba(0, 180, 255, 0.3);
+  stroke-width: 8;
+  stroke-linecap: round;
+  stroke-dasharray: 326.7;
+  stroke-dashoffset: 0;
+  transform: rotate(-90deg);
+  transform-origin: 60px 60px;
+  transition: stroke-dashoffset 0.4s ease, stroke 1s ease;
+}
+
+.timer-gauge-center {
+  fill: rgba(0, 180, 255, 0.2);
+}
+
+#game-screen.game-overtime .timer-gauge-arc {
+  stroke: rgba(255, 80, 60, 0.45);
+  animation: gauge-overtime-pulse 2s ease-in-out infinite;
+}
+
+#game-screen.game-overtime .timer-gauge-center {
+  fill: rgba(255, 80, 60, 0.3);
+}
+
+@keyframes gauge-overtime-pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.4; }
+}
+
+.stat-panel > *:not(.timer-gauge-svg) {
+  position: relative;
+  z-index: 1;
+}
+
 .warn-panel {
   background: linear-gradient(180deg, #201800 0%, #281e00 100%);
 }

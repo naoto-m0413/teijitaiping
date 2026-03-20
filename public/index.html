@@ -327,6 +327,11 @@
               <!-- ステータスバー（コンパクト） -->
               <div class="status-grid">
                 <article class="panel stat-panel accent-panel" id="main-time-panel">
+                  <svg class="timer-gauge-svg" viewBox="0 0 120 120" aria-hidden="true">
+                    <circle class="timer-gauge-track" cx="60" cy="60" r="52"/>
+                    <circle class="timer-gauge-arc" id="timer-gauge-arc" cx="60" cy="60" r="52"/>
+                    <circle class="timer-gauge-center" cx="60" cy="60" r="6"/>
+                  </svg>
                   <span class="stat-label">現在時刻</span>
                   <div class="main-time-row">
                     <strong id="current-time" class="main-time-value">--:--</strong>

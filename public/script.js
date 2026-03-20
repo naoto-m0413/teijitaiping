@@ -608,6 +608,7 @@ const el = {
   bestRecords:          document.getElementById("best-records"),
   lastResultSummary:    document.getElementById("last-result-summary"),
   currentTime:          document.getElementById("current-time"),
+  timerGaugeArc:        document.getElementById("timer-gauge-arc"),
   timeLeft:             document.getElementById("time-left"),
   penaltyFloat:         document.getElementById("penalty-float"),
   progressFill:         document.getElementById("progress-fill"),
@@ -2062,6 +2063,16 @@ function updateStats() {
 
   el.currentTime.textContent   = fmtMin(session.gameMinutes);
   el.timeLeft.textContent      = fmtRemain(session.gameMinutes, session.difficulty.endMinutes);
+
+  // 円形ゲージ更新
+  if (el.timerGaugeArc) {
+    const { startMinutes, endMinutes } = session.difficulty;
+    const totalWork = endMinutes - startMinutes;
+    const remaining = endMinutes - session.gameMinutes;
+    const ratio = Math.max(0, Math.min(1, remaining / totalWork));
+    const circumference = 326.7;
+    el.timerGaugeArc.style.strokeDashoffset = circumference * (1 - ratio);
+  }
   el.progressFill.style.width  = `${pct}%`;
 
   // マイルストーン演出
