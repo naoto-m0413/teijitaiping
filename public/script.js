@@ -2035,7 +2035,7 @@ function updateStats() {
   const currentTask = session.tasks[tasksDone];
 
   // 加重進捗計算（short=1, medium=1.5, long=2）
-  const WEIGHT = { short: 1, medium: 1.5, long: 2 };
+  const WEIGHT = { short: 1, medium: 2, long: 3.6 };
   const taskWeights  = session.tasks.map(t => WEIGHT[t.lengthType] ?? 1);
   const totalWeight  = taskWeights.reduce((s, w) => s + w, 0);
   const doneWeight   = taskWeights.slice(0, tasksDone).reduce((s, w) => s + w, 0);
