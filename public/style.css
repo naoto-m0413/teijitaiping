@@ -1227,9 +1227,6 @@ h1 {
   background: linear-gradient(180deg, #1c0d0d 0%, #130808 100%);
 }
 
-#game-screen.game-overtime #main-time-panel {
-  background: linear-gradient(180deg, #220a0a 0%, #1a0606 100%);
-}
 
 #game-screen.game-overtime .main-time-value {
   color: #ff6060;
@@ -1249,23 +1246,18 @@ h1 {
   animation: overtime-breathe 4s ease-in-out infinite alternate;
 }
 
-.penalty-panel {
-  background: linear-gradient(180deg, #2a2000 0%, #3d3000 100%);
-  animation: penalty-pulse 0.8s ease-in-out infinite alternate;
+.penalty-panel .timer-gauge-arc {
+  stroke: rgba(255, 215, 0, 0.9);
+  animation: gauge-penalty-pulse 0.5s ease-in-out infinite alternate;
 }
 
-.penalty-panel .stat-label {
-  color: #ffe066;
+.penalty-panel .timer-gauge-center {
+  fill: rgba(255, 215, 0, 0.5);
 }
 
-.penalty-panel .stat-value {
-  color: #ffd700;
-  text-shadow: 0 0 8px rgba(255, 215, 0, 0.8);
-}
-
-@keyframes penalty-pulse {
-  from { box-shadow: inset 0 0 0 1px rgba(255, 215, 0, 0.3); }
-  to   { box-shadow: inset 0 0 0 2px rgba(255, 215, 0, 0.9), 0 0 12px rgba(255, 215, 0, 0.4); }
+@keyframes gauge-penalty-pulse {
+  from { stroke: rgba(255, 200, 0, 0.6); }
+  to   { stroke: rgba(255, 220, 0, 1.0); filter: drop-shadow(0 0 6px rgba(255, 215, 0, 0.9)); }
 }
 
 /* ===========================
