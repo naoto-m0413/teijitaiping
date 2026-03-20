@@ -2077,7 +2077,7 @@ function updateStats() {
   }
 
   if (el.progressInfo) {
-    el.progressInfo.textContent = `${tasksDone} / ${total} TASKS`;
+    el.progressInfo.textContent = `残り${total - tasksDone}タスク`;
   }
   const pctEl = document.getElementById("progress-pct");
   if (pctEl) pctEl.textContent = pct >= 1 ? `${Math.round(pct)}%` : "";
