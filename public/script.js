@@ -912,11 +912,18 @@ function bindEvents() {
   el.readyStartBtn.addEventListener("click", startGame);
   el.readyBackBtn.addEventListener("click", goToDifficulty);
 
-  // ゲーム画面 仕切り直す
+  // ゲーム画面 仕切り直す（準備画面へ戻る）
   document.getElementById("game-retry-btn").addEventListener("click", () => {
     stopStatTicker();
     stopBGM();
-    startGame();
+    goToReady();
+  });
+
+  // ゲーム画面 転職する（難易度選択へ）
+  document.getElementById("game-change-diff-btn").addEventListener("click", () => {
+    stopStatTicker();
+    stopBGM();
+    goToDifficulty();
   });
 
   // ゲーム画面クリック時は入力欄へフォーカスを戻す（ボタン・リンクへのクリックは除く）
