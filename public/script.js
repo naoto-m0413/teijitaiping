@@ -1242,6 +1242,7 @@ function goToReady() {
   closeModal();
   const difficulty = DIFFICULTIES[state.selectedDifficulty];
   el.readyDifficultyName.textContent = difficulty.name;
+  el.readyDifficultyName.dataset.difficulty = state.selectedDifficulty;
   const readyTitle = document.getElementById("ready-title");
   if (readyTitle) readyTitle.textContent = READY_TITLES[state.selectedDifficulty] ?? "準備はいいですか？";
   updateHeaderClock(difficulty);
@@ -2190,6 +2191,7 @@ function renderResult(result, recordStatus, prevResult) {
   // 難易度チップ
   if (el.resultDifficultyChip) {
     el.resultDifficultyChip.textContent = result.difficultyName;
+    el.resultDifficultyChip.dataset.difficulty = result.difficultyId;
   }
 
   // 記録バッジ

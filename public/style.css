@@ -767,6 +767,10 @@ h1 {
   color: var(--accent);
 }
 
+.ready-difficulty[data-difficulty="white"] { color: #80e8ff; }
+.ready-difficulty[data-difficulty="normal"] { color: #ffd890; }
+.ready-difficulty[data-difficulty="black"]  { color: #ffb8a8; }
+
 .ready-hint {
   margin: 0 0 20px;
   font-size: 0.95rem;
@@ -1405,6 +1409,10 @@ h1 {
   white-space: nowrap;
   flex-shrink: 0;
 }
+
+.difficulty-chip[data-difficulty="white"]  { color: #80e8ff; border-color: rgba(0, 200, 240, 0.4); }
+.difficulty-chip[data-difficulty="normal"] { color: #ffd890; border-color: rgba(255, 160, 40, 0.4); }
+.difficulty-chip[data-difficulty="black"]  { color: #ffb8a8; border-color: rgba(220, 60, 40, 0.4); }
 
 .sentence-panel {
   padding: 8px 14px;
