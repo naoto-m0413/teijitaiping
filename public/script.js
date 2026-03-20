@@ -1234,7 +1234,7 @@ function goToDifficulty() {
 const READY_TITLES = {
   white:  "では、はじめましょう！",
   normal: "では、よろしくお願いします",
-  black:  "家に帰れるといいな...",
+  black:  "今日は帰れるといいな...",
 };
 
 function goToReady() {
