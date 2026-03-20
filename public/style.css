@@ -1270,6 +1270,28 @@ h1 {
   to   { filter: drop-shadow(0 0 14px rgba(255, 215, 0, 1.0)); }
 }
 
+/* 残業中のミスは濃い赤で発光 */
+#game-screen.game-overtime .penalty-panel .timer-gauge-svg {
+  animation: gauge-penalty-overtime-pulse 0.5s ease-in-out infinite alternate;
+}
+
+#game-screen.game-overtime .penalty-panel .timer-gauge-arc {
+  stroke: rgba(220, 30, 30, 1.0);
+}
+
+#game-screen.game-overtime .penalty-panel .timer-gauge-track {
+  stroke: rgba(200, 20, 20, 0.4);
+}
+
+#game-screen.game-overtime .penalty-panel .timer-gauge-center {
+  fill: rgba(220, 30, 30, 0.7);
+}
+
+@keyframes gauge-penalty-overtime-pulse {
+  from { filter: drop-shadow(0 0 4px rgba(200, 0, 0, 0.7)); }
+  to   { filter: drop-shadow(0 0 16px rgba(220, 0, 0, 1.0)); }
+}
+
 /* ===========================
    プログレスバー（コンパクト）
 =========================== */
