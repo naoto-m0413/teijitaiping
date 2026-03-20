@@ -1167,8 +1167,12 @@ function openModal()  { el.modal.hidden = false; }
 function closeModal() { el.modal.hidden = true; }
 
 function openSettingsModal() {
-  el.soundToggle.textContent  = state.soundEnabled ? "ON" : "OFF";
-  el.soundToggle.dataset.on   = String(state.soundEnabled);
+  el.masterMuteBtn.textContent    = state.masterMuted ? "🔇" : "🔊";
+  el.masterMuteBtn.dataset.muted  = String(state.masterMuted);
+  el.bgmVolumeSlider.value        = Math.round(state.bgmVolume * 100);
+  el.bgmVolumeVal.textContent     = Math.round(state.bgmVolume * 100);
+  el.seVolumeSlider.value         = Math.round(state.seVolume * 100);
+  el.seVolumeVal.textContent      = Math.round(state.seVolume * 100);
   el.settingsModal.hidden = false;
 }
 function closeSettingsModal() { el.settingsModal.hidden = true; }
