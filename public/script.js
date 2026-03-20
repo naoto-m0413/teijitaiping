@@ -2058,6 +2058,11 @@ function updateStats() {
   el.progressFill.style.width  = `${pct}%`;
 
   // マイルストーン演出
+  if (!session.milestone50 && pct >= 50) {
+    session.milestone50 = true;
+    showMilestoneFlash("業務折り返し", "half");
+    playMilestoneSound("half");
+  }
   if (!session.milestone80 && pct >= 80) {
     session.milestone80 = true;
     showMilestoneFlash("もうすぐ退勤！", "near");
