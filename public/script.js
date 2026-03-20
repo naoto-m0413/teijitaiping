@@ -2056,9 +2056,10 @@ function updateStats() {
   }
 
   if (el.progressInfo) {
-    const pctDisplay = pct >= 1 ? `${Math.round(pct)}%` : "0%";
-    el.progressInfo.textContent = `${tasksDone} / ${total} TASKS ・ ${pctDisplay}`;
+    el.progressInfo.textContent = `${tasksDone} / ${total} TASKS`;
   }
+  const pctEl = document.getElementById("progress-pct");
+  if (pctEl) pctEl.textContent = pct >= 1 ? `${Math.round(pct)}%` : "";
   el.cpsValue.textContent      = (Number.isFinite(+cps) ? cps : "0.0") + "回/秒";
   el.accuracyValue.textContent = `${accuracy}%`;
   el.missValue.textContent     = String(session.misses);
