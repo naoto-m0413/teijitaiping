@@ -1231,11 +1231,19 @@ function goToDifficulty() {
 /* ===========================
    準備画面へ
 =========================== */
+const READY_TITLES = {
+  white:  "では、はじめましょう！",
+  normal: "では、よろしくお願いします",
+  black:  "早くしてください",
+};
+
 function goToReady() {
   stopStatTicker();
   closeModal();
   const difficulty = DIFFICULTIES[state.selectedDifficulty];
   el.readyDifficultyName.textContent = difficulty.name;
+  const readyTitle = document.getElementById("ready-title");
+  if (readyTitle) readyTitle.textContent = READY_TITLES[state.selectedDifficulty] ?? "準備はいいですか？";
   updateHeaderClock(difficulty);
   switchScreen("ready");
   startBGM(state.selectedDifficulty);
