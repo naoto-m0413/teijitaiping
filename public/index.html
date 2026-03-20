@@ -68,10 +68,30 @@
         <div class="settings-list">
           <div class="settings-row">
             <div class="settings-label">
-              <span class="settings-name">効果音</span>
+              <span class="settings-name">サウンド</span>
+              <span class="settings-desc">全ての音をオン/オフ</span>
+            </div>
+            <button class="settings-speaker-btn" id="master-mute-btn" type="button" data-muted="false" aria-label="ミュート切り替え">🔊</button>
+          </div>
+          <div class="settings-row">
+            <div class="settings-label">
+              <span class="settings-name">BGM音量</span>
+              <span class="settings-desc">ゲーム中のBGM</span>
+            </div>
+            <div class="settings-slider-wrap">
+              <input type="range" class="settings-slider" id="bgm-volume" min="0" max="100" value="50">
+              <span class="settings-slider-val" id="bgm-volume-val">50</span>
+            </div>
+          </div>
+          <div class="settings-row">
+            <div class="settings-label">
+              <span class="settings-name">タイプ音量</span>
               <span class="settings-desc">キー入力・タスク完了の効果音</span>
             </div>
-            <button class="settings-toggle" id="sound-toggle" type="button" data-on="true">ON</button>
+            <div class="settings-slider-wrap">
+              <input type="range" class="settings-slider" id="se-volume" min="0" max="100" value="100">
+              <span class="settings-slider-val" id="se-volume-val">100</span>
+            </div>
           </div>
           <div class="settings-row">
             <div class="settings-label">

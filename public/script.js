@@ -583,7 +583,9 @@ const state = {
   session: null,
   records: loadRecords(),
   statTimerId: null,
-  soundEnabled: true
+  masterMuted: false,
+  bgmVolume: 0.5,
+  seVolume: 1.0
 };
 
 /* ===========================
@@ -642,7 +644,11 @@ const el = {
   settingsModal:        document.getElementById("settings-modal"),
   settingsModalCloseBtn:document.getElementById("settings-modal-close-btn"),
   settingsModalOkBtn:   document.getElementById("settings-modal-ok-btn"),
-  soundToggle:          document.getElementById("sound-toggle"),
+  masterMuteBtn:        document.getElementById("master-mute-btn"),
+  bgmVolumeSlider:      document.getElementById("bgm-volume"),
+  bgmVolumeVal:         document.getElementById("bgm-volume-val"),
+  seVolumeSlider:       document.getElementById("se-volume"),
+  seVolumeVal:          document.getElementById("se-volume-val"),
   mobileWarning:        document.getElementById("mobile-warning"),
   mobileWarningDismiss: document.getElementById("mobile-warning-dismiss")
 };
@@ -653,7 +659,7 @@ const el = {
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
 function playKeySound(isCorrect) {
-  if (!state.soundEnabled) return;
+  if (state.masterMuted || state.seVolume === 0) return;
   const osc  = audioCtx.createOscillator();
   const gain = audioCtx.createGain();
   osc.connect(gain);
@@ -665,7 +671,7 @@ function playKeySound(isCorrect) {
     osc.type = "triangle";
     osc.frequency.setValueAtTime(1100, t);
     osc.frequency.exponentialRampToValueAtTime(780, t + 0.05);
-    gain.gain.setValueAtTime(0.07, t);
+    gain.gain.setValueAtTime(0.07 * state.seVolume, t);
     gain.gain.exponentialRampToValueAtTime(0.001, t + 0.07);
     osc.start(t);
     osc.stop(t + 0.07);
@@ -674,7 +680,7 @@ function playKeySound(isCorrect) {
     osc.type = "sine";
     osc.frequency.setValueAtTime(220, t);
     osc.frequency.exponentialRampToValueAtTime(150, t + 0.06);
-    gain.gain.setValueAtTime(0.04, t);
+    gain.gain.setValueAtTime(0.04 * state.seVolume, t);
     gain.gain.exponentialRampToValueAtTime(0.001, t + 0.06);
     osc.start(t);
     osc.stop(t + 0.06);
@@ -682,7 +688,7 @@ function playKeySound(isCorrect) {
 }
 
 function playTaskCompleteSound() {
-  if (!state.soundEnabled) return;
+  if (state.masterMuted || state.seVolume === 0) return;
   [523, 659, 784].forEach((freq, i) => {
     const osc  = audioCtx.createOscillator();
     const gain = audioCtx.createGain();
@@ -691,7 +697,7 @@ function playTaskCompleteSound() {
     osc.type = "triangle";
     const t = audioCtx.currentTime + i * 0.1;
     osc.frequency.setValueAtTime(freq, t);
-    gain.gain.setValueAtTime(0.12, t);
+    gain.gain.setValueAtTime(0.12 * state.seVolume, t);
     gain.gain.exponentialRampToValueAtTime(0.001, t + 0.18);
     osc.start(t);
     osc.stop(t + 0.18);
@@ -823,13 +829,13 @@ function playBGMBar(startTime) {
 }
 
 function startBGM(difficultyId) {
-  if (!state.soundEnabled) return;
+  if (state.masterMuted) return;
   currentBGMConfig = BGM_CONFIGS[difficultyId] ?? BGM_CONFIGS.normal;
   stopBGM();
   // 旧オシレーターが旧gainノードに残っているため、切断して新規ノードを作成する
   bgmGain.disconnect();
   bgmGain = audioCtx.createGain();
-  bgmGain.gain.setValueAtTime(0.5, audioCtx.currentTime);
+  bgmGain.gain.setValueAtTime(state.bgmVolume, audioCtx.currentTime);
   bgmGain.connect(audioCtx.destination);
   audioCtx.resume();
   const loopMs = currentBGMConfig.loopBeats * (60 / currentBGMConfig.bpm) * 1000;
@@ -969,10 +975,22 @@ function bindEvents() {
   el.settingsModal.addEventListener("click", (e) => {
     if (e.target === el.settingsModal) closeSettingsModal();
   });
-  el.soundToggle.addEventListener("click", () => {
-    state.soundEnabled = !state.soundEnabled;
-    el.soundToggle.textContent = state.soundEnabled ? "ON" : "OFF";
-    el.soundToggle.dataset.on = String(state.soundEnabled);
+  el.masterMuteBtn.addEventListener("click", () => {
+    state.masterMuted = !state.masterMuted;
+    el.masterMuteBtn.textContent = state.masterMuted ? "🔇" : "🔊";
+    el.masterMuteBtn.dataset.muted = String(state.masterMuted);
+    bgmGain.gain.setTargetAtTime(state.masterMuted ? 0 : state.bgmVolume, audioCtx.currentTime, 0.05);
+  });
+  el.bgmVolumeSlider.addEventListener("input", () => {
+    state.bgmVolume = el.bgmVolumeSlider.value / 100;
+    el.bgmVolumeVal.textContent = el.bgmVolumeSlider.value;
+    if (!state.masterMuted) {
+      bgmGain.gain.setTargetAtTime(state.bgmVolume, audioCtx.currentTime, 0.05);
+    }
+  });
+  el.seVolumeSlider.addEventListener("input", () => {
+    state.seVolume = el.seVolumeSlider.value / 100;
+    el.seVolumeVal.textContent = el.seVolumeSlider.value;
   });
 
   // 実績モーダル
@@ -2346,7 +2364,7 @@ function showMilestoneFlash(text, type) {
 }
 
 function playMilestoneSound(type) {
-  if (!state.soundEnabled) return;
+  if (state.masterMuted || state.seVolume === 0) return;
   const notes = type === "half"
     ? [[523.25, 0], [659.25, 0.13]]
     : type === "overtime"
@@ -2358,7 +2376,7 @@ function playMilestoneSound(type) {
     const g   = audioCtx.createGain();
     osc.type = "triangle";
     osc.frequency.setValueAtTime(freq, t);
-    g.gain.setValueAtTime(0.07, t);
+    g.gain.setValueAtTime(0.07 * state.seVolume, t);
     g.gain.exponentialRampToValueAtTime(0.001, t + 0.28);
     osc.connect(g); g.connect(audioCtx.destination);
     osc.start(t); osc.stop(t + 0.3);
