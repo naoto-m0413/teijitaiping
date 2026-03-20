@@ -2064,13 +2064,13 @@ function updateStats() {
   el.currentTime.textContent   = fmtMin(session.gameMinutes);
   el.timeLeft.textContent      = fmtRemain(session.gameMinutes, session.difficulty.endMinutes);
 
-  // 円形ゲージ更新
+  // 円形ゲージ更新（経過時間が12時から右回りに蓄積）
   if (el.timerGaugeArc) {
     const { startMinutes, endMinutes } = session.difficulty;
     const totalWork = endMinutes - startMinutes;
-    const remaining = endMinutes - session.gameMinutes;
-    const ratio = Math.max(0, Math.min(1, remaining / totalWork));
-    const circumference = 326.7;
+    const elapsed = session.gameMinutes - startMinutes;
+    const ratio = Math.max(0, Math.min(1, elapsed / totalWork));
+    const circumference = 301.6;
     el.timerGaugeArc.style.strokeDashoffset = circumference * (1 - ratio);
   }
   el.progressFill.style.width  = `${pct}%`;

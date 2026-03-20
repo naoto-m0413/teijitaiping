@@ -1147,7 +1147,7 @@ h1 {
 
 #main-time-panel {
   position: relative;
-  overflow: hidden;
+  overflow: visible;
 }
 
 /* ===========================
@@ -1158,33 +1158,34 @@ h1 {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 90%;
-  max-width: 140px;
+  width: 108%;
+  max-width: 168px;
   aspect-ratio: 1;
   pointer-events: none;
   z-index: 0;
+  overflow: visible;
 }
 
 .timer-gauge-track {
   fill: none;
-  stroke: rgba(0, 180, 255, 0.1);
+  stroke: rgba(0, 180, 255, 0.12);
   stroke-width: 5;
 }
 
 .timer-gauge-arc {
   fill: none;
-  stroke: rgba(0, 180, 255, 0.3);
+  stroke: rgba(0, 180, 255, 0.45);
   stroke-width: 8;
   stroke-linecap: round;
-  stroke-dasharray: 326.7;
-  stroke-dashoffset: 0;
+  stroke-dasharray: 301.6;
+  stroke-dashoffset: 301.6;
   transform: rotate(-90deg);
   transform-origin: 60px 60px;
   transition: stroke-dashoffset 0.4s ease, stroke 1s ease;
 }
 
 .timer-gauge-center {
-  fill: rgba(0, 180, 255, 0.2);
+  fill: rgba(0, 180, 255, 0.25);
 }
 
 #game-screen.game-overtime .timer-gauge-arc {
