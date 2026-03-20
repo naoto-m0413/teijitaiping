@@ -912,19 +912,11 @@ function bindEvents() {
   el.readyStartBtn.addEventListener("click", startGame);
   el.readyBackBtn.addEventListener("click", goToDifficulty);
 
-  // ゲーム画面 メイン画面へ戻る／やり直す
-  document.getElementById("game-back-btn").addEventListener("click", () => {
-    stopStatTicker();
-    stopBGM();
-    hideHeaderClock();
-    switchScreen("title");
-    renderBestRecords();
-    renderLastResultSummary();
-  });
+  // ゲーム画面 仕切り直す
   document.getElementById("game-retry-btn").addEventListener("click", () => {
     stopStatTicker();
     stopBGM();
-    goToDifficulty();
+    startGame();
   });
 
   // ゲーム画面クリック時は入力欄へフォーカスを戻す（ボタン・リンクへのクリックは除く）
