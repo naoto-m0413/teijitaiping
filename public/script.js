@@ -1124,7 +1124,7 @@ function handleGameInput(event) {
   const rawValue = event.target.value;
   event.target.value = "";
 
-  if (state.currentScreen !== "game" || !state.session || !rawValue) return;
+  if (state.currentScreen !== "game" || !state.session || !rawValue.trim()) return;
 
   const normalized = normalizeTypingChars(rawValue);
   for (const char of normalized) {
@@ -1299,6 +1299,14 @@ function startGame() {
 
   if (el.gameTip) {
     el.gameTip.textContent = TIPS[Math.floor(Math.random() * TIPS.length)];
+  }
+
+  // ゲージをトランジションなしで即時リセット
+  if (el.timerGaugeArc) {
+    el.timerGaugeArc.style.transition = "none";
+    el.timerGaugeArc.style.strokeDashoffset = "301.6";
+    void el.timerGaugeArc.getBoundingClientRect();
+    el.timerGaugeArc.style.transition = "";
   }
 
   renderCurrentTask();

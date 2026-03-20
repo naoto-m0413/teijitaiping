@@ -1181,7 +1181,11 @@ h1 {
   stroke-dashoffset: 301.6;
   transform: rotate(-90deg);
   transform-origin: 60px 60px;
-  transition: stroke-dashoffset 0.4s ease, stroke 1s ease;
+  transition: stroke-dashoffset 0.4s ease;
+}
+
+#game-screen.game-overtime .timer-gauge-arc {
+  transition: stroke-dashoffset 0.4s ease;
 }
 
 .timer-gauge-center {
