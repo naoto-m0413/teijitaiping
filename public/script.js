@@ -605,7 +605,6 @@ const el = {
   readyStartBtn:        document.getElementById("ready-start-btn"),
   readyBackBtn:         document.getElementById("ready-back-btn"),
   diffBackBtn:          document.getElementById("diff-back-btn"),
-  diffReturnBtn:        document.getElementById("diff-return-btn"),
   bestRecords:          document.getElementById("best-records"),
   lastResultSummary:    document.getElementById("last-result-summary"),
   currentTime:          document.getElementById("current-time"),
@@ -908,14 +907,6 @@ function bindEvents() {
 
   // 難易度選択画面
   el.diffBackBtn.addEventListener("click", () => switchScreen("title"));
-  el.diffReturnBtn.addEventListener("click", () => {
-    const returnTo = el.diffReturnBtn.dataset.returnTo;
-    if (returnTo === "ready") {
-      goToReady();
-    } else if (returnTo === "result") {
-      switchScreen("result");
-    }
-  });
 
   // 準備画面（Space キーでスタート、クリックでも可）
   el.readyStartBtn.addEventListener("click", startGame);
@@ -1221,16 +1212,12 @@ function updateDifficultySelection() {
    難易度選択画面へ
 =========================== */
 function goToDifficulty() {
-  const prevScreen = state.currentScreen;
   stopStatTicker();
   stopBGM();
   closeModal();
   updateDifficultySelection();
   hideHeaderClock();
   switchScreen("difficulty");
-  const canReturn = prevScreen === "ready" || prevScreen === "result";
-  el.diffReturnBtn.style.display = canReturn ? "" : "none";
-  el.diffReturnBtn.dataset.returnTo = prevScreen;
 }
 
 /* ===========================
