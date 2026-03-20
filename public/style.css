@@ -1151,7 +1151,7 @@ h1 {
 
 #main-time-panel {
   position: relative;
-  overflow: clip;
+  overflow: visible;
 }
 
 /* ===========================
