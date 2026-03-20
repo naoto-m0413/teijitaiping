@@ -167,7 +167,7 @@ const DIFFICULTIES = {
     taskCount: 8,
     taskCount: 9,
     gameSpeed: 14.0,
-    penaltyMinutes: 60,
+    penaltyMinutes: 40,
     startMinutes: 7 * 60,         // 07:00
     endMinutes:   23 * 60         // 23:00
   }
