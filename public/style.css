@@ -1249,18 +1249,25 @@ h1 {
   animation: overtime-breathe 4s ease-in-out infinite alternate;
 }
 
-.penalty-panel .timer-gauge-arc {
-  stroke: rgba(255, 215, 0, 0.9);
+.penalty-panel .timer-gauge-svg {
   animation: gauge-penalty-pulse 0.5s ease-in-out infinite alternate;
 }
 
+.penalty-panel .timer-gauge-arc {
+  stroke: rgba(255, 215, 0, 0.95);
+}
+
+.penalty-panel .timer-gauge-track {
+  stroke: rgba(255, 215, 0, 0.3);
+}
+
 .penalty-panel .timer-gauge-center {
-  fill: rgba(255, 215, 0, 0.5);
+  fill: rgba(255, 215, 0, 0.6);
 }
 
 @keyframes gauge-penalty-pulse {
-  from { stroke: rgba(255, 200, 0, 0.6); }
-  to   { stroke: rgba(255, 220, 0, 1.0); filter: drop-shadow(0 0 6px rgba(255, 215, 0, 0.9)); }
+  from { filter: drop-shadow(0 0 4px rgba(255, 215, 0, 0.6)); }
+  to   { filter: drop-shadow(0 0 14px rgba(255, 215, 0, 1.0)); }
 }
 
 /* ===========================
