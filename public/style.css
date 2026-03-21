@@ -287,38 +287,64 @@ h1 {
    タイトルサイドバー
 =========================== */
 .title-sidebar {
-  width: 160px;
+  width: 130px;
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  padding-top: 60px;
+  gap: 2px;
+  padding-top: 64px;
 }
 
+/* 左サイドバー：左縁アクセント、テキスト左寄せ */
 .sidebar-nav-btn {
   width: 100%;
-  padding: 9px 12px;
-  border-radius: 8px;
+  padding: 8px 10px 8px 14px;
+  border-radius: 0 6px 6px 0;
   font: inherit;
-  font-size: 0.82rem;
+  font-size: 0.76rem;
   font-weight: 600;
   cursor: pointer;
-  text-align: center;
-  background: rgba(20, 40, 64, 0.7);
-  border: 1px solid rgba(80, 140, 200, 0.25);
-  color: #9ab8d4;
-  transition: background 120ms, color 120ms, border-color 120ms;
+  text-align: left;
+  background: transparent;
+  border: none;
+  border-left: 2px solid rgba(70, 130, 190, 0.18);
+  color: rgba(140, 178, 215, 0.55);
+  letter-spacing: 0.02em;
+  transition: background 150ms, color 150ms, border-left-color 150ms;
 }
 
 .sidebar-nav-btn:hover {
-  background: rgba(30, 58, 88, 0.9);
-  color: #d0e8ff;
-  border-color: rgba(100, 160, 220, 0.5);
+  background: rgba(22, 52, 88, 0.45);
+  color: rgba(185, 218, 248, 0.9);
+  border-left-color: rgba(80, 160, 230, 0.55);
 }
-.sidebar-nav-btn:active { transform: translateY(1px); }
+.sidebar-nav-btn:active { opacity: 0.72; }
+
+/* 右サイドバー：右縁アクセント、テキスト右寄せ */
+.title-sidebar-right .sidebar-nav-btn {
+  border-left: none;
+  border-right: 2px solid rgba(70, 130, 190, 0.18);
+  border-radius: 6px 0 0 6px;
+  text-align: right;
+  padding: 8px 14px 8px 10px;
+  transition: background 150ms, color 150ms, border-right-color 150ms;
+}
+.title-sidebar-right .sidebar-nav-btn:hover {
+  border-right-color: rgba(80, 160, 230, 0.55);
+}
 
 .sidebar-ad {
-  margin-top: 16px;
+  margin-top: 20px;
+}
+
+/* モバイルナビ：ボタン感を戻す */
+.title-mobile-nav .sidebar-nav-btn {
+  border: 1px solid rgba(80, 140, 200, 0.28);
+  border-radius: 8px;
+  background: rgba(20, 40, 64, 0.65);
+  color: #9ab8d4;
+  text-align: center;
+  padding: 7px 12px;
 }
 
 /* ===========================
@@ -413,6 +439,13 @@ h1 {
     min-width: 80px;
     max-width: 140px;
     font-size: 0.82rem;
+    /* サイドタブ上書き：モバイルでは通常ボタン */
+    border: 1px solid rgba(80, 140, 200, 0.28) !important;
+    border-radius: 8px !important;
+    background: rgba(20, 40, 64, 0.65) !important;
+    color: #9ab8d4 !important;
+    text-align: center !important;
+    padding: 7px 12px !important;
   }
 
   .title-description {
