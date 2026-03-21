@@ -2223,10 +2223,10 @@ function renderResult(result, recordStatus, prevResult) {
       const isCurrent = rank === result.rank;
       let timeText;
       if (i < thresholds.length) {
-        timeText = fmtMin(endMin - thresholds[i]) + "以前";
+        timeText = fmtMin(endMin - thresholds[i]) + "まで";
       } else {
         const lastThreshold = thresholds[thresholds.length - 1];
-        timeText = fmtMin(endMin - lastThreshold + 1) + "以降";
+        timeText = fmtMin(endMin - lastThreshold + 1) + "より後";
       }
       const title = titles[rank] ?? "";
       html += `<div class="rank-table-row${isCurrent ? " is-current" : ""}">` +
