@@ -1537,19 +1537,22 @@ h1 {
 }
 
 .result-sub-nav-btn {
-  background: none;
-  border: none;
-  color: rgba(160, 200, 235, 0.6);
+  background: rgba(30, 65, 105, 0.45);
+  border: 1px solid rgba(100, 165, 225, 0.45);
+  border-radius: 7px;
+  color: #a8d4f5;
   font: inherit;
   font-size: 1.1rem;
   font-weight: 700;
-  padding: 0;
+  padding: 2px 10px;
   cursor: pointer;
-  transition: color 120ms;
+  transition: background 120ms, border-color 120ms, color 120ms;
 }
 
 .result-sub-nav-btn:hover {
-  color: rgba(160, 200, 235, 0.9);
+  background: rgba(40, 85, 135, 0.6);
+  border-color: rgba(120, 185, 240, 0.65);
+  color: #c8e6ff;
 }
 
 .result-row {
@@ -1629,18 +1632,27 @@ h1 {
 }
 
 .result-hero-action-primary {
-  /* 中央の主ボタン：他より少しだけ明るいが控えめ */
-  color: #c4dff5;
-  background: rgba(30, 65, 110, 0.55);
-  border: 1.5px solid rgba(90, 160, 225, 0.55);
-  box-shadow: 0 0 8px rgba(40, 110, 200, 0.12);
+  /* 中央：最も目立つ明るい青 */
+  color: #e0f0ff;
+  background: linear-gradient(180deg, #2272cc 0%, #1450a0 100%);
+  border: 1.5px solid #3d8fe0;
+  box-shadow: 0 3px 0 #0a2e60, 0 0 12px rgba(34, 114, 204, 0.3);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
-.result-hero-action-sub {
-  /* 左右の補助ボタン：ghost寄りで統一感 */
+.result-hero-action-teal {
+  /* 左：転職する・中程度のシアン青緑 */
+  color: #7ae8f0;
+  background: linear-gradient(180deg, rgba(0, 120, 145, 0.5) 0%, rgba(0, 85, 110, 0.45) 100%);
+  border: 1.5px solid rgba(0, 195, 225, 0.5);
+  box-shadow: 0 2px 0 rgba(0, 50, 70, 0.5);
+}
+
+.result-hero-action-ghost {
+  /* 右：退社する・落ち着いたダーク */
   color: #7ba8c8;
   background: rgba(18, 36, 60, 0.45);
-  border: 1.5px solid rgba(100, 150, 200, 0.30);
+  border: 1.5px solid rgba(100, 150, 200, 0.28);
   box-shadow: none;
 }
 
@@ -1668,7 +1680,7 @@ h1 {
   background: none;
   border: none;
   color: rgba(160, 200, 235, 0.45);
-  font-size: 1.15rem;
+  font-size: 1.72rem;
   line-height: 1;
   cursor: pointer;
   padding: 0;
