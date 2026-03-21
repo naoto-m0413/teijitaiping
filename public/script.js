@@ -721,6 +721,7 @@ bgmGain.connect(bgmFilter);
 bgmFilter.connect(audioCtx.destination);
 let bgmTimerId = null;
 let overtimePitchRatio = 1.0;
+let bgmLoopFn = null;
 
 // 企業タイプ別BGM設定 [周波数(Hz), 開始拍, 長さ(拍)]
 const BGM_CONFIGS = {
@@ -855,11 +856,11 @@ function startBGM(difficultyId) {
   bgmFilter.connect(audioCtx.destination);
   audioCtx.resume();
   const loopMs = currentBGMConfig.loopBeats * (60 / currentBGMConfig.bpm) * 1000;
-  function loop() {
+  bgmLoopFn = function loop() {
     playBGMBar(audioCtx.currentTime);
-    bgmTimerId = setTimeout(loop, loopMs - 80);
-  }
-  loop();
+    bgmTimerId = setTimeout(bgmLoopFn, loopMs - 80);
+  };
+  bgmLoopFn();
 }
 
 function stopBGM() {
@@ -868,14 +869,17 @@ function stopBGM() {
 }
 
 function enterOvertimeBGM() {
-  // ピッチを約1半音下げる（次のループから反映）
   overtimePitchRatio = 0.944;
-  // ローパスフィルターで高域を3秒かけてカット → 重く不穏な印象に
+  // フィルターを即時適用（time constant 0.15s で素早く収束）
   const t = audioCtx.currentTime;
-  bgmFilter.frequency.setValueAtTime(bgmFilter.frequency.value, t);
-  bgmFilter.frequency.linearRampToValueAtTime(900, t + 3.0);
-  bgmFilter.Q.setValueAtTime(bgmFilter.Q.value, t);
-  bgmFilter.Q.linearRampToValueAtTime(1.5, t + 3.0);
+  bgmFilter.frequency.setTargetAtTime(900, t, 0.15);
+  bgmFilter.Q.setTargetAtTime(1.5, t, 0.15);
+  // 現在のループを即座に再起動してピッチ変更を反映
+  if (bgmTimerId !== null) {
+    clearTimeout(bgmTimerId);
+    bgmTimerId = null;
+  }
+  if (bgmLoopFn) bgmLoopFn();
 }
 
 /* ===========================
