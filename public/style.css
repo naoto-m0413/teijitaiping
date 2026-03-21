@@ -571,9 +571,6 @@ h1 {
   font-weight: 900;
   opacity: 0.75;
 }
-.best-record-card[data-difficulty="white"] .brc-rank { color: #80e8ff; }
-.best-record-card[data-difficulty="normal"] .brc-rank { color: #ffd890; }
-.best-record-card[data-difficulty="black"]  .brc-rank { color: #ffb8a8; }
 
 .brc-time {
   font-size: 1.65rem;
