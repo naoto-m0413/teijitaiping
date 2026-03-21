@@ -1180,16 +1180,11 @@ h1 {
   fill: none;
   stroke: rgba(0, 180, 255, 0.45);
   stroke-width: 8;
-  stroke-linecap: round;
+  stroke-linecap: butt;
   stroke-dasharray: 301.6;
   stroke-dashoffset: 301.6;
   transform: rotate(-90deg);
   transform-origin: 60px 60px;
-  transition: stroke-dashoffset 0.4s ease;
-}
-
-#game-screen.game-overtime .timer-gauge-arc {
-  transition: stroke-dashoffset 0.4s ease;
 }
 
 .timer-gauge-center {
