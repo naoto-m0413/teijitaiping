@@ -2344,10 +2344,11 @@ function renderBestRecords() {
       const timeText = earlyMin >= 0
         ? `定時より${fmtDuration(earlyMin)}早退`
         : `残業 ${fmtDuration(Math.abs(earlyMin))}`;
+      const rankClass = `rank-color-${rank.toLowerCase()}`;
       card.innerHTML = `
         <div class="brc-header">
           <span class="brc-company">${diff.name}</span>
-          <span class="brc-rank">${rank}</span>
+          <span class="brc-rank ${rankClass}">${rank}</span>
         </div>
         <div class="brc-time">${fmtMin(rec.bestLeaveMinutes)}</div>
         <div class="brc-status">${timeText}</div>
@@ -2376,9 +2377,13 @@ function renderLastResultSummary() {
       ? `${fmtDuration(earlyMinLast)}早退`
       : "ちょうど定時退社";
 
+  const lastRankClass = `rank-color-${(last.rank ?? "f").toLowerCase()}`;
   el.lastResultSummary.innerHTML = `
     <div class="lrs-card" data-difficulty="${last.difficultyId ?? "normal"}">
-      <div class="lrs-company">${last.difficultyName}</div>
+      <div class="lrs-header">
+        <div class="lrs-company">${last.difficultyName}</div>
+        <span class="lrs-rank ${lastRankClass}">${last.rank ?? "-"}</span>
+      </div>
       <div class="lrs-time">${fmtMin(last.leaveMinutes)}</div>
       <div class="lrs-status">${statusText}</div>
       <div class="lrs-detail">称号：${last.title} &nbsp;/&nbsp; ${last.cps}回/秒</div>

@@ -620,12 +620,24 @@ h1 {
   border-color: rgba(220, 60, 40, 0.4);
 }
 
+.lrs-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.lrs-rank {
+  font-size: 1.0rem;
+  font-weight: 900;
+  opacity: 0.85;
+}
+
 .lrs-company {
   font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.06em;
   opacity: 0.8;
-  margin-bottom: 8px;
 }
 .lrs-card[data-difficulty="white"] .lrs-company { color: #80e8ff; }
 .lrs-card[data-difficulty="normal"] .lrs-company { color: #ffd890; }
