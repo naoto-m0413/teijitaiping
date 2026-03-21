@@ -106,7 +106,7 @@ h1, h2, h3, p { margin-top: 0; }
   font-size: 0.82rem;
   font-weight: 700;
   letter-spacing: 0.06em;
-  color: #c8e0ff;
+  color: rgba(180, 210, 240, 0.4);
 }
 
 .top-bar a {
