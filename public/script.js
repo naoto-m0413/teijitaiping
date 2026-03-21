@@ -2329,18 +2329,29 @@ function renderBestRecords() {
     const rec  = state.records.byDifficulty[diff.id];
     const card = document.createElement("article");
     card.className = "best-record-card";
+    card.dataset.difficulty = diff.id;
 
     if (!rec) {
-      card.innerHTML = `<p>${diff.name}</p><strong>未プレイ</strong>`;
+      card.innerHTML = `
+        <div class="brc-header">
+          <span class="brc-company">${diff.name}</span>
+        </div>
+        <div class="brc-unplayed">未プレイ</div>
+      `;
     } else {
       const earlyMin = Math.floor(diff.endMinutes - rec.bestLeaveMinutes);
+      const rank     = resolveRank(earlyMin, diff.id);
       const timeText = earlyMin >= 0
         ? `定時より${fmtDuration(earlyMin)}早退`
         : `残業 ${fmtDuration(Math.abs(earlyMin))}`;
       card.innerHTML = `
-        <p>${diff.name}</p>
-        <strong>${fmtMin(rec.bestLeaveMinutes)} 退勤</strong>
-        <p>${timeText}</p>
+        <div class="brc-header">
+          <span class="brc-company">${diff.name}</span>
+          <span class="brc-rank">${rank}</span>
+        </div>
+        <div class="brc-time">${fmtMin(rec.bestLeaveMinutes)}</div>
+        <div class="brc-status">${timeText}</div>
+        <div class="brc-sub">CPS ${rec.bestCps} &nbsp;/&nbsp; 正確率 ${rec.bestAccuracy}%</div>
       `;
     }
 
@@ -2366,9 +2377,12 @@ function renderLastResultSummary() {
       : "ちょうど定時退社";
 
   el.lastResultSummary.innerHTML = `
-    <p class="summary-emphasis">${fmtMin(last.leaveMinutes)} 退勤</p>
-    <p>${statusText} / ${last.difficultyName}</p>
-    <p>${last.cps}回/秒 / 称号: ${last.title}</p>
+    <div class="lrs-card" data-difficulty="${last.difficultyId ?? "normal"}">
+      <div class="lrs-company">${last.difficultyName}</div>
+      <div class="lrs-time">${fmtMin(last.leaveMinutes)}</div>
+      <div class="lrs-status">${statusText}</div>
+      <div class="lrs-detail">称号：${last.title} &nbsp;/&nbsp; ${last.cps}回/秒</div>
+    </div>
   `;
 }
 

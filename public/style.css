@@ -494,21 +494,133 @@ h1 {
 
 .link-list a:hover { color: var(--accent); }
 
+/* === 自己ベストカード === */
+.best-records { gap: 10px; }
+
 .best-record-card {
-  padding: 8px 10px;
-  border: 2px dashed rgba(0, 160, 220, 0.18);
-  border-radius: 10px;
-  background: rgba(0, 15, 40, 0.4);
-  font-size: 0.84rem;
-  color: var(--muted);
+  padding: 14px 16px;
+  border-radius: 12px;
+  border: 1.5px solid rgba(0, 160, 220, 0.25);
+  background: rgba(10, 25, 45, 0.6);
 }
 
-.best-record-card p { margin-bottom: 2px; }
+.best-record-card[data-difficulty="white"] {
+  background: linear-gradient(135deg, #0a2030 0%, #112e44 100%);
+  border-color: rgba(0, 200, 240, 0.45);
+}
+.best-record-card[data-difficulty="normal"] {
+  background: linear-gradient(135deg, #281a08 0%, #362210 100%);
+  border-color: rgba(255, 160, 40, 0.5);
+}
+.best-record-card[data-difficulty="black"] {
+  background: linear-gradient(135deg, #1a0808 0%, #260c0c 100%);
+  border-color: rgba(220, 60, 40, 0.45);
+}
 
-.summary-emphasis {
-  color: var(--accent);
-  font-size: 1.1rem;
+.brc-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+.brc-company {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  opacity: 0.85;
+}
+.best-record-card[data-difficulty="white"] .brc-company { color: #80e8ff; }
+.best-record-card[data-difficulty="normal"] .brc-company { color: #ffd890; }
+.best-record-card[data-difficulty="black"]  .brc-company { color: #ffb8a8; }
+
+.brc-rank {
+  font-size: 1.0rem;
   font-weight: 900;
+  opacity: 0.75;
+}
+.best-record-card[data-difficulty="white"] .brc-rank { color: #80e8ff; }
+.best-record-card[data-difficulty="normal"] .brc-rank { color: #ffd890; }
+.best-record-card[data-difficulty="black"]  .brc-rank { color: #ffb8a8; }
+
+.brc-time {
+  font-size: 1.65rem;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  margin-bottom: 3px;
+}
+.best-record-card[data-difficulty="white"] .brc-time { color: #c8f4ff; }
+.best-record-card[data-difficulty="normal"] .brc-time { color: #ffe8b0; }
+.best-record-card[data-difficulty="black"]  .brc-time { color: #ffd0c0; }
+
+.brc-status {
+  font-size: 0.8rem;
+  opacity: 0.8;
+  margin-bottom: 4px;
+}
+.brc-sub {
+  font-size: 0.7rem;
+  opacity: 0.5;
+}
+.brc-unplayed {
+  font-size: 0.85rem;
+  opacity: 0.35;
+  margin-top: 8px;
+}
+
+/* === 直近の退勤カード === */
+.lrs-card {
+  border-radius: 12px;
+  padding: 16px;
+  border: 1.5px solid rgba(0, 160, 220, 0.3);
+  background: rgba(10, 25, 45, 0.6);
+}
+.lrs-card[data-difficulty="white"] {
+  background: linear-gradient(135deg, #0a2030 0%, #112e44 100%);
+  border-color: rgba(0, 200, 240, 0.4);
+}
+.lrs-card[data-difficulty="normal"] {
+  background: linear-gradient(135deg, #281a08 0%, #362210 100%);
+  border-color: rgba(255, 160, 40, 0.45);
+}
+.lrs-card[data-difficulty="black"] {
+  background: linear-gradient(135deg, #1a0808 0%, #260c0c 100%);
+  border-color: rgba(220, 60, 40, 0.4);
+}
+
+.lrs-company {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  opacity: 0.8;
+  margin-bottom: 8px;
+}
+.lrs-card[data-difficulty="white"] .lrs-company { color: #80e8ff; }
+.lrs-card[data-difficulty="normal"] .lrs-company { color: #ffd890; }
+.lrs-card[data-difficulty="black"]  .lrs-company { color: #ffb8a8; }
+
+.lrs-time {
+  font-size: 2.0rem;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  margin-bottom: 4px;
+}
+.lrs-card[data-difficulty="white"] .lrs-time { color: #c8f4ff; }
+.lrs-card[data-difficulty="normal"] .lrs-time { color: #ffe8b0; }
+.lrs-card[data-difficulty="black"]  .lrs-time { color: #ffd0c0; }
+
+.lrs-status {
+  font-size: 0.88rem;
+  font-weight: 700;
+  opacity: 0.9;
+  margin-bottom: 8px;
+}
+.lrs-detail {
+  font-size: 0.72rem;
+  opacity: 0.5;
+}
+.lrs-empty {
+  font-size: 0.85rem;
+  opacity: 0.45;
 }
 
 /* ===========================
