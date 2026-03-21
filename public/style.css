@@ -1522,11 +1522,41 @@ h1 {
   padding: 8px 12px;
 }
 
+.result-section-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
 .result-section-title {
-  margin: 0 0 10px;
+  margin: 0;
   font-size: 1.1rem;
   font-weight: 700;
   color: var(--text);
+}
+
+.result-sub-nav {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.result-sub-nav-btn {
+  background: none;
+  border: 1px solid rgba(120, 170, 220, 0.25);
+  border-radius: 6px;
+  color: rgba(160, 200, 235, 0.6);
+  font: inherit;
+  font-size: 0.72rem;
+  padding: 2px 7px;
+  cursor: pointer;
+  transition: color 120ms, border-color 120ms;
+}
+
+.result-sub-nav-btn:hover {
+  color: rgba(160, 200, 235, 0.9);
+  border-color: rgba(120, 170, 220, 0.5);
 }
 
 .result-row {
