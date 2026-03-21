@@ -871,15 +871,11 @@ function stopBGM() {
 function enterOvertimeBGM() {
   overtimePitchRatio = 0.944;
   // フィルターを即時適用（time constant 0.15s で素早く収束）
+  // ループは再起動しない：既スケジュール済み音符との重複を防ぐため
+  // ピッチは次のループ自然到来時に反映される
   const t = audioCtx.currentTime;
   bgmFilter.frequency.setTargetAtTime(900, t, 0.15);
   bgmFilter.Q.setTargetAtTime(1.5, t, 0.15);
-  // 現在のループを即座に再起動してピッチ変更を反映
-  if (bgmTimerId !== null) {
-    clearTimeout(bgmTimerId);
-    bgmTimerId = null;
-  }
-  if (bgmLoopFn) bgmLoopFn();
 }
 
 /* ===========================
