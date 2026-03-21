@@ -712,9 +712,15 @@ function playTaskCompleteSound() {
    企業タイプ別に3種類のBGM
 =========================== */
 let bgmGain = audioCtx.createGain();
+let bgmFilter = audioCtx.createBiquadFilter();
+bgmFilter.type = "lowpass";
+bgmFilter.frequency.setValueAtTime(20000, audioCtx.currentTime);
+bgmFilter.Q.setValueAtTime(0.1, audioCtx.currentTime);
 bgmGain.gain.setValueAtTime(0.5, audioCtx.currentTime);
-bgmGain.connect(audioCtx.destination);
+bgmGain.connect(bgmFilter);
+bgmFilter.connect(audioCtx.destination);
 let bgmTimerId = null;
+let overtimePitchRatio = 1.0;
 
 // 企業タイプ別BGM設定 [周波数(Hz), 開始拍, 長さ(拍)]
 const BGM_CONFIGS = {
@@ -809,7 +815,7 @@ function playBGMBar(startTime) {
     const osc = audioCtx.createOscillator();
     const g   = audioCtx.createGain();
     osc.type = cfg.melodyType;
-    osc.frequency.setValueAtTime(freq, t);
+    osc.frequency.setValueAtTime(freq * overtimePitchRatio, t);
     g.gain.setValueAtTime(0, t);
     g.gain.linearRampToValueAtTime(cfg.melodyGain, t + 0.01);
     g.gain.exponentialRampToValueAtTime(0.001, t + d);
@@ -822,7 +828,7 @@ function playBGMBar(startTime) {
     const osc = audioCtx.createOscillator();
     const g   = audioCtx.createGain();
     osc.type = cfg.bassType;
-    osc.frequency.setValueAtTime(freq, t);
+    osc.frequency.setValueAtTime(freq * overtimePitchRatio, t);
     g.gain.setValueAtTime(0, t);
     g.gain.linearRampToValueAtTime(cfg.bassGain, t + 0.02);
     g.gain.exponentialRampToValueAtTime(0.001, t + d);
@@ -835,11 +841,18 @@ function startBGM(difficultyId) {
   if (state.masterMuted) return;
   currentBGMConfig = BGM_CONFIGS[difficultyId] ?? BGM_CONFIGS.normal;
   stopBGM();
-  // 旧オシレーターが旧gainノードに残っているため、切断して新規ノードを作成する
+  overtimePitchRatio = 1.0;
+  // 旧ノードを切断して新規ノードを作成する
   bgmGain.disconnect();
+  bgmFilter.disconnect();
   bgmGain = audioCtx.createGain();
+  bgmFilter = audioCtx.createBiquadFilter();
+  bgmFilter.type = "lowpass";
+  bgmFilter.frequency.setValueAtTime(20000, audioCtx.currentTime);
+  bgmFilter.Q.setValueAtTime(0.1, audioCtx.currentTime);
   bgmGain.gain.setValueAtTime(state.bgmVolume, audioCtx.currentTime);
-  bgmGain.connect(audioCtx.destination);
+  bgmGain.connect(bgmFilter);
+  bgmFilter.connect(audioCtx.destination);
   audioCtx.resume();
   const loopMs = currentBGMConfig.loopBeats * (60 / currentBGMConfig.bpm) * 1000;
   function loop() {
@@ -852,6 +865,17 @@ function startBGM(difficultyId) {
 function stopBGM() {
   if (bgmTimerId !== null) { clearTimeout(bgmTimerId); bgmTimerId = null; }
   bgmGain.gain.setTargetAtTime(0, audioCtx.currentTime, 0.12);
+}
+
+function enterOvertimeBGM() {
+  // ピッチを約1半音下げる（次のループから反映）
+  overtimePitchRatio = 0.944;
+  // ローパスフィルターで高域を3秒かけてカット → 重く不穏な印象に
+  const t = audioCtx.currentTime;
+  bgmFilter.frequency.setValueAtTime(bgmFilter.frequency.value, t);
+  bgmFilter.frequency.linearRampToValueAtTime(900, t + 3.0);
+  bgmFilter.Q.setValueAtTime(bgmFilter.Q.value, t);
+  bgmFilter.Q.linearRampToValueAtTime(1.5, t + 3.0);
 }
 
 /* ===========================
@@ -2500,6 +2524,7 @@ function startStatTicker() {
         void el.timerGaugeArc.getBoundingClientRect();
         el.timerGaugeArc.style.transition = "";
       }
+      enterOvertimeBGM();
       showMilestoneFlash("残業開始...", "overtime");
       playMilestoneSound("overtime");
     }
