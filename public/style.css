@@ -304,7 +304,7 @@ h1 {
   top: 14px;
   right: 16px;
   display: flex;
-  gap: 6px;
+  gap: 14px;
   align-items: center;
   z-index: 5;
 }
@@ -312,7 +312,7 @@ h1 {
 .title-hero-icon-btn {
   background: none;
   border: none;
-  font-size: 1.55rem;
+  font-size: 1.95rem;
   line-height: 1;
   color: rgba(145, 188, 228, 0.48);
   cursor: pointer;
@@ -355,7 +355,9 @@ h1 {
 }
 
 .title-desc-tab:hover:not(.is-active) {
-  color: rgba(168, 205, 242, 0.72);
+  color: rgba(175, 210, 245, 0.82);
+  background: rgba(60, 110, 170, 0.1);
+  border-radius: 4px 4px 0 0;
 }
 
 .desc-panel[hidden] { display: none; }
@@ -376,7 +378,7 @@ h1 {
    説明文カード
 =========================== */
 .title-description {
-  margin-top: 20px;
+  margin-top: 12px;
   text-align: left;
   background: rgba(255, 255, 255, 0.07);
   border: 1px solid rgba(100, 160, 220, 0.22);
