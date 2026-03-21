@@ -195,6 +195,10 @@
 
             <!-- 中央ステージ -->
             <div class="hero-card panel office-title-stage">
+              <div class="title-hero-icons">
+                <button class="title-hero-icon-btn records-btn" type="button" aria-label="実績">🏆</button>
+                <button class="title-hero-icon-btn settings-btn" type="button" aria-label="設定">⚙</button>
+              </div>
               <div class="title-board">
                 <div class="title-plaque">
                   <img
@@ -207,37 +211,54 @@
                 <div class="title-start-block">
                   <button id="start-button" class="primary-button stage-button title-action-button title-action-start" type="button">スタート</button>
 
-                  <!-- 補助ナビ -->
-                  <div class="title-sub-nav">
-                    <button class="title-sub-nav-btn how-to-btn" type="button">📋 遊び方</button>
-                    <button class="title-sub-nav-btn records-btn" type="button">🏆 実績</button>
-                    <button class="title-sub-nav-btn settings-btn" type="button" aria-label="設定">⚙</button>
-                  </div>
-
-                  <!-- 説明文 -->
+                  <!-- 説明カード（タブ切り替え式） -->
                   <div class="title-description">
-                    <section class="desc-section">
-                      <h2 class="desc-heading">定時退ピングとは？</h2>
-                      <p class="desc-body">山積みの仕事をタイピングでさばき、誰よりも早い退勤を目指すブラウザゲームです。<br>迫る締切、鳴りやまない通知、終わらないタスク。<br>すべてを打ち返し、最速退勤をつかみ取りましょう。</p>
-                    </section>
-                    <hr class="desc-divider">
-                    <section class="desc-section">
-                      <h3 class="desc-subheading">こんな人におすすめ</h3>
-                      <ul class="desc-list">
-                        <li>仕事を片づけるような爽快感を味わいたい人</li>
-                        <li>スキマ時間にテンポよく遊びたい人</li>
-                        <li>ゲーム感覚でタイピングを鍛えたい人</li>
-                      </ul>
-                    </section>
-                    <hr class="desc-divider">
-                    <section class="desc-section desc-section--last">
-                      <h3 class="desc-subheading">特徴</h3>
-                      <ul class="desc-list">
-                        <li>難易度ごとに会社の空気が変わる</li>
-                        <li>スコアや称号で結果が分かる</li>
-                        <li>ブラウザですぐ遊べる</li>
-                      </ul>
-                    </section>
+                    <div class="title-desc-tabs">
+                      <button class="title-desc-tab is-active" data-tab="about">定時退ピングとは？</button>
+                      <button class="title-desc-tab" data-tab="howto">遊び方</button>
+                    </div>
+
+                    <div class="desc-panel" id="desc-panel-about">
+                      <p class="desc-body">山積みの仕事をタイピングでさばき、誰よりも早い退勤を目指すブラウザゲームです。<br>迫る締切、鳴りやまない通知、終わらないタスク。すべてを打ち返し、最速退勤をつかみ取りましょう。</p>
+                      <hr class="desc-divider">
+                      <section class="desc-section">
+                        <h3 class="desc-subheading">こんな人におすすめ</h3>
+                        <ul class="desc-list">
+                          <li>仕事を片づけるような爽快感を味わいたい人</li>
+                          <li>スキマ時間にテンポよく遊びたい人</li>
+                          <li>ゲーム感覚でタイピングを鍛えたい人</li>
+                        </ul>
+                      </section>
+                      <hr class="desc-divider">
+                      <section class="desc-section desc-section--last">
+                        <h3 class="desc-subheading">特徴</h3>
+                        <ul class="desc-list">
+                          <li>難易度ごとに会社の空気が変わる</li>
+                          <li>スコアや称号で結果が分かる</li>
+                          <li>ブラウザですぐ遊べる</li>
+                        </ul>
+                      </section>
+                    </div>
+
+                    <div class="desc-panel" id="desc-panel-howto" hidden>
+                      <ol class="how-to-list desc-howto-list">
+                        <li>就職先（難易度）を選ぶ</li>
+                        <li><strong>Space キー</strong> を押して入室</li>
+                        <li>画面の日本語をローマ字で <strong>キーボード入力</strong></li>
+                        <li>ゲーム内の時計は <strong>リアルタイムで進む</strong></li>
+                        <li>全業務を完了したら <strong>退勤時刻</strong> が確定</li>
+                        <li>定時より前に退勤できれば <strong>定時退社成功！</strong></li>
+                      </ol>
+                      <div class="desc-howto-tips">
+                        <p class="desc-subheading">ポイント</p>
+                        <ul class="desc-list">
+                          <li>タイプミスで <strong>時間ペナルティ</strong> が加算される</li>
+                          <li>定時を過ぎると <strong>残業開始</strong> — 職場の空気が重くなる</li>
+                          <li>ブラック企業ほど時計が速く・ペナルティが大きい</li>
+                          <li>ランクは退勤時刻（定時との差）で決まる</li>
+                        </ul>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>

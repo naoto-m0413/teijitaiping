@@ -918,6 +918,17 @@ function checkMobile() {
    イベントバインド
 =========================== */
 function bindEvents() {
+  // 説明カード タブ切り替え
+  document.querySelectorAll(".title-desc-tab").forEach((tab) => {
+    tab.addEventListener("click", () => {
+      document.querySelectorAll(".title-desc-tab").forEach((t) => t.classList.remove("is-active"));
+      document.querySelectorAll(".desc-panel").forEach((p) => { p.hidden = true; });
+      tab.classList.add("is-active");
+      const panel = document.getElementById(`desc-panel-${tab.dataset.tab}`);
+      if (panel) panel.hidden = false;
+    });
+  });
+
   // 難易度選択
   el.difficultyCards.forEach((card) => {
     card.addEventListener("click", () => {
