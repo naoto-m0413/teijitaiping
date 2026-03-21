@@ -2493,6 +2493,13 @@ function startStatTicker() {
     // 定時を超えた瞬間に「残業開始！」
     if (prevMinutes <= session.difficulty.endMinutes &&
         session.gameMinutes > session.difficulty.endMinutes) {
+      // ゲージをトランジションなしで即時 100% に埋めてから残業演出を起動
+      if (el.timerGaugeArc) {
+        el.timerGaugeArc.style.transition = "none";
+        el.timerGaugeArc.style.strokeDashoffset = "0";
+        void el.timerGaugeArc.getBoundingClientRect();
+        el.timerGaugeArc.style.transition = "";
+      }
       showMilestoneFlash("残業開始...", "overtime");
       playMilestoneSound("overtime");
     }
