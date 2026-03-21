@@ -1611,28 +1611,18 @@ h1 {
 }
 
 .result-hero-action-primary {
-  /* 主ボタン：ソリッドブルー、最も存在感 */
-  color: #ffffff;
-  background: linear-gradient(180deg, #2272cc 0%, #1450a0 100%);
-  border: 2px solid #2878d0;
-  box-shadow: 0 3px 0 #0a2e60, 0 0 10px rgba(34, 114, 204, 0.2);
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  /* 中央の主ボタン：他より少しだけ明るいが控えめ */
+  color: #c4dff5;
+  background: rgba(30, 65, 110, 0.55);
+  border: 1.5px solid rgba(90, 160, 225, 0.55);
+  box-shadow: 0 0 8px rgba(40, 110, 200, 0.12);
 }
 
-.result-hero-action-secondary {
-  /* 別ルートボタン：ティール系で青と色相を差別化、「別の選択肢」感 */
-  color: #7ae0f2;
-  background: linear-gradient(180deg, rgba(0, 110, 140, 0.45) 0%, rgba(0, 75, 105, 0.4) 100%);
-  border: 2px solid rgba(0, 180, 215, 0.55);
-  box-shadow: 0 3px 0 rgba(0, 50, 70, 0.6);
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-}
-
-.result-hero-action-ghost {
-  /* 補助ボタン：アウトライン寄り、でも視認性を確保 */
-  color: #96bcd8;
-  background: rgba(20, 38, 60, 0.65);
-  border: 1.5px solid rgba(120, 175, 220, 0.35);
+.result-hero-action-sub {
+  /* 左右の補助ボタン：ghost寄りで統一感 */
+  color: #7ba8c8;
+  background: rgba(18, 36, 60, 0.45);
+  border: 1.5px solid rgba(100, 150, 200, 0.30);
   box-shadow: none;
 }
 
