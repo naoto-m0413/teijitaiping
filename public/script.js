@@ -421,7 +421,6 @@ const difficultyMessagePools = {
 
   black: {
     early: {
-      short: [
       medium: [
         { text: "明日の朝一でお願いします",   reading: "あしたのあさいちでおねがいします",   lengthType: "medium" },
         { text: "先方がかなり急いでいます",   reading: "せんぽうがかなりいそいでいます",     lengthType: "medium" },
