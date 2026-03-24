@@ -2390,7 +2390,7 @@ function shareResult() {
     `退勤時刻：${fmtMin(last.leaveMinutes)}　${statusText}`,
     `速度：${last.cps}回/秒　正確率：${last.accuracy}%`,
     `${last.rank ?? ""}　${last.title}`,
-    "#定時退ピング #タイピングゲーム"
+    "#定時退ピング #タイピングゲーム #個人開発"
   ].join("\n");
 
   const gameUrl = window.location.origin + window.location.pathname;
