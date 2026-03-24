@@ -1334,7 +1334,7 @@ function pickMessage(diffId, taskIndex, taskTotal, usedTexts) {
 =========================== */
 function isKanjiChar(ch) {
   const code = ch.charCodeAt(0);
-  return (code >= 0x4E00 && code <= 0x9FFF) || (code >= 0x3400 && code <= 0x4DBF);
+  return (code >= 0x4E00 && code <= 0x9FFF) || (code >= 0x3400 && code <= 0x4DBF) || code === 0x3005; // 々
 }
 
 /* ===========================
