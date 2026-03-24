@@ -287,21 +287,6 @@ const TASK_POOL = [
   }
 ];
 
-
-/* ===========================
-   攻略ヒント
-=========================== */
-const TIPS = [
-  "ミスを減らして時間ロスを防ごう！",
-  "速く正確に打つほど退勤が早まる。",
-  "ブラック企業はスコア倍率が高い！",
-  "イベント発生でゲーム内時間が増える。",
-  "正確率 97% 以上でボーナス補正あり。",
-  "最終タスクをこなせば退勤確定！",
-  "定時前退社で「退勤の神」を狙おう。",
-  "ブラック企業完走で称号「脱出者」が取れる。"
-];
-
 /* ===========================
    難易度別業務メッセージプール
    構造: difficultyMessagePools[diffId][scene][lengthType][]
@@ -442,11 +427,6 @@ const difficultyMessagePools = {
   black: {
     early: {
       short: [
-        { text: "ちょっといいですか", reading: "ちょっといいですか", lengthType: "short" },
-        { text: "すぐ確認して",       reading: "すぐかくにんして",   lengthType: "short" },
-        { text: "先にこれやって",     reading: "さきにこれやって",   lengthType: "short" },
-        { text: "今日中です",         reading: "きょうじゅうです",   lengthType: "short" }
-      ],
       medium: [
         { text: "明日の朝一でお願いします",   reading: "あしたのあさいちでおねがいします",   lengthType: "medium" },
         { text: "先方がかなり急いでいます",   reading: "せんぽうがかなりいそいでいます",     lengthType: "medium" },
@@ -460,13 +440,6 @@ const difficultyMessagePools = {
       ]
     },
     middle: {
-      short: [
-        { text: "今すぐ対応して", reading: "いますぐたいおうして", lengthType: "short" },
-        { text: "まだですか",     reading: "まだですか",           lengthType: "short" },
-        { text: "急いでください", reading: "いそいでください",     lengthType: "short" },
-        { text: "早く送って",     reading: "はやくおくって",       lengthType: "short" },
-        { text: "もう見ましたか", reading: "もうみましたか",       lengthType: "short" }
-      ],
       medium: [
         { text: "さっき言った修正まだですか",         reading: "さっきいったしゅうせいまだですか",         lengthType: "medium" },
         { text: "なんでまだ終わってないんですか",     reading: "なんでまだおわってないんですか",           lengthType: "medium" },
@@ -485,10 +458,6 @@ const difficultyMessagePools = {
       ]
     },
     late: {
-      short: [
-        { text: "まだ終わりませんか", reading: "まだおわりませんか",   lengthType: "short" },
-        { text: "先に出してください", reading: "さきにだしてください", lengthType: "short" }
-      ],
       medium: [
         { text: "今日の分全部やり直してください",   reading: "きょうのぶんぜんぶやりなおしてください", lengthType: "medium" },
         { text: "もう一度確認して送り直してください", reading: "もういちどかくにんしておくりなおしてください", lengthType: "medium" },
@@ -620,8 +589,7 @@ const el = {
   cpsValue:             document.getElementById("cps-value"),
   accuracyValue:        document.getElementById("accuracy-value"),
   missValue:            document.getElementById("miss-value"),
-  gameTip:              document.getElementById("game-tip"),
-  resultLeaveTime:      document.getElementById("result-leave-time"),
+resultLeaveTime:      document.getElementById("result-leave-time"),
   resultStatus:         document.getElementById("result-status"),
   resultRank:           document.getElementById("result-rank"),
   resultTitle:          document.getElementById("result-title"),
@@ -1333,10 +1301,6 @@ function startGame() {
   switchScreen("game");
   showKisoFlash(difficulty.id);
   focusGameInput({ resetValue: true });
-
-  if (el.gameTip) {
-    el.gameTip.textContent = TIPS[Math.floor(Math.random() * TIPS.length)];
-  }
 
   // ゲージをトランジションなしで即時リセット
   if (el.timerGaugeArc) {
